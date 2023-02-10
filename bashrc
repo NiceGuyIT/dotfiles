@@ -127,7 +127,7 @@ pathmunge "${HOME}/.local/share/JetBrains/Toolbox/scripts"
 
 ######################################################################
 # mac-osx.sh
-# Mac OSX specific (Tsurani)
+# Mac OSX specific
 ######################################################################
 if [[ $(uname -s) = 'Darwin' ]]
 then

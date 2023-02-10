@@ -36,7 +36,62 @@ The vim plugins are not pulled automatically. They are submodules in `vim/pack/p
     - [ripgrep](https://github.com/BurntSushi/ripgrep)
 - [Awesome Go](https://github.com/avelino/awesome-go)
     - [fzf](https://github.com/junegunn/fzf)
+    - [gojq](https://github.com/elgs/gojq)
+- [cfssl](https://github.com/cloudflare/cfssl)
 
 ## Caveat
 
 Things may be broken as I move from a private repo with another name.
+
+## Useful commands
+
+### .env
+
+Export all variables in `.env` into the current environment.
+
+```bash
+export $(grep -vE "^(#.*|\s*)$" .env)
+```
+
+### Certs
+
+Check domain for certificate expiration.
+
+```bash
+cfssl-certinfo -domain github.com
+```
+
+Display only the important information with colors!
+
+```bash
+cfssl-certinfo -domain github.com | gojq '{subject: .subject, sans: .sans, expired: .not_after}'
+```
+
+Check a PEM certificate for expiration. The server cert is the first cert in the PEM file with the intermediary and root
+certs afterwards.
+
+```bash
+sed -e '/^-----END CERTIFICATE-----$/q' /etc/letsencrypt/live/example.com/fullchain.pem | cfssl-certinfo -cert - | gojq '{subject: .subject, sans: .sans, expired: .not_after}'
+```
+
+### Searching through files
+
+Recursively search for `findme` in the current directory.
+```bash
+rg findme
+```
+
+Search all files, including hidden and \[git]ignored files.
+```bash
+rg --no-ignore --hidden findme
+```
+
+Don't search `node_modules`.
+```bash
+rg --glob \!node_modules findme
+```
+
+Search all files, including hidden and \[git]ignored files _except_ `node_modules` and `.git`.
+```bash
+rg --no-ignore --hidden --glob \!node_modules --glob \!.git findme
+```
