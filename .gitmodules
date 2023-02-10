@@ -1,0 +1,44 @@
+[submodule "vim/pack/plugins/start/vim-toml"]
+	path = vim/pack/plugins/start/vim-toml
+	url = https://github.com/cespare/vim-toml
+	branch = main
+[submodule "vim/pack/plugins/start/vim-surround"]
+	path = vim/pack/plugins/start/vim-surround
+	url = https://github.com/tpope/vim-surround
+	branch = master
+[submodule "vim/pack/plugins/start/vim-sensible"]
+	path = vim/pack/plugins/start/vim-sensible
+	url = https://github.com/tpope/vim-sensible
+	branch = master
+[submodule "vim/pack/plugins/start/vim-json"]
+	path = vim/pack/plugins/start/vim-json
+	url = https://github.com/elzr/vim-json
+	branch = master
+[submodule "vim/pack/plugins/start/vim-go"]
+	path = vim/pack/plugins/start/vim-go
+	url = https://github.com/fatih/vim-go
+	branch = master
+[submodule "vim/pack/plugins/start/syntastic"]
+	path = vim/pack/plugins/start/syntastic
+	url = https://github.com/vim-syntastic/syntastic
+	branch = master
+[submodule "vim/pack/plugins/start/nginx.vim"]
+	path = vim/pack/plugins/start/nginx.vim
+	url = https://github.com/chr4/nginx.vim
+	branch = master
+[submodule "vim/pack/plugins/start/nerdtree"]
+	path = vim/pack/plugins/start/nerdtree
+	url = https://github.com/preservim/nerdtree
+	branch = master
+[submodule "vim/pack/plugins/start/fzf.vim"]
+	path = vim/pack/plugins/start/fzf.vim
+	url = https://github.com/junegunn/fzf.vim
+	branch = master
+[submodule "vim/pack/plugins/start/unicode"]
+	path = vim/pack/plugins/start/unicode
+	url = https://github.com/chrisbra/unicode.vim
+	branch = master
+[submodule "vim/pack/plugins/start/vim-hcl"]
+	path = vim/pack/plugins/start/vim-hcl
+	url = https://github.com/jvirtanen/vim-hcl
+	branch = main

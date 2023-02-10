@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+git pull
+git add --update
+git commit --message "$1"
+git push
+

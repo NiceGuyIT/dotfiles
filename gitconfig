@@ -1,0 +1,65 @@
+[user]
+	name = David Randall
+	email = David@NiceGuyIT.biz
+
+[init]
+	defaultBranch = main
+
+[safe]
+# Use this when the uid is different.
+#	directory = /srv/ca04/machines/ns-v18-tactical/opt/trmm-community-scripts
+
+[push]
+	default = simple
+
+[pull]
+	rebase = false
+
+[core]
+	editor = vim -f
+	# https://www.kernel.org/pub/software/scm/git/docs/v1.7.10.1/git-config.html
+	# https://git-scm.com/docs/gitattributes/1.7.3.3
+	safecrlf = true
+	autocrlf = false
+	# https://github.com/github/gitignore
+	excludesfile = ~/.gitignore_global
+	pager = less
+
+[diff]
+	tool = vimdiff
+
+[difftool]
+	prompt = false
+
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+	ui = true
+	pager = true
+
+# https://golang.org/doc/faq#git_https
+# This affects brew and git submodule checkout
+# FIXME: This affects 'flutter update' because flutter expects https: instead of ssh:
+#[url "ssh://git@github.com/"]
+#    insteadOf = https://github.com/
+
+[url "ssh://git@gitlab.com/"]
+	insteadOf = https://gitlab.com/
+
+# The URL is case sensitive for SSH.
+# FIXME: Change the URL to something longer term.
+[url "ssh://git@Git.O.NiceGuyIT.biz/"]
+    insteadOf = https://gitea.o.niceguyit.biz/
+
+# The URL is case sensitive for SSH.
+# FIXME: Change the URL to something longer term.
+[url "ssh://git@git.n.niceguyit.biz/"]
+    insteadOf = https://gitea.n.niceguyit.biz/
+
+################################################################################
+# vim: filetype=dosini
+################################################################################
+[init]
+	defaultBranch = main

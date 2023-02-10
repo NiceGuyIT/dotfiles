@@ -1,0 +1,24 @@
+# ripgrep config file
+
+# ripgrep supports configuration files. Set RIPGREP_CONFIG_PATH to a
+# configuration file. The file can specify one shell argument per line. Lines
+# starting with '#' are ignored. For more details, see the man page or the
+# README.
+
+##
+## See https://github.com/BurntSushi/ripgrep/blob/master/GUIDE.md
+##
+
+# Because who cares about case!?
+--smart-case
+
+# Don't let ripgrep vomit really long lines to my terminal, and show a preview.
+--max-columns=150
+# ripgrep 0.9.0 doesn't support this flag
+# Comment it out until all servers have been updated.
+# openSUSE Leap 15.2 has ripgrep 0.8.1
+--max-columns-preview
+
+# Don't respect ignore files
+# More often than not, I'm searching for files in the ignore list.
+--no-ignore

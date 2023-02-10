@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+# Reset the permissions for ~/.ssh/*
+# This is mainly to set permissions for ssh/config which is symlinked to
+# ~/.ssh/config, but also helps protect the public SSH keys
+#
+[[ -d ./ssh ]] && chmod -R go-rwx ./ssh
+
+# Allow other read permission for root-owned repos on servers.
+# Do not include dotfiles (primarily .git)
+chmod -R o+rX [a-z]*

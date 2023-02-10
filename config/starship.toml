@@ -1,0 +1,270 @@
+# ~/.config/starship.toml
+
+
+[hostname]
+ssh_only = false
+format = "<[$hostname]($style)>"
+#trim_at = "-"
+style = "bold dimmed white"
+disabled = false
+
+
+[cmd_duration]
+min_time = 10_000  # Show command duration over 10,000 milliseconds (=10 sec)
+format = " took [$duration]($style)"
+#format = '\[[⏱ $duration ]($style)\]'
+
+[conda]
+format = '\[[$symbol$environment]($style)\]'
+#symbol = " "
+symbol = "conda "
+
+[dart]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "dart "
+
+[docker_context]
+format = '\[[$symbol$context]($style)\]'
+#symbol = " "
+symbol = "docker "
+
+[dotnet]
+format = '\[[$symbol($version)(🎯 $tfm)]($style)\]'
+symbol = ".NET "
+
+[elixir]
+format = '\[[$symbol($version \(OTP $otp_version\))]($style)\]'
+#symbol = " "
+symbol = "exs "
+
+[elm]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "elm "
+
+[erlang]
+format = '\[[$symbol($version)]($style)\]'
+
+[gcloud]
+format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
+
+[git_branch]
+format = '\[[$symbol$branch]($style)\]'
+#format = " [$symbol$branch]($style) "
+symbol = "🍣 "
+#symbol = " "
+#symbol = "git "
+style = "bold yellow"
+
+[git_state]
+format = '[\($state( $progress_current of $progress_total)\)]($style) '
+
+[golang]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "go "
+
+[helm]
+format = '\[[$symbol($version)]($style)\]'
+
+[hg_branch]
+format = '\[[$symbol$branch]($style)\]'
+#symbol = " "
+symbol = "hg "
+
+[java]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "java "
+
+[julia]
+format = '\[[$symbol($version)]($style)\]'
+#format = "[$symbol$version]($style) "
+#symbol = " "
+#symbol = "ஃ "
+symbol = "jl "
+style = "bold green"
+
+[kotlin]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "kt "
+
+[kubernetes]
+format = '\[[$symbol$context( \($namespace\))]($style)\]'
+
+[lua]
+format = '\[[$symbol($version)]($style)\]'
+
+[memory_usage]
+format = '\[$symbol[$ram]($style)\]'
+#format = '\[$symbol[$ram( | $swap)]($style)\]'
+#format = "$symbol[${ram}( | ${swap})]($style) "
+symbol = " "
+#symbol = "memory "
+threshold = 70
+style = "bold dimmed white"
+disabled = false
+
+[nim]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "nim "
+
+[nix_shell]
+format = '\[[$symbol$state( \($name\))]($style)\]'
+#symbol = " "
+symbol = "nix "
+
+[nodejs]
+# There doesn't seem to be a way to disable this module by removing values from detect_* variables
+# https://starship.rs/config/#node-js
+disabled = true
+detect_extensions = '[]'
+detect_files = '[]'
+detect_folders = '[]'
+format = '\[[$symbol($version)]($style)\]'
+symbol = "nodejs "
+
+[ocaml]
+format = '\[[$symbol($version)(\($switch_indicator$switch_name\))]($style)\]'
+symbol = "ml "
+
+[openstack]
+format = '\[[$symbol$cloud(\($project\))]($style)\]'
+
+[package]
+format = '\[[$symbol$version]($style)\]'
+symbol = " "
+#symbol = "pkg "
+#disabled = true
+
+[perl]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "pl "
+
+[php]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "php "
+
+[purescript]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "purs "
+
+[python]
+format = '\[[${symbol}${pyenv_prefix}(${version})(\($virtualenv\))]($style)\]'
+#format = "[$symbol$version]($style) "
+#symbol = " "
+symbol = "py "
+style = "bold green"
+
+[red]
+format = '\[[$symbol($version)]($style)\]'
+
+[ruby]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "rb "
+
+[rust]
+format = '\[[$symbol($version)]($style)\]'
+#format = "[$symbol$version]($style) "
+#symbol = " "
+symbol = "rs "
+style = "bold green"
+
+[scala]
+format = '\[[$symbol($version)]($style)\]'
+#symbol = " "
+symbol = "scala "
+
+[shlvl]
+symbol = " "
+
+[swift]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "ﯣ "
+#symbol = "swift "
+
+[terraform]
+format = '\[[$symbol$workspace]($style)\]'
+
+[time]
+#format = '\[[$time]($style)\]'
+format = "🕙 $time($style) "
+time_format = "%T"
+style = "bright-white"
+disabled = false
+
+[username]
+format = '\[[$user]($style)\]'
+#style_user = "bold dimmed blue"
+show_always = false
+
+[vagrant]
+format = '\[[$symbol($version)]($style)\]'
+
+[vlang]
+format = '\[[$symbol($version)]($style)\]'
+
+[zig]
+format = '\[[$symbol($version)]($style)\]'
+
+
+[character]
+success_symbol = "[#](bold green)"
+#error_symbol = "[✖](bold red) "
+error_symbol = "[x](bold red)"
+vicmd_symbol = "[#](bold green)"
+
+[git_commit]
+tag_symbol = " tag "
+commit_hash_length = 8
+style = "bold white"
+
+[git_status]
+ahead = ">"
+behind = "<"
+diverged = "<>"
+renamed = "r"
+deleted = "x"
+
+conflicted = "⚔️ "
+#ahead = "🏎️ 💨 ×${count}"
+#behind = "🐢 ×${count}"
+#diverged = "🔱 🏎️ 💨 ×${ahead_count} 🐢 ×${behind_count}"
+untracked = "🛤️  ×${count}"
+stashed = "📦 "
+modified = "📝 ×${count}"
+staged = "🗃️  ×${count}"
+#renamed = "📛 ×${count}"
+#deleted = "🗑️  ×${count}"
+style = "bright-white"
+#format = "$all_status$ahead_behind"
+format = '([\[$all_status$ahead_behind\]]($style))'
+
+[aws]
+format = '\[[$symbol($profile)(\($region\))(\[$duration\])]($style)\]'
+#symbol = "  "
+symbol = "aws "
+
+[crystal]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "cr "
+
+[cmake]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "cmake "
+
+[deno]
+format = '\[[$symbol($version)]($style)\]'
+symbol = "deno "
+
+[directory]
+#read_only = " ro"
+read_only = " "
+truncation_length = 5
+format = "[$path]($style)[$lock_symbol]($lock_style) "
+

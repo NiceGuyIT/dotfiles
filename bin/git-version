@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+
+if [[ "$#" -eq 1 ]]
+then
+	message="$1"
+
+	cur_version=$(git describe --tags --abbrev=0)
+	# https://stackoverflow.com/a/61921674
+	if [[ -z "${cur_version}" ]]
+	then
+		version="v0.0.1"
+	else
+		version=$(echo "${cur_version}" | awk -F. -v OFS=. '{$NF += 1 ; print}')
+	fi
+
+elif [[ "$#" -eq 2 ]]
+then
+	message="$1"
+	version="$2"
+else
+	echo "Invalid number of arguments"
+	echo "$0 message [version]"
+	exit 1
+fi
+
+echo "Publishing version ${version}"
+
+git pull
+git add --update
+git commit --message "${message}"
+git tag "${version}"
+git push origin "${version}"
+git push
+
