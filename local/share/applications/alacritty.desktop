@@ -2,7 +2,9 @@
 Type=Application
 TryExec=alacritty
 Exec=alacritty
-Icon=Alacritty
+# Copy the icons to one of these locations.
+Icon=/home/user/.local/share/applications/alacritty-term.svg
+#Icon=/usr/local/share/applications/alacritty-term.svg
 Terminal=false
 Categories=System;TerminalEmulator;
 

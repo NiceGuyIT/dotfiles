@@ -13,23 +13,23 @@
 # https://github.com/alacritty/alacritty-theme
 import:
   # Bright colors
-  #- $HOME/projects/github/alacritty-theme/themes/hyper.yaml
-  - $HOME/projects/github/alacritty-theme/themes/monokai_charcoal.yaml
-  #- $HOME/projects/github/alacritty-theme/themes/blood_moon.yaml
+  #- ~/projects/github/alacritty-theme/themes/hyper.yaml
+  - ~/projects/github/alacritty-theme/themes/monokai_charcoal.yaml
+  #- ~/projects/github/alacritty-theme/themes/blood_moon.yaml
   # Too dark grey; hostname is hard to read
-  #- $HOME/projects/github/alacritty-theme/themes/tomorrow_night_bright.yaml
+  #- ~/projects/github/alacritty-theme/themes/tomorrow_night_bright.yaml
   # Too dark of blue
-  #- $HOME/projects/github/alacritty-theme/themes/campbell.yaml
-  #- $HOME/projects/github/alacritty-theme/themes/xterm.yaml
+  #- ~/projects/github/alacritty-theme/themes/campbell.yaml
+  #- ~/projects/github/alacritty-theme/themes/xterm.yaml
   # Blueish background
-  #- $HOME/projects/github/alacritty-theme/themes/falcon.yaml
-  #- $HOME/projects/github/alacritty-theme/themes/iterm.yaml
+  #- ~/projects/github/alacritty-theme/themes/falcon.yaml
+  #- ~/projects/github/alacritty-theme/themes/iterm.yaml
   # Greyish backgrounds
-  #- $HOME/projects/github/alacritty-theme/themes/omni.yaml
-  #- $HOME/projects/github/alacritty-theme/themes/papercolor_dark.yaml
+  #- ~/projects/github/alacritty-theme/themes/omni.yaml
+  #- ~/projects/github/alacritty-theme/themes/papercolor_dark.yaml
   # Washed out colors
-  #- $HOME/projects/github/alacritty-theme/themes/terminal_app.yaml
-  #- $HOME/projects/github/alacritty-theme/themes/atom_dark.yaml
+  #- ~/projects/github/alacritty-theme/themes/terminal_app.yaml
+  #- ~/projects/github/alacritty-theme/themes/atom_dark.yaml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
