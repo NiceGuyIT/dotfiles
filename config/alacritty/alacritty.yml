@@ -13,23 +13,23 @@
 # https://github.com/alacritty/alacritty-theme
 import:
   # Bright colors
-  #- /home/drandall/projects/github/alacritty-theme/themes/hyper.yaml
-  - /home/drandall/projects/github/alacritty-theme/themes/monokai_charcoal.yaml
-  #- /home/drandall/projects/github/alacritty-theme/themes/blood_moon.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/hyper.yaml
+  - $HOME/projects/github/alacritty-theme/themes/monokai_charcoal.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/blood_moon.yaml
   # Too dark grey; hostname is hard to read
-  #- /home/drandall/projects/github/alacritty-theme/themes/tomorrow_night_bright.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/tomorrow_night_bright.yaml
   # Too dark of blue
-  #- /home/drandall/projects/github/alacritty-theme/themes/campbell.yaml
-  #- /home/drandall/projects/github/alacritty-theme/themes/xterm.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/campbell.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/xterm.yaml
   # Blueish background
-  #- /home/drandall/projects/github/alacritty-theme/themes/falcon.yaml
-  #- /home/drandall/projects/github/alacritty-theme/themes/iterm.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/falcon.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/iterm.yaml
   # Greyish backgrounds
-  #- /home/drandall/projects/github/alacritty-theme/themes/omni.yaml
-  #- /home/drandall/projects/github/alacritty-theme/themes/papercolor_dark.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/omni.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/papercolor_dark.yaml
   # Washed out colors
-  #- /home/drandall/projects/github/alacritty-theme/themes/terminal_app.yaml
-  #- /home/drandall/projects/github/alacritty-theme/themes/atom_dark.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/terminal_app.yaml
+  #- $HOME/projects/github/alacritty-theme/themes/atom_dark.yaml
 
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
