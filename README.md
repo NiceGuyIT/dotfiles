@@ -28,16 +28,23 @@ The vim plugins are not pulled automatically. They are submodules in `vim/pack/p
 - [Vim-Go](https://github.com/fatih/vim-go.git)
 - [Awesome Alternatives in Rust](https://github.com/TaKO8Ki/awesome-alternatives-in-rust) (Originally Awesome Rewrite It
   In Rust)
-    - [dog](https://github.com/ogham/dog)
-    - [fd](https://github.com/sharkdp/fd)
-    - [starship](https://github.com/starship/starship)
-    - [xh](https://github.com/ducaale/xh)
+    - [dog](https://github.com/ogham/dog) - A command-line DNS client.
+    - [fd](https://github.com/sharkdp/fd) = A simple, fast and user-friendly alternative to 'find'
+    - [starship](https://github.com/starship/starship) - The minimal, blazing-fast, and infinitely customizable prompt
+      for any shell!
+    - [xh](https://github.com/ducaale/xh) - friendly and fast tool for sending HTTP requests
+- [uutils coreutils](https://github.com/uutils/coreutils) - Cross-platform Rust rewrite of the GNU coreutils
+- [dua-cli](https://github.com/Byron/dua-cli) - View disk space usage and delete unwanted data, fast.
 - [Awesome Rust](https://github.com/awesome-rust-com/awesome-rust)
-    - [ripgrep](https://github.com/BurntSushi/ripgrep)
+    - [ripgrep](https://github.com/BurntSushi/ripgrep) - combines the usability of The Silver Searcher with the raw speed
+      of grep
 - [Awesome Go](https://github.com/avelino/awesome-go)
-    - [fzf](https://github.com/junegunn/fzf)
-    - [gojq](https://github.com/elgs/gojq)
-- [cfssl](https://github.com/cloudflare/cfssl)
+    - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder
+    - [gojq](https://github.com/elgs/gojq) - JSON query in Golang
+    - [gdu](https://github.com/dundee/gdu) - Fast disk usage analyzer with console interface written in Go
+- [cfssl](https://github.com/cloudflare/cfssl) - Cloudflare's PKI and TLS toolkit
+- [dnslookup](https://github.com/ameshkov/dnslookup) - Simple command line utility to make DNS lookups. Supports all
+  known DNS protocols: plain DNS, DoH, DoT, DoQ, DNSCrypt.
 
 ## Caveat
 
