@@ -71,7 +71,9 @@ Check a PEM certificate for expiration. The server cert is the first cert in the
 certs afterwards.
 
 ```bash
-sed -e '/^-----END CERTIFICATE-----$/q' /etc/letsencrypt/live/example.com/fullchain.pem | cfssl-certinfo -cert - | gojq '{subject: .subject, sans: .sans, expired: .not_after}'
+sed -e '/^-----END CERTIFICATE-----$/q' /etc/letsencrypt/live/example.com/fullchain.pem | \
+    cfssl-certinfo -cert - | \
+    gojq '{subject: .subject, sans: .sans, expired: .not_after}'
 ```
 
 ### Searching through files
