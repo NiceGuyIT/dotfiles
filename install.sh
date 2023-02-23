@@ -84,13 +84,12 @@ ln -s "${config_link}" "${config_file}"
 
 # Process ~/.config
 config_dir="config"
-[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
 
 # Starship config in ~/.config/starship.toml
 file="starship.toml"
 config_file="${HOME}/.${config_dir}/${file}"
 config_link="../${base_dir}/${config_dir}/${file}"
-# Use relative links instead of absolute
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
 [[ -h "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
@@ -99,7 +98,7 @@ file="alacritty.yml"
 config_dir="config/alacritty"
 config_file="${HOME}/.${config_dir}/${file}"
 config_link="../../${base_dir}/${config_dir}/${file}"
-# Use relative links instead of absolute
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
 [[ -h "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
@@ -109,5 +108,5 @@ if [[ ! -e "${HOME}/projects/github/alacritty-theme" ]]
 then
 	echo "Alacritty themes are not checked out automatically."
 	echo mkdir --parents ~/projects/github/
-	echo git clone https://github.com/alacritty/alacritty-theme ~/projects/github/
+	echo git clone https://github.com/alacritty/alacritty-theme ~/projects/github/alacritty-theme
 fi
