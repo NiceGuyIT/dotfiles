@@ -38,6 +38,7 @@ The vim plugins are not pulled automatically. They are submodules in `vim/pack/p
 - [Awesome Rust](https://github.com/awesome-rust-com/awesome-rust)
     - [ripgrep](https://github.com/BurntSushi/ripgrep) - combines the usability of The Silver Searcher with the raw speed
       of grep
+    - [alacritty](https://github.com/alacritty/alacritty) - A cross-platform, GPU enhanced terminal emulator
 - [Awesome Go](https://github.com/avelino/awesome-go)
     - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder
     - [gojq](https://github.com/elgs/gojq) - JSON query in Golang
