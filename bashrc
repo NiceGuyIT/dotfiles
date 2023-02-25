@@ -95,6 +95,8 @@ pathmunge "${HOME}/.cargo/bin"
 
 # Python
 pathmunge "${HOME}/.pyenv/bin"
+# "pip install --user" installs to ~/.local/bin/
+pathmunge "${HOME}/.local/bin"
 
 # Flutter
 pathmunge "${HOME}/projects/github/flutter/bin"
