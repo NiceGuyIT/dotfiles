@@ -82,20 +82,19 @@ pathmunge "/usr/sbin"
 pathmunge "/usr/local/bin"
 
 # Custom install for Go binaries
-pathmunge "/opt/niceguyit/bin"
-pathmunge "/mnt/apps/local/bin"
-pathmunge "/srv/local/bin"
+#pathmunge "/opt/niceguyit/bin"
 
 # Local binaries
 pathmunge "${HOME}/bin"
 
 # Go
 pathmunge "${HOME}/go/bin"
-# go v1.16 installed by brew on MacOS
-#pathmunge "/usr/local/opt/go@1.16/bin"
 
 # Rust
 pathmunge "${HOME}/.cargo/bin"
+
+# Python
+pathmunge "${HOME}/.pyenv/bin"
 
 # Flutter
 pathmunge "${HOME}/projects/github/flutter/bin"
@@ -107,6 +106,7 @@ pathmunge "${HOME}/.rd/bin"
 # Local git repos
 pathmunge "${HOME}/projects/server-profile/bin"
 pathmunge "${HOME}/projects/server-utils/bin"
+pathmunge "${HOME}/projects/dotfiles/bin"
 
 # Composer
 pathmunge "${HOME}/.composer/vendor/bin"
@@ -170,9 +170,10 @@ then
 	MANPATH="$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
 
 	# Python Virtualenv
-	if which pyenv-virtualenv-init > /dev/null
+	if which pyenv > /dev/null
 	then
-		eval "$(pyenv virtualenv-init -)"
+		#export PYENV_ROOT="$HOME/.pyenv"
+		eval "$(pyenv -init -)"
 	fi
 
 	# Bash completion has been installed to:
@@ -343,14 +344,14 @@ then
 	# update the values of LINES and COLUMNS.
 	#shopt -s checkwinsize
 
-    # Use case sensitive matching for filename expansions (globs).
-    #shopt -s nocaseglob
+	# Use case sensitive matching for filename expansions (globs).
+	#shopt -s nocaseglob
 
-    # If no files are matched, the NULL string is returned.
-    #shopt -s nullglob
+	# If no files are matched, the NULL string is returned.
+	#shopt -s nullglob
 
-    # History filename
-    #export HISTFILE=~/history.txt
+	# History filename
+	#export HISTFILE=~/history.txt
 
 	# Bash 4.3 and later use -1 to set unlimited history.
 	# Bash prior to 4.3 use "" to set unlimited history.
@@ -387,7 +388,7 @@ then
 
 	fi
 
-    # "ignoredups" means to not enter lines which match the last entered line.
+	# "ignoredups" means to not enter lines which match the last entered line.
 	# don't put duplicate lines in the history. See bash(1) for more options
 	# https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html
 	export HISTCONTROL="ignoredups:erasedups"
@@ -397,12 +398,12 @@ then
 	# keep dangerous commands in the history file.  Who really needs to
 	# repeat the shutdown(8) command accidentally from your command
 	# history?
-    # A colon-separated list of patterns used to decide which command lines should be
-    # saved on the history list.
-    export HISTIGNORE='\&:fg:bg:ls:l:ll:lt:lrt:lsd:pwd:cd ..:cd ~-:cd -:cd:jobs::x:which*'
+	# A colon-separated list of patterns used to decide which command lines should be
+	# saved on the history list.
+	export HISTIGNORE='\&:fg:bg:ls:l:ll:lt:lrt:lsd:pwd:cd ..:cd ~-:cd -:cd:jobs::x:which*'
 
-    # The maximum number of history events to save in the history file. (disk)
-    export SAVEHIST=5000000
+	# The maximum number of history events to save in the history file. (disk)
+	export SAVEHIST=5000000
 fi
 
 
@@ -492,25 +493,25 @@ fi
 ######################################################################
 # Show the hostname with the full log path
 function logpath() {
-    echo "${HOSTNAME%%.*}:$(ls -1d "$(pwd -P)/$1")"
+	echo "${HOSTNAME%%.*}:$(ls -1d "$(pwd -P)/$1")"
 }
 
 # Add the file sizes output from ls -l
 function ad() {
-    field=5
-    [[ -n $1 ]] && field=$1
-    gawk "{sum += \$$field} END {printf \"%'d\n\", sum}"
+	field=5
+	[[ -n $1 ]] && field=$1
+	gawk "{sum += \$$field} END {printf \"%'d\n\", sum}"
 }
 
 # List only directories
 function lsd() {
-    # -d is necessary to list directories
-    ls -ldFA --color=always "$@" | grep '^[dl]'
+	# -d is necessary to list directories
+	ls -ldFA --color=always "$@" | grep '^[dl]'
 }
 
 # Show the count of matches
 function grepc() {
-    grep -c "$@" | grep -v ':0$'
+	grep -c "$@" | grep -v ':0$'
 }
 
 # Swap two files/dirs
@@ -805,46 +806,6 @@ then
 	export LESS_TERMCAP_mr
 	export LESS_TERMCAP_mh
 fi
-
-
-######################################################################
-# buffalo_completion.bash
-######################################################################
-_buffalo_complete()
-{
-  local cur prev
-
-  COMPREPLY=()
-  cur=${COMP_WORDS[COMP_CWORD]}
-  prev=${COMP_WORDS[COMP_CWORD-1]}
-
-  if [ $COMP_CWORD -eq 1 ]; then
-    COMPREPLY=( $(compgen -W "build db destroy dev fix generate help info new pop routes setup task test version" -- $cur) )
-  elif [ $COMP_CWORD -eq 2 ]; then
-    case "$prev" in
-      -*)
-        COMPREPLY=( $(compgen -W "h -help" -- $cur) )
-        ;;
-      "pop"|"db")
-        COMPREPLY=( $(compgen -W "create destroy drop fix generate migrate reset schema version" -- $cur) )
-        ;;
-      "destroy")
-        COMPREPLY=( $(compgen -W "action mailer model resource" -- $cur) )
-        ;;
-      "generate")
-        COMPREPLY=( $(compgen -W "action docker mailer resource swagger task" -- $cur) )
-        ;;
-      "help")
-        COMPREPLY=( $(compgen -W "build db destroy dev fix generate help info new pop routes setup task test version" -- $cur) )
-        ;;
-      *)
-        ;;
-    esac
-  fi
-
-  return 0
-} &&
-complete -F _buffalo_complete buffalo
 
 
 ######################################################################
