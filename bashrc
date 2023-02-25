@@ -252,6 +252,9 @@ then
 	# https://stackoverflow.com/questions/27500861/whats-the-proper-way-to-go-get-a-private-repository
 	export GOPRIVATE="*.niceguyit.biz"
 
+	# Disable telemetry
+	export GOTELEMETRY=off
+
 fi
 
 
@@ -471,8 +474,11 @@ export QUOTING_STYLE=literal
 # Disable dotnet telemetry
 export DOTNET_CLI_TELEMETRY_OPTOUT=true
 export VCPKG_DISABLE_METRICS=true
-
 [[ -f "${HOME}/projects/github/vcpkg/vcpkg" ]] && export VCPKG_ROOT="${HOME}/projects/github/vcpkg"
+
+# SOPS Age support
+[[ -f "${HOME}/.config/sops/age/keys.txt" ]] && export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
+
 
 
 if [[ $EUID -ne 0 ]] && tty >/dev/null
