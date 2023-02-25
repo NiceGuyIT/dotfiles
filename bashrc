@@ -169,13 +169,6 @@ then
 	#
 	MANPATH="$(brew --prefix)/opt/coreutils/libexec/gnuman:$MANPATH"
 
-	# Python Virtualenv
-	if which pyenv > /dev/null
-	then
-		#export PYENV_ROOT="$HOME/.pyenv"
-		eval "$(pyenv -init -)"
-	fi
-
 	# Bash completion has been installed to:
 	#  /usr/local/etc/bash_completion.d
 	if [ -d "$(brew --prefix)/etc/bash_completion.d" ]; then
@@ -264,6 +257,13 @@ fi
 # Python support
 # https://stackoverflow.com/questions/38112756/how-do-i-access-packages-installed-by-pip-user
 #export PYTHONPATH="$(python -c "import site, os; print(os.path.join(site.USER_BASE, 'lib', 'python', 'site-packages'))"):$PYTHONPATH"
+
+# Python Virtualenv
+if which pyenv > /dev/null
+then
+    #export PYENV_ROOT="$HOME/.pyenv"
+    eval "$(pyenv init -)"
+fi
 
 
 ######################################################################
