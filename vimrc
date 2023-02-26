@@ -20,5 +20,5 @@ function! SourceDirectory(file)
 endfunction
 " }
 
-call SourceDirectory('~/projects/server-profile/vim.d')
+call SourceDirectory('~/projects/dotfiles/vim.d')
 

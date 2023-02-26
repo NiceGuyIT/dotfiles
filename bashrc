@@ -17,7 +17,7 @@ VERBOSE=false
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 [[ -f /etc/bash.bashrc ]] && source /etc/bash.bashrc
 
-# Process scripts in ~/projects/Server-Settings/bash.d/
+# Process scripts in ~/projects/dotfiles/bash.d/
 if [[ "$OSTYPE" == darwin* ]]
 then
 	# Mac's readline does not have --canonicalize argument
@@ -757,7 +757,7 @@ fi
 # starting with '#' are ignored. For more details, see the man page or the
 # README.
 
-export RIPGREP_CONFIG_PATH="${HOME}/projects/server-profile/ripgreprc"
+export RIPGREP_CONFIG_PATH="${HOME}/projects/dotfiles/ripgreprc"
 
 
 ######################################################################
@@ -819,9 +819,9 @@ fi
 ######################################################################
 # Bash Completions
 ######################################################################
-if compgen -G "${HOME}/projects/server-profile/bash-completion/*" > /dev/null
+if compgen -G "${HOME}/projects/dotfiles/bash-completion/*" > /dev/null
 then
-	source ${HOME}/projects/server-profile/bash-completion/*
+	source ${HOME}/projects/dotfiles/bash-completion/*
 fi
 
 ######################################################################
