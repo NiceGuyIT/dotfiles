@@ -106,7 +106,7 @@ then
 fi
 
 # Alacritty terminfo
-if [[ ! -e "${HOME}/.terminfo.db" ]]
+if [[ ! -d "${HOME}/.terminfo" ]]
 then
-	tic -xe ~/projects/dotfiles/local/share/alacritty/alacritty.info
+	tic -xe alacritty,alacritty-direct ~/projects/dotfiles/local/share/alacritty/alacritty.info
 fi
