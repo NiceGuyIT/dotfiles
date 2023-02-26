@@ -104,3 +104,9 @@ then
 	echo mkdir --parents ~/projects/github/
 	echo git clone https://github.com/alacritty/alacritty-theme ~/projects/github/alacritty-theme
 fi
+
+# Alacritty terminfo
+if [[ ! -e "${HOME}/.terminfo.db" ]]
+then
+	tic -xe ~/projects/dotfiles/local/share/alacritty/alacritty.info
+fi
