@@ -1,0 +1,32 @@
+# Configuration for Alacritty, the GPU enhanced terminal emulator.
+# macOS specific settings.
+
+# Linux specific settings
+# Since imported files are lower precedent, the config is symlinked to the os-specific
+# config in local/share/alacritty, which in turn imports the config in config/alacritty/.
+
+# Import additional configuration files
+#
+# Imports are loaded in order, skipping all missing files, with the importing
+# file being loaded last. If a field is already present in a previous import, it
+# will be replaced.
+#
+# All imports must either be absolute paths starting with `/`, or paths relative
+# to the user's home directory starting with `~/`.
+#import:
+#  - /path/to/alacritty.yml
+# https://github.com/alacritty/alacritty-theme
+import:
+  - ~/projects/dotfiles/config/alacritty/alacritty.yml
+
+window:
+  # Window dimensions (changes require restart)
+  #
+  # Number of lines/columns (not pixels) in the terminal. Both lines and columns
+  # must be non-zero for this to take effect. The number of columns must be at
+  # least `2`, while using a value of `0` for columns and lines will fall back
+  # to the window manager's recommended size
+  # Retina (2560x1600) display with 2 terminals wide and 2 terminals high.
+  dimensions:
+    columns: 120
+    lines: 38

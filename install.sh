@@ -19,7 +19,7 @@ dotfiles=( \
 )
 
 # Get the directory the script is located in.
-if [[ ! "$(declare -p BASH_SOURCE)" =~ "declare -a" ]] && [[ -z "$BASH_SOURCE" ]]
+if [[ ! "$(declare -p BASH_SOURCE)" =~ "declare -a" ]] && [[ -z "${BASH_SOURCE[0]}" ]]
 then
 	# This most likely happens when run inside a container from the host.
 	DIR="$( dirname "$(dirname "$0")" )"
@@ -71,21 +71,6 @@ do
    	ln -s "./${base_dir}/${file}" "${HOME}/.${file}"
 done
 
-# ~/.vim is a directory with symbolic links inside
-#file="pack"
-#config_dir="vim"
-#config_file="${HOME}/.${config_dir}/${file}"
-#config_link="../${base_dir}/${config_dir}/${file}"
-#[[ -h "${config_file}" ]] && rm "${config_file}"
-#ln -s "${config_link}" "${config_file}"
-#
-#file="spell"
-#config_dir="vim"
-#config_file="${HOME}/.${config_dir}/${file}"
-#config_link="../${base_dir}/${config_dir}/${file}"
-#[[ -h "${config_file}" ]] && rm "${config_file}"
-#ln -s "${config_link}" "${config_file}"
-
 # Process ~/.config
 config_dir="config"
 
@@ -98,10 +83,15 @@ config_link="../${base_dir}/${config_dir}/${file}"
 ln -s "${config_link}" "${config_file}"
 
 # Alacritty config in ~/.config/alacritty/alacritty.yml
+os="unknown"
+[[ $(uname -s) = 'Darwin' ]] && os="mac"
+[[ $(uname -s) = 'FreeBSD' ]] && os="bsd"
+[[ $(uname -s) = 'Linux' ]] && os="linux"
+file_os="alacritty-${os}.yml"
 file="alacritty.yml"
 config_dir="config/alacritty"
 config_file="${HOME}/.${config_dir}/${file}"
-config_link="../../${base_dir}/${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file_os}"
 [[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
 [[ -h "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"

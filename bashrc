@@ -791,7 +791,7 @@ fi
 # interfering with the man page.
 # I don't think this is causing the man page error.
 # However, it is causing tput errors in containers.
-if [[ "${TERM}" != "dumb" ]]
+if [[ "${TERM}" != "dumb" && "${TERM}" != "alacritty" ]]
 then
 	LESS_TERMCAP_mb=$(tput bold; tput setaf 2)
 	LESS_TERMCAP_md=$(tput bold; tput setaf 6)
