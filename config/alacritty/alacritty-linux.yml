@@ -28,4 +28,4 @@ window:
   # 4k display with 3 terminals wide and about a quarter high.
   dimensions:
     columns: 159
-    lines: 31
+    lines: 35
