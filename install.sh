@@ -99,7 +99,7 @@ fi
 # Alacritty terminfo
 if ! infocmp alacritty >/dev/null 2>&1; then
 	# Need to compile the terminfo database
-	if which tic >/dev/null 2>&1; then
+	if type -P tic >/dev/null 2>&1; then
 		# It seems infocmp does not list $HOME/.terminfo as a known directory when run as root
 		# If tic can't write to /usr/share/terminfo, it will default to $HOME/.terminfo
 		tic -x -e alacritty,alacritty-direct ~/projects/dotfiles/local/share/alacritty/alacritty.info

@@ -211,7 +211,7 @@ fi
 ######################################################################
 # Go language support
 ######################################################################
-if which go >/dev/null 2>&1
+if type -P go >/dev/null 2>&1
 then
 
 	# openSUSE uses /etc/profile.d/go.sh to setup the environment
@@ -243,7 +243,7 @@ fi
 #export PYTHONPATH="$(python -c "import site, os; print(os.path.join(site.USER_BASE, 'lib', 'python', 'site-packages'))"):$PYTHONPATH"
 
 # Python Virtualenv
-if which pyenv >/dev/null 2>&1
+if type -P pyenv >/dev/null 2>&1
 then
     #export PYENV_ROOT="$HOME/.pyenv"
     eval "$(pyenv init -)"
@@ -272,8 +272,6 @@ fi
 ######################################################################
 # alias.sh
 ######################################################################
-# My aliases
-
 # ls
 alias l='ls -lFh'
 alias la='ls -lFah'
@@ -293,11 +291,6 @@ alias recode='recode -v UNICODE..UTF-8'
 
 # Shortcut for chmod
 alias x='chmod a+x'
-
-# Aliases for Hugo sites
-#alias mylife='cd ~/projects/mylife/content/posts'
-#alias psa='cd ~/projects/psa/'
-#alias links='cd ~/Gitea/NiceGuyIT/link'
 
 # Alias for xfreerdp
 alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
@@ -444,8 +437,9 @@ export SYSTEMD_PAGER=
 # Some applications read the EDITOR variable to determine your favourite text
 # editor. So uncomment the line below and enter the editor of your choice :-)
 # FIXME: which is not installed in production
-#export EDITOR=$(which vim)
-export EDITOR=/usr/bin/vim
+# TODO: type -P is a posix replacement
+export EDITOR=$(type -P vim)
+# export EDITOR=/usr/bin/vim
 
 # Oracle's Java
 # Required for Elasticsearch
@@ -530,7 +524,7 @@ function git_commit() {
 
 if [[ "$OSTYPE" == darwin* ]]
 then
-	if $(which fzf 2>&1 >/dev/null)
+	if type -P fzf >/dev/null 2>&1
 	then
 		# Auto-completion
 		# ---------------
@@ -646,7 +640,7 @@ else
 	if [[ -x "/usr/bin/which" ]]
 	then
 		[[ "true" == "$VERBOSE" ]] && echo "Checking for dircolors"
-		if which dircolors >/dev/null
+		if type -P dircolors >/dev/null
 		then
 			[[ "true" == "$VERBOSE" ]] && echo "Executing dircolors"
 			eval $(dircolors --bourne-shell)
@@ -725,7 +719,7 @@ PS1="${debian_chroot:+($debian_chroot)}\[${txtpur}\]\t\[${txtrst}\] \[${Username
 ######################################################################
 # starship
 ######################################################################
-if which starship >/dev/null 2>&1
+if type -P starship >/dev/null 2>&1
 then
 	eval "$(starship init bash)"
 fi
@@ -758,8 +752,7 @@ then
 	# This is after the cleanup so that it will start a new agent if the last agent was deleted
 	# The banner on STDERR is causing JetBrains Gateway to fail to deploy remote IDEs.
 	# https://youtrack.jetbrains.com/issue/CWM-6796
-	#which keychain 1>/dev/null 2>&1 && eval $( keychain --eval --agents ssh )
-	which keychain 1>/dev/null 2>&1 && eval $( keychain --eval --agents ssh 2>/dev/null )
+	type -P keychain 1>/dev/null 2>&1 && eval $( keychain --eval --agents ssh 2>/dev/null )
 fi
 #echo "gateway issue GTW-1872"
 
