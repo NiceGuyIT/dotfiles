@@ -665,63 +665,59 @@ else
 fi
 
 
-
-######################################################################
-# prompt.sh
-######################################################################
-# /etc/profile.d/bashrc.sh
-
-# ANSI colors
-# http://wiki.archlinux.org/index.php/Color_Bash_Prompt
-txtblk='\e[0;30m' # Black - Regular
-txtred='\e[0;31m' # Red
-txtgrn='\e[0;32m' # Green
-txtylw='\e[0;33m' # Yellow
-txtblu='\e[0;34m' # Blue
-txtpur='\e[0;35m' # Purple
-txtcyn='\e[0;36m' # Cyan
-txtwht='\e[0;37m' # White
-bldblk='\e[1;30m' # Black - Bold
-bldred='\e[1;31m' # Red
-bldgrn='\e[1;32m' # Green
-bldylw='\e[1;33m' # Yellow
-bldblu='\e[1;34m' # Blue
-bldpur='\e[1;35m' # Purple
-bldcyn='\e[1;36m' # Cyan
-bldwht='\e[1;37m' # White
-undblk='\e[4;30m' # Black - Underline
-undred='\e[4;31m' # Red
-undgrn='\e[4;32m' # Green
-undylw='\e[4;33m' # Yellow
-undblu='\e[4;34m' # Blue
-undpur='\e[4;35m' # Purple
-undcyn='\e[4;36m' # Cyan
-undwht='\e[4;37m' # White
-bakblk='\e[40m'   # Black - Background
-bakred='\e[41m'   # Red
-badgrn='\e[42m'   # Green
-bakylw='\e[43m'   # Yellow
-bakblu='\e[44m'   # Blue
-bakpur='\e[45m'   # Purple
-bakcyn='\e[46m'   # Cyan
-bakwht='\e[47m'   # White
-txtrst='\e[0m'    # Text Reset
-
-# Nice prompt
-UsernameColor="${bldgrn}"
-if [[ "$EUID" -eq 0 ]]
-then
-	UsernameColor="${bldred}"
-fi
-PS1="${debian_chroot:+($debian_chroot)}\[${txtpur}\]\t\[${txtrst}\] \[${UsernameColor}\]\u\[${txtrst}\]@\[${txtgrn}\]\H\[${txtrst}\] \[${bldblu}\]\w\[${txtrst}\] # "
-
-
 ######################################################################
 # starship
 ######################################################################
-if type -P starship >/dev/null 2>&1
-then
+if type -P starship >/dev/null 2>&1; then
 	eval "$(starship init bash)"
+else
+    ######################################################################
+    # prompt.sh if starship is not installed
+    ######################################################################
+
+    # ANSI colors
+    # http://wiki.archlinux.org/index.php/Color_Bash_Prompt
+    txtblk='\e[0;30m' # Black - Regular
+    txtred='\e[0;31m' # Red
+    txtgrn='\e[0;32m' # Green
+    txtylw='\e[0;33m' # Yellow
+    txtblu='\e[0;34m' # Blue
+    txtpur='\e[0;35m' # Purple
+    txtcyn='\e[0;36m' # Cyan
+    txtwht='\e[0;37m' # White
+    bldblk='\e[1;30m' # Black - Bold
+    bldred='\e[1;31m' # Red
+    bldgrn='\e[1;32m' # Green
+    bldylw='\e[1;33m' # Yellow
+    bldblu='\e[1;34m' # Blue
+    bldpur='\e[1;35m' # Purple
+    bldcyn='\e[1;36m' # Cyan
+    bldwht='\e[1;37m' # White
+    undblk='\e[4;30m' # Black - Underline
+    undred='\e[4;31m' # Red
+    undgrn='\e[4;32m' # Green
+    undylw='\e[4;33m' # Yellow
+    undblu='\e[4;34m' # Blue
+    undpur='\e[4;35m' # Purple
+    undcyn='\e[4;36m' # Cyan
+    undwht='\e[4;37m' # White
+    bakblk='\e[40m'   # Black - Background
+    bakred='\e[41m'   # Red
+    badgrn='\e[42m'   # Green
+    bakylw='\e[43m'   # Yellow
+    bakblu='\e[44m'   # Blue
+    bakpur='\e[45m'   # Purple
+    bakcyn='\e[46m'   # Cyan
+    bakwht='\e[47m'   # White
+    txtrst='\e[0m'    # Text Reset
+    
+    # Nice prompt
+    UsernameColor="${bldgrn}"
+    if [[ "$EUID" -eq 0 ]]
+    then
+        UsernameColor="${bldred}"
+    fi
+    PS1="${debian_chroot:+($debian_chroot)}\[${txtpur}\]\t\[${txtrst}\] \[${UsernameColor}\]\u\[${txtrst}\]@\[${txtgrn}\]\H\[${txtrst}\] \[${bldblu}\]\w\[${txtrst}\] # "
 fi
 
 
@@ -732,7 +728,6 @@ fi
 # configuration file. The file can specify one shell argument per line. Lines
 # starting with '#' are ignored. For more details, see the man page or the
 # README.
-
 export RIPGREP_CONFIG_PATH="${HOME}/projects/dotfiles/ripgreprc"
 
 
@@ -742,19 +737,11 @@ export RIPGREP_CONFIG_PATH="${HOME}/projects/dotfiles/ripgreprc"
 # Use [Funtoo] Keychain to manage ssh-agent
 if [[ $EUID -ne 0 ]] && tty >/dev/null
 then
-	# Clean up sockets more than 30 days old
-	# 2018-08-14: 10 days is too soon. Let's try 30 days
-	# 2022-03-11 - Disabled because it's deleting active ssh sockets
-	#find /tmp -name 'agent.*' -mtime +30 -delete 2>/dev/null
-	# This will delete the ssh-* directories 2 days after the socket is deleted
-	#find /tmp -name 'ssh-*' -mtime +2 -delete 2>/dev/null
-
 	# This is after the cleanup so that it will start a new agent if the last agent was deleted
 	# The banner on STDERR is causing JetBrains Gateway to fail to deploy remote IDEs.
 	# https://youtrack.jetbrains.com/issue/CWM-6796
 	type -P keychain 1>/dev/null 2>&1 && eval $( keychain --eval --agents ssh 2>/dev/null )
 fi
-#echo "gateway issue GTW-1872"
 
 
 ######################################################################
