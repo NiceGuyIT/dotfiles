@@ -787,6 +787,12 @@ fi
 ######################################################################
 # See https://russellparker.me/2018/02/23/adding-colors-to-man/
 
+# Default to sane TERM if alacritty terminfo hasn't been installed.
+if [[ "${TERM}" == "alacritty" ]] && infocmp $TERM >/dev/null 2>&1
+then
+    export TERM=xterm-256color
+fi
+
 # The snap man page gets narrower as you page down. Disable this to make sure it's not
 # interfering with the man page.
 # I don't think this is causing the man page error.

@@ -108,5 +108,11 @@ fi
 # Alacritty terminfo
 if [[ ! -d "${HOME}/.terminfo" ]]
 then
-	tic -xe alacritty,alacritty-direct ~/projects/dotfiles/local/share/alacritty/alacritty.info
+	if $(which tic 2>&1 >/dev/null)
+	then
+		echo "tic is not installed. Please install ncurses-devel and run install.sh again."
+	else
+		# Always write to $HOME so root doesn't add to /usr/share/terminfo/ 
+		tic -x -e alacritty,alacritty-direct -o "${HOME}/.terminfo" ~/projects/dotfiles/local/share/alacritty/alacritty.info
+	fi
 fi
