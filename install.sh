@@ -38,11 +38,10 @@ else
 fi
 
 # Add the git-hook
-if [[ ! -d "${DIR}/.git/hooks" ]]; then
-	echo "git hooks directory does not exist: ${DIR}/.git/hooks"
-	exit 1
+# User may not have permission to read .git/hooks
+if [[ -d "${DIR}/.git/hooks" ]]; then
+	[[ ! -e "${DIR}/.git/hooks/post-merge" ]] && ln -s "../../git-hooks/post-merge" "${DIR}/.git/hooks/post-merge"
 fi
-[[ ! -e "${DIR}/.git/hooks/post-merge" ]] && ln -s "../../git-hooks/post-merge" "${DIR}/.git/hooks/post-merge"
 
 if [[ -z "$HOME" ]]; then
 	# Run using bash -c
