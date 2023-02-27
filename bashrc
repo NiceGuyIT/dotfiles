@@ -31,28 +31,10 @@ else
 	DIR="$( dirname "$( readlink --canonicalize "${BASH_SOURCE[0]}" )" )"
 fi
 
-# Note: The use of tty was removed to allow systemd services to initialize some environments,
-# specifically ruby (rbenv).
-# tty prevents bash.d/* from setting up the environment for services.
-# Exclude root to prevent system issues.
-#if [[ $EUID -ne 0 ]] && tty >/dev/null
-#then
-#fi
-
-# Desktop profile (private)
-#for f in ${DIR}/bash.d/*.sh
-#do
-#	source "${f}"
-#done
-
 
 ######################################################################
 # 80-path.sh
 ######################################################################
-#Packages installed locally
-# .local contains wand-py
-#export PATH="${PATH}:${HOME}/.local/bin"
-#[[ -d "${HOME}/bin" ]]                  && export PATH="${PATH}:${HOME}/bin"
 
 # https://www.cyberciti.biz/faq/redhat-linux-pathmunge-command-in-shell-script/
 pathmunge () {
