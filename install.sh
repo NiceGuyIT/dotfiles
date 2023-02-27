@@ -98,7 +98,7 @@ if [[ ! -e "${HOME}/projects/github/alacritty-theme" ]]; then
 fi
 
 # Alacritty terminfo
-if infocmp "${TERM}" >/dev/null 2>&1; then
+if infocmp alacritty >/dev/null 2>&1; then
 	# Need to compile the terminfo database
 	if which tic >/dev/null 2>&1; then
 		# It seems infocmp does not list $HOME/.terminfo as a known directory when run as root
