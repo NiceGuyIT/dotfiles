@@ -295,6 +295,10 @@ alias x='chmod a+x'
 # Alias for xfreerdp
 alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
 
+# fd all files and rg all files
+alias fda="fd --no-ignore --hidden"
+alias rga="rg --no-ignore --hidden"
+
 
 ######################################################################
 # bash.sh
