@@ -744,6 +744,7 @@ then
 	# This is after the cleanup so that it will start a new agent if the last agent was deleted
 	# The banner on STDERR is causing JetBrains Gateway to fail to deploy remote IDEs.
 	# https://youtrack.jetbrains.com/issue/CWM-6796
+	# shellcheck disable=SC2046
 	type -P keychain 1>/dev/null 2>&1 && eval $( keychain --eval --agents ssh 2>/dev/null )
 fi
 
@@ -756,7 +757,7 @@ fi
 # Default to sane TERM if alacritty terminfo hasn't been installed.
 if [[ "${TERM}" == "alacritty" ]] && ! infocmp alacritty >/dev/null 2>&1
 then
-    export TERM=xterm-256color
+	export TERM=xterm-256color
 fi
 
 # The snap man page gets narrower as you page down. Disable this to make sure it's not
@@ -793,6 +794,7 @@ fi
 ######################################################################
 if compgen -G "${HOME}/projects/dotfiles/bash-completion/*" > /dev/null
 then
+	# shellcheck disable=SC1090
 	source ${HOME}/projects/dotfiles/bash-completion/*
 fi
 
