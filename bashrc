@@ -245,8 +245,8 @@ fi
 # Python Virtualenv
 if type -P pyenv >/dev/null 2>&1
 then
-    #export PYENV_ROOT="$HOME/.pyenv"
-    eval "$(pyenv init -)"
+	#export PYENV_ROOT="$HOME/.pyenv"
+	eval "$(pyenv init -)"
 fi
 
 
@@ -379,7 +379,7 @@ then
 
 	# Taken from http://www.jmglov.net/unix/bash.html
 	# Don't keep useless history commands. Note the last pattern is to not
-	# keep dangerous commands in the history file.  Who really needs to
+	# keep dangerous commands in the history file. Who really needs to
 	# repeat the shutdown(8) command accidentally from your command
 	# history?
 	# A colon-separated list of patterns used to decide which command lines should be
@@ -506,7 +506,7 @@ function grepc() {
 # https://stackoverflow.com/questions/1115904/shortest-way-to-swap-two-files-in-bash
 function swap() {
 	tmpfile=$(mktemp "$(dirname "$1")/XXXXXX")
-	mv "$1" "$tmpfile" && mv "$2" "$1" &&  mv "$tmpfile" "$2"
+	mv "$1" "$tmpfile" && mv "$2" "$1" && mv "$tmpfile" "$2"
 }
 
 # Short git commit
@@ -515,7 +515,7 @@ function swap() {
 function git_commit() {
 	git add --update
 	git commit --message "$1"
-   	git push
+	git push
 }
 
 
@@ -542,18 +542,18 @@ else
 	# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
 	# This works: env LC_ALL=en_US.UTF-8 perl -e exit
 	# This fails: env LC_ALL= perl -e exit
-	#   perl: warning: Setting locale failed.
-	#   perl: warning: Please check that your locale settings:
-	#           LANGUAGE = "en_US.UTF-8",
-	#           LC_ALL = "",
-	#           LC_MEASUREMENT = "en_US.UTF-8",
-	#           LC_MONETARY = "en_US.UTF-8",
-	#           LC_COLLATE = "C",
-	#           LC_NUMERIC = "en_US.UTF-8",
-	#           LC_TIME = "en_SE.UTF-8",
-	#           LANG = "en_US.UTF-8"
-	#       are supported and installed on your system.
-	#   perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+	#	perl: warning: Setting locale failed.
+	#	perl: warning: Please check that your locale settings:
+	#			LANGUAGE = "en_US.UTF-8",
+	#			LC_ALL = "",
+	#			LC_MEASUREMENT = "en_US.UTF-8",
+	#			LC_MONETARY = "en_US.UTF-8",
+	#			LC_COLLATE = "C",
+	#			LC_NUMERIC = "en_US.UTF-8",
+	#			LC_TIME = "en_SE.UTF-8",
+	#			LANG = "en_US.UTF-8"
+	#		are supported and installed on your system.
+	#	perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
 	# See https://perldoc.perl.org/perllocale#PERL_SKIP_LOCALE_INIT
 	export PERL_SKIP_LOCALE_INIT=true
 
@@ -581,56 +581,56 @@ then
 	# FreeNAS commands don't support --color option
 	# CLICOLOR=true enables the LSCOLORS option (not LS_COLORS)
 
-	# Use ANSI color sequences to distinguish file types.  See LSCOLORS below.  In addition to the
+	# Use ANSI color sequences to distinguish file types. See LSCOLORS below. In addition to the
 	# file types mentioned in the -F option some extra attributes (setuid bit set, etc.) are also
-	# displayed.  The colorization is dependent on a terminal type with the proper termcap(5)
-	# capabilities.  The default cons25 console has the proper capabilities, but to
+	# displayed. The colorization is dependent on a terminal type with the proper termcap(5)
+	# capabilities. The default cons25 console has the proper capabilities, but to
 	# display the colors in an xterm(1), for example, the TERM variable must be set to xterm-color.
-	# Other terminal types may require similar adjustments.  Colorization is silently disabled if
+	# Other terminal types may require similar adjustments. Colorization is silently disabled if
 	# the output is not directed to a terminal unless the CLICOLOR_FORCE variable is defined.
 	export CLICOLOR=true
 
 	# The value of this variable describes what color to use for which
-	# attribute when colors are enabled with CLICOLOR.  This string is a
+	# attribute when colors are enabled with CLICOLOR. This string is a
 	# concatenation of pairs of the format fb, where f is the foreground color and b
 	# is the background color.
 	#
 	# The color designators are as follows:
 	#
-	#	a     black
-	#	b     red
-	#	c     green
-	#	d     brown
-	#	e     blue
-	#	f     magenta
-	#	g     cyan
-	#	h     light grey
-	#	A     bold black, usually shows up as dark grey
-	#	B     bold red
-	#	C     bold green
-	#	D     bold brown, usually shows up as yellow
-	#	E     bold blue
-	#	F     bold magenta
-	#	G     bold cyan
-	#	H     bold light grey; looks like bright white
-	#	x     default foreground or background
+	#	a	black
+	#	b	red
+	#	c	green
+	#	d	brown
+	#	e	blue
+	#	f	magenta
+	#	g	cyan
+	#	h	light grey
+	#	A	bold black, usually shows up as dark grey
+	#	B	bold red
+	#	C	bold green
+	#	D	bold brown, usually shows up as yellow
+	#	E	bold blue
+	#	F	bold magenta
+	#	G	bold cyan
+	#	H	bold light grey; looks like bright white
+	#	x	default foreground or background
 	#
-	# Note that the above are standard ANSI colors.  The actual display may
+	# Note that the above are standard ANSI colors. The actual display may
 	# differ depending on the color capabilities of the terminal in use.
 	#
 	# The order of the attributes are as follows:
 	#
-	#	1.   directory
-	#	2.   symbolic link
-	#	3.   socket
-	#	4.   pipe
-	#	5.   executable
-	#	6.   block special
-	#	7.   character special
-	#	8.   executable with setuid bit set
-	#	9.   executable with setgid bit set
-	#	10.  directory writable to others, with sticky bit
-	#	11.  directory writable to others, without sticky bit
+	#	1.	directory
+	#	2.	symbolic link
+	#	3.	socket
+	#	4.	pipe
+	#	5.	executable
+	#	6.	block special
+	#	7.	character special
+	#	8.	executable with setuid bit set
+	#	9.	executable with setgid bit set
+	#	10.	directory writable to others, with sticky bit
+	#	11.	directory writable to others, without sticky bit
 	#
 	# The default is "exfxcxdxbxegedabagacad", i.e., blue foreground and default
 	# background for regular directories, black foreground and red background for
@@ -675,53 +675,53 @@ fi
 if type -P starship >/dev/null 2>&1; then
 	eval "$(starship init bash)"
 else
-    ######################################################################
-    # prompt.sh if starship is not installed
-    ######################################################################
+	######################################################################
+	# prompt.sh if starship is not installed
+	######################################################################
 
-    # ANSI colors
-    # http://wiki.archlinux.org/index.php/Color_Bash_Prompt
-    txtblk='\e[0;30m' # Black - Regular
-    txtred='\e[0;31m' # Red
-    txtgrn='\e[0;32m' # Green
-    txtylw='\e[0;33m' # Yellow
-    txtblu='\e[0;34m' # Blue
-    txtpur='\e[0;35m' # Purple
-    txtcyn='\e[0;36m' # Cyan
-    txtwht='\e[0;37m' # White
-    bldblk='\e[1;30m' # Black - Bold
-    bldred='\e[1;31m' # Red
-    bldgrn='\e[1;32m' # Green
-    bldylw='\e[1;33m' # Yellow
-    bldblu='\e[1;34m' # Blue
-    bldpur='\e[1;35m' # Purple
-    bldcyn='\e[1;36m' # Cyan
-    bldwht='\e[1;37m' # White
-    undblk='\e[4;30m' # Black - Underline
-    undred='\e[4;31m' # Red
-    undgrn='\e[4;32m' # Green
-    undylw='\e[4;33m' # Yellow
-    undblu='\e[4;34m' # Blue
-    undpur='\e[4;35m' # Purple
-    undcyn='\e[4;36m' # Cyan
-    undwht='\e[4;37m' # White
-    bakblk='\e[40m'   # Black - Background
-    bakred='\e[41m'   # Red
-    badgrn='\e[42m'   # Green
-    bakylw='\e[43m'   # Yellow
-    bakblu='\e[44m'   # Blue
-    bakpur='\e[45m'   # Purple
-    bakcyn='\e[46m'   # Cyan
-    bakwht='\e[47m'   # White
-    txtrst='\e[0m'    # Text Reset
-    
-    # Nice prompt
-    UsernameColor="${bldgrn}"
-    if [[ "$EUID" -eq 0 ]]
-    then
-        UsernameColor="${bldred}"
-    fi
-    PS1="${debian_chroot:+($debian_chroot)}\[${txtpur}\]\t\[${txtrst}\] \[${UsernameColor}\]\u\[${txtrst}\]@\[${txtgrn}\]\H\[${txtrst}\] \[${bldblu}\]\w\[${txtrst}\] # "
+	# ANSI colors
+	# http://wiki.archlinux.org/index.php/Color_Bash_Prompt
+	txtblk='\e[0;30m'	# Black - Regular
+	txtred='\e[0;31m'	# Red
+	txtgrn='\e[0;32m'	# Green
+	txtylw='\e[0;33m'	# Yellow
+	txtblu='\e[0;34m'	# Blue
+	txtpur='\e[0;35m'	# Purple
+	txtcyn='\e[0;36m'	# Cyan
+	txtwht='\e[0;37m'	# White
+	bldblk='\e[1;30m'	# Black - Bold
+	bldred='\e[1;31m'	# Red
+	bldgrn='\e[1;32m'	# Green
+	bldylw='\e[1;33m'	# Yellow
+	bldblu='\e[1;34m'	# Blue
+	bldpur='\e[1;35m'	# Purple
+	bldcyn='\e[1;36m'	# Cyan
+	bldwht='\e[1;37m'	# White
+	undblk='\e[4;30m'	# Black - Underline
+	undred='\e[4;31m'	# Red
+	undgrn='\e[4;32m'	# Green
+	undylw='\e[4;33m'	# Yellow
+	undblu='\e[4;34m'	# Blue
+	undpur='\e[4;35m'	# Purple
+	undcyn='\e[4;36m'	# Cyan
+	undwht='\e[4;37m'	# White
+	bakblk='\e[40m'		# Black - Background
+	bakred='\e[41m'		# Red
+	badgrn='\e[42m'		# Green
+	bakylw='\e[43m'		# Yellow
+	bakblu='\e[44m'		# Blue
+	bakpur='\e[45m'		# Purple
+	bakcyn='\e[46m'		# Cyan
+	bakwht='\e[47m'		# White
+	txtrst='\e[0m'		# Text Reset
+
+	# Nice prompt
+	UsernameColor="${bldgrn}"
+	if [[ "$EUID" -eq 0 ]]
+	then
+		UsernameColor="${bldred}"
+	fi
+	PS1="${debian_chroot:+($debian_chroot)}\[${txtpur}\]\t\[${txtrst}\] \[${UsernameColor}\]\u\[${txtrst}\]@\[${txtgrn}\]\H\[${txtrst}\] \[${bldblu}\]\w\[${txtrst}\] # "
 fi
 
 
