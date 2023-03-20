@@ -64,6 +64,18 @@ for file in ${dotfiles[*]}; do
 	ln -s "./${base_dir}/${file}" "${HOME}/.${file}"
 done
 
+# Process ~/.cargo
+config_dir="cargo"
+
+# Cargo config in ~/.cargo/config
+file="config"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+[[ ! -L "${config_file}" ]] && [[ -f "${config_file}" ]] && mv "${config_file}" "${config_file}.orig"
+ln -s "${config_link}" "${config_file}"
+
 # Process ~/.config
 config_dir="config"
 
