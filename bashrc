@@ -296,8 +296,9 @@ alias x='chmod a+x'
 alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
 
 # fd all files and rg all files
-alias fda="fd --no-ignore --hidden"
-alias rga="rg --no-ignore --hidden"
+# "rga" is taken: https://github.com/phiresky/ripgrep-all
+alias fdall="fd --no-ignore --hidden"
+alias rgall="rg --no-ignore --hidden"
 
 
 ######################################################################
