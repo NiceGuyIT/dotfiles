@@ -6,6 +6,13 @@
 # NOTE: It is recommended to make language settings in ~/.profile rather than
 # here, since multilingual X sessions would not work properly if LANG is over-
 # ridden in every subshell.
+#
+# Command line fuzzy search and the like:
+#   - https://github.com/cantino/mcfly
+#   - https://github.com/urbainvaes/fzf-marks
+#   - https://github.com/kimono-koans/two_percent
+#
+# Modern Unix: https://github.com/ibraheemdev/modern-unix
 
 # Check if this file has already been sourced
 #[[ "true" == "${BASHRCREAD}" ]] && return
@@ -501,10 +508,11 @@ function ad() {
 }
 
 # List only directories
-function lsd() {
+# 2023-03-23: lsd is a rust replacement of ls. Going to use that for now.
+#function lsd() {
 	# -d is necessary to list directories
-	ls -ldFA --color=always "$@" | grep '^[dl]'
-}
+#	ls -ldFA --color=always "$@" | grep '^[dl]'
+#}
 
 # Show the count of matches
 function grepc() {
@@ -530,6 +538,7 @@ function git_commit() {
 
 ######################################################################
 # fzf.bash
+# Similar to atuin.
 ######################################################################
 if [[ "$OSTYPE" == darwin* ]]
 then
