@@ -22,13 +22,13 @@ if [[ "$OSTYPE" == darwin* ]]
 then
 	# Mac's readline does not have --canonicalize argument
 	# http://stackoverflow.com/questions/7665/how-to-resolve-symbolic-links-in-a-shell-script
-	DIR="$( dirname "$( /opt/homebrew/opt/coreutils/bin/grealpath "${BASH_SOURCE[0]}" )" )"
+	DOTFILES_DIR="$( dirname "$( /opt/homebrew/opt/coreutils/bin/grealpath "${BASH_SOURCE[0]}" )" )"
 elif [[ "$OSTYPE" == freebsd* ]]
 then
 	# FreeBSD doesn't have readline
-	DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
+	DOTFILES_DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
 else
-	DIR="$( dirname "$( readlink --canonicalize "${BASH_SOURCE[0]}" )" )"
+	DOTFILES_DIR="$( dirname "$( readlink --canonicalize "${BASH_SOURCE[0]}" )" )"
 fi
 
 
@@ -170,6 +170,23 @@ fi
 
 
 ######################################################################
+# bash preexec
+# Required by atuin
+# https://github.com/rcaloras/bash-preexec
+######################################################################
+[[ -s "${DOTFILES_DIR}/bash-preexec.sh" ]] && source "${DOTFILES_DIR}/bash-preexec.sh"
+
+######################################################################
+# atuin
+# https://github.com/ellie/atuin
+######################################################################
+if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
+then
+	eval "$(atuin init bash)"
+fi
+
+
+######################################################################
 # 90-node.sh
 ######################################################################
 # Node Version Manager
@@ -304,22 +321,6 @@ alias rgall="rg --no-ignore --hidden"
 ######################################################################
 # bash.sh
 ######################################################################
-
-# Eternal bash history.
-# ---------------------
-# Undocumented feature which sets the size to "unlimited".
-# http://stackoverflow.com/questions/9457233/unlimited-bash-history
-#export HISTFILESIZE=
-#export HISTSIZE=
-#export HISTTIMEFORMAT="[%F %T] "
-# Change the file location because certain bash sessions truncate .bash_history file upon close.
-# http://superuser.com/questions/575479/bash-history-truncated-to-500-lines-on-each-login
-#export HISTFILE=~/.bash_eternal_history
-# Force prompt to write history after every command.
-# http://superuser.com/questions/20900/bash-history-loss
-#PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
-
-# Assign some BASH specific variables.
 if [[ -n $BASH_VERSION ]]
 then
 	# append to the history file, don't overwrite it
@@ -337,6 +338,14 @@ then
 
 	# History filename
 	#export HISTFILE=~/history.txt
+
+	# Eternal bash history.
+	# ---------------------
+	# Undocumented feature which sets the size to "unlimited".
+	# http://stackoverflow.com/questions/9457233/unlimited-bash-history
+	#export HISTFILESIZE=
+	#export HISTSIZE=
+	#export HISTTIMEFORMAT="[%F %T] "
 
 	# Bash 4.3 and later use -1 to set unlimited history.
 	# Bash prior to 4.3 use "" to set unlimited history.
@@ -463,7 +472,6 @@ export VCPKG_DISABLE_METRICS=true
 [[ -f "${HOME}/.config/sops/age/keys.txt" ]] && export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
 
 
-
 if [[ $EUID -ne 0 ]] && tty >/dev/null
 then
 	# @see https://d.niceguyit.biz/en/internal/troubleshooting
@@ -520,13 +528,9 @@ function git_commit() {
 }
 
 
-
 ######################################################################
 # fzf.bash
 ######################################################################
-# Setup fzf
-# ---------
-
 if [[ "$OSTYPE" == darwin* ]]
 then
 	if type -P fzf >/dev/null 2>&1
