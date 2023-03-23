@@ -24,7 +24,6 @@ VERBOSE=false
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 [[ -f /etc/bash.bashrc ]] && source /etc/bash.bashrc
 
-# Process scripts in ~/projects/dotfiles/bash.d/
 if [[ "$OSTYPE" == darwin* ]]
 then
 	# Mac's readline does not have --canonicalize argument
@@ -540,46 +539,35 @@ function git_commit() {
 # fzf.bash
 # Similar to atuin.
 ######################################################################
-if [[ "$OSTYPE" == darwin* ]]
-then
-	if type -P fzf >/dev/null 2>&1
+if type -P fzf >/dev/null 2>&1; then
+	if [[ "$OSTYPE" == darwin* ]]
 	then
 		# Auto-completion
-		# ---------------
 		[[ $- == *i* ]] && source "$(brew --prefix)/opt/fzf/shell/completion.bash" 2> /dev/null
-
+	
 		# Key bindings
-		# ------------
 		source "$(brew --prefix)/opt/fzf/shell/key-bindings.bash"
+	else
+		# Bash completion is enabled in the bash-completion section.
+
+		# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
+		# This works: env LC_ALL=en_US.UTF-8 perl -e exit
+		# This fails: env LC_ALL= perl -e exit
+		#	perl: warning: Setting locale failed.
+		#	perl: warning: Please check that your locale settings:
+		#			LANGUAGE = "en_US.UTF-8",
+		#			LC_ALL = "",
+		#			LC_MEASUREMENT = "en_US.UTF-8",
+		#			LC_MONETARY = "en_US.UTF-8",
+		#			LC_COLLATE = "C",
+		#			LC_NUMERIC = "en_US.UTF-8",
+		#			LC_TIME = "en_SE.UTF-8",
+		#			LANG = "en_US.UTF-8"
+		#		are supported and installed on your system.
+		#	perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+		# See https://perldoc.perl.org/perllocale#PERL_SKIP_LOCALE_INIT
+		export PERL_SKIP_LOCALE_INIT=true
 	fi
-else
-	# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
-	# This works: env LC_ALL=en_US.UTF-8 perl -e exit
-	# This fails: env LC_ALL= perl -e exit
-	#	perl: warning: Setting locale failed.
-	#	perl: warning: Please check that your locale settings:
-	#			LANGUAGE = "en_US.UTF-8",
-	#			LC_ALL = "",
-	#			LC_MEASUREMENT = "en_US.UTF-8",
-	#			LC_MONETARY = "en_US.UTF-8",
-	#			LC_COLLATE = "C",
-	#			LC_NUMERIC = "en_US.UTF-8",
-	#			LC_TIME = "en_SE.UTF-8",
-	#			LANG = "en_US.UTF-8"
-	#		are supported and installed on your system.
-	#	perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
-	# See https://perldoc.perl.org/perllocale#PERL_SKIP_LOCALE_INIT
-	export PERL_SKIP_LOCALE_INIT=true
-
-	# For some reason, /usr/share/bash-completion/bash_completion does not source
-	# /usr/share/bash-completion/completions/fzf* so that Ctrl-R works.
-	[[ -f "/usr/share/bash-completion/completions/fzf" ]] && source "/usr/share/bash-completion/completions/fzf"
-	[[ -f "/usr/share/bash-completion/completions/fzf-key-bindings" ]] && source "/usr/share/bash-completion/completions/fzf-key-bindings"
-
-	# Ubuntu
-	[[ -f "/usr/share/doc/fzf/examples/completion.bash" ]] && source "/usr/share/doc/fzf/examples/completion.bash"
-	[[ -f "/usr/share/doc/fzf/examples/key-bindings.bash" ]] && source "/usr/share/doc/fzf/examples/key-bindings.bash"
-
 fi
 
 
@@ -742,11 +730,7 @@ fi
 ######################################################################
 # ripgrep.sh
 ######################################################################
-# ripgrep supports configuration files. Set RIPGREP_CONFIG_PATH to a
-# configuration file. The file can specify one shell argument per line. Lines
-# starting with '#' are ignored. For more details, see the man page or the
-# README.
-export RIPGREP_CONFIG_PATH="${HOME}/projects/dotfiles/ripgreprc"
+[[ -s "${DOTFILES_DIR}/ripgreprc" ]] && export RIPGREP_CONFIG_PATH="${DOTFILES_DIR}/ripgreprc"
 
 
 ######################################################################
@@ -806,10 +790,10 @@ fi
 ######################################################################
 # Bash Completions
 ######################################################################
-if compgen -G "${HOME}/projects/dotfiles/bash-completion/*" > /dev/null
+if compgen -G "${DOTFILES_DIR}/bash-completion/*" > /dev/null
 then
 	# shellcheck disable=SC1090
-	source ${HOME}/projects/dotfiles/bash-completion/*
+	source ${DOTFILES_DIR}/bash-completion/*
 fi
 
 ######################################################################
