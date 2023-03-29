@@ -188,7 +188,7 @@ fi
 ######################################################################
 if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
 then
-	eval "$(atuin init bash)"
+	eval "$(atuin init bash --disable-up-arrow)"
 fi
 
 
@@ -544,7 +544,7 @@ if type -P fzf >/dev/null 2>&1; then
 	then
 		# Auto-completion
 		[[ $- == *i* ]] && source "$(brew --prefix)/opt/fzf/shell/completion.bash" 2> /dev/null
-	
+
 		# Key bindings
 		source "$(brew --prefix)/opt/fzf/shell/key-bindings.bash"
 	else
