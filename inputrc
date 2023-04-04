@@ -16,13 +16,24 @@
 # any possible partial completion cause the matches to be listed immediately
 # instead of ringing the bell.
 #
-#set show-all-if-unmodified on
+set show-all-if-unmodified on
 
 #
 # If set to on, words which have more than one possible completion cause the
 # matches to be listed immediately instead of ringing the bell.
 #
 #set show-all-if-ambiguous on
+
+#
+# Treat symlinks as directories as far as tab completion.
+#
+set mark-symlinked-directories on
+
+#
+# Make auto-complete case insensitive.
+# https://askubuntu.com/questions/87061/can-i-make-tab-auto-completion-case-insensitive-in-bash
+#
+set completion-ignore-case on
 
 #
 # Bash readline does not interpret (or maybe output?) Ctrl-Arrow keys correctly.
