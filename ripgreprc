@@ -13,7 +13,7 @@
 --smart-case
 
 # Don't let ripgrep vomit really long lines to my terminal, and show a preview.
---max-columns=150
+--max-columns=500
 # ripgrep 0.9.0 doesn't support this flag
 # Comment it out until all servers have been updated.
 # openSUSE Leap 15.2 has ripgrep 0.8.1
