@@ -799,7 +799,7 @@ then
 		bin="${filename%.bash}"
 		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
 		then
-			#echo "Sourcing ${f}"
+			#echo "Sourcing completion: ${f}"
 			# shellcheck disable=SC1090
 			source "${f}"
 		fi
@@ -818,7 +818,7 @@ then
 		bin="${filename%.bash}"
 		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
 		then
-			#echo "Sourcing ${f}"
+			#echo "Sourcing key bindings: ${f}"
 			# shellcheck disable=SC1090
 			source "${f}"
 		fi
