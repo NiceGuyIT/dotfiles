@@ -790,10 +790,39 @@ fi
 ######################################################################
 # Bash Completions
 ######################################################################
-if compgen -G "${DOTFILES_DIR}/bash-completion/*" > /dev/null
+# Only source files for executables that exist.
+if compgen -G "${DOTFILES_DIR}/bash-completion/*.bash" > /dev/null
 then
-	# shellcheck disable=SC1090
-	source ${DOTFILES_DIR}/bash-completion/*
+	for f in "${DOTFILES_DIR}"/bash-completion/*.bash
+	do
+		filename="${f##*/}"
+		bin="${filename%.bash}"
+		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
+		then
+			#echo "Sourcing ${f}"
+			# shellcheck disable=SC1090
+			source "${f}"
+		fi
+	done
+fi
+
+######################################################################
+# Key Bindings
+######################################################################
+# Only source files for executables that exist.
+if compgen -G "${DOTFILES_DIR}/key-bindings/*.bash" > /dev/null
+then
+	for f in "${DOTFILES_DIR}"/key-bindings/*.bash
+	do
+		filename="${f##*/}"
+		bin="${filename%.bash}"
+		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
+		then
+			#echo "Sourcing ${f}"
+			# shellcheck disable=SC1090
+			source "${f}"
+		fi
+	done
 fi
 
 ######################################################################
