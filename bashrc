@@ -640,24 +640,18 @@ then
 	export LSCOLORS="Gxfxcxdxdxegedabagacad"
 
 else
-	[[ "true" == "$VERBOSE" ]] && echo "Processing LSCOLORS for Linux/Mac"
-
-	# which is not installed in production
-	if [[ -x "/usr/bin/which" ]]
+	if type -P dircolors >/dev/null
 	then
-		[[ "true" == "$VERBOSE" ]] && echo "Checking for dircolors"
-		if type -P dircolors >/dev/null
-		then
-			[[ "true" == "$VERBOSE" ]] && echo "Executing dircolors"
-			eval $(dircolors --bourne-shell)
-		else
-			[[ "true" == "$VERBOSE" ]] && echo "dircolors not found"
-			[[ "true" == "$VERBOSE" ]] && echo "$PATH"
-		fi
+		# TODO: Detect if alacritty is installed instead of using xterm-256color
+		# shellcheck disable=SC2046
+		eval $(TERM=xterm-256color dircolors --bourne-shell)
+	else
+		[[ "true" == "$VERBOSE" ]] && echo "dircolors not found"
+		[[ "true" == "$VERBOSE" ]] && echo "$PATH"
 	fi
 
 	# Enable color if available
-	if [[ ! -z ${LS_COLORS+x} ]]
+	if [[ -n ${LS_COLORS+x} ]]
 	then
 		alias ls='ls --color=auto'
 		alias dir='dir --color=auto'
