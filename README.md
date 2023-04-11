@@ -55,11 +55,28 @@ Things may be broken as I move from a private repo with another name.
 
 ### .env
 
-Export all variables in `.env` into the current environment.
+Export all variables in `.env` into the current environment. Unfortunately, this has problems
+when the values have spaces.
 
 ```bash
 export $(grep -vE "^(#.*|\s*)$" .env)
 ```
+
+Instead, use 'set -a' or 'set -o allexport': <https://stackoverflow.com/a/30969768>.
+See [man set][] for details.
+
+```bash
+set -a
+source .env
+set +a
+
+# Alternatively, use the 'allexport' option
+set -o allexport
+source .env
+set +o allexport
+```
+
+[man set]: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
 
 ### Certs
 
