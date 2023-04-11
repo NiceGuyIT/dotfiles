@@ -63,7 +63,7 @@ export $(grep -vE "^(#.*|\s*)$" .env)
 ```
 
 Instead, use 'set -a' or 'set -o allexport': <https://stackoverflow.com/a/30969768>.
-See [man set][] for details.
+See [man set][] for details. See also [load_dotenv.sh][] gist.
 
 ```bash
 set -a
@@ -77,6 +77,8 @@ set +o allexport
 ```
 
 [man set]: https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html
+
+[load_dotenv.sh]: https://gist.github.com/mihow/9c7f559807069a03e302605691f85572
 
 ### Certs
 
