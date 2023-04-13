@@ -811,6 +811,27 @@ fi
 
 
 ######################################################################
+# Key Bindings
+######################################################################
+# Only source files for executables that exist.
+# FIXME: fzf key bindings override atuin key bindings for Ctrl-R for reverse history search.
+# Source fzf first (here) before initializing atuin (below).
+if compgen -G "${DOTFILES_DIR}/key-bindings/*.bash" > /dev/null
+then
+	for f in "${DOTFILES_DIR}"/key-bindings/*.bash
+	do
+		filename="${f##*/}"
+		bin="${filename%.bash}"
+		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
+		then
+			#echo "Sourcing key bindings: ${f}"
+			# shellcheck disable=SC1090
+			source "${f}"
+		fi
+	done
+fi
+
+######################################################################
 # Bash Completions
 ######################################################################
 # Only source files for executables that exist.
@@ -823,25 +844,6 @@ then
 		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
 		then
 			#echo "Sourcing completion: ${f}"
-			# shellcheck disable=SC1090
-			source "${f}"
-		fi
-	done
-fi
-
-######################################################################
-# Key Bindings
-######################################################################
-# Only source files for executables that exist.
-if compgen -G "${DOTFILES_DIR}/key-bindings/*.bash" > /dev/null
-then
-	for f in "${DOTFILES_DIR}"/key-bindings/*.bash
-	do
-		filename="${f##*/}"
-		bin="${filename%.bash}"
-		if [[ -n $BASH_VERSION ]] && type -P "${bin}" >/dev/null 2>&1
-		then
-			#echo "Sourcing key bindings: ${f}"
 			# shellcheck disable=SC1090
 			source "${f}"
 		fi
