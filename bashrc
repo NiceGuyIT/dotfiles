@@ -189,6 +189,7 @@ fi
 if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
 then
 	eval "$(atuin init bash --disable-up-arrow)"
+	eval "$(atuin gen-completions --shell bash)"
 fi
 
 
@@ -549,6 +550,9 @@ if type -P fzf >/dev/null 2>&1; then
 		source "$(brew --prefix)/opt/fzf/shell/key-bindings.bash"
 	else
 		# Bash completion is enabled in the bash-completion section.
+
+		# key-bindings/fzf.bash was modified to use Ctrl-Y instead of Ctrl-R to search command history.
+		# This prevents conflicts with atuin which provides a better search experience.
 
 		# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
 		# This works: env LC_ALL=en_US.UTF-8 perl -e exit
