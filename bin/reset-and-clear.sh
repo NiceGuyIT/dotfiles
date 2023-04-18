@@ -5,7 +5,13 @@
 
 if [ -z "${ALACRITTY_LOG}" ]; then exit 1; fi
 
-TERM_PID="${ALACRITTY_LOG//[^0-9]/}"
-tty=$(ps o tty= --ppid $TERM_PID)
+PID_LOG="${ALACRITTY_LOG##*-}"
+TERM_PID="${PID_LOG%%.*}"
 
-echo -e "\ec" > /dev/$tty
+# FIXME: PPID of Alacritty on macOS is 1. This will not work.
+# shellcheck disable=SC2039
+if [[ "$(uname -s)" != 'Darwin' ]]
+then
+	tty=$(ps o tty= --ppid "${TERM_PID}")
+	echo -e "\ec" > /dev/$tty
+fi

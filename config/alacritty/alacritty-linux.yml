@@ -29,3 +29,7 @@ window:
   dimensions:
     columns: 159
     lines: 35
+
+key_bindings:
+  # https://gist.github.com/avindra/dd2c6f14ec6e03b05261d370ef60c9d8
+  - { key: K,       mods: Control,       command: reset-and-clear.sh }

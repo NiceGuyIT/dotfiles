@@ -20,6 +20,9 @@
 # Verbose logging
 VERBOSE=false
 
+# Require a tty
+tty -s || exit
+
 # Process global bashrc
 [[ -f /etc/bashrc ]] && source /etc/bashrc
 [[ -f /etc/bash.bashrc ]] && source /etc/bash.bashrc
@@ -188,6 +191,7 @@ fi
 ######################################################################
 if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
 then
+	echo Setting up atuin
 	eval "$(atuin init bash --disable-up-arrow)"
 	eval "$(atuin gen-completions --shell bash)"
 fi
@@ -541,37 +545,28 @@ function git_commit() {
 # Similar to atuin.
 ######################################################################
 if type -P fzf >/dev/null 2>&1; then
-	if [[ "$OSTYPE" == darwin* ]]
-	then
-		# Auto-completion
-		[[ $- == *i* ]] && source "$(brew --prefix)/opt/fzf/shell/completion.bash" 2> /dev/null
+	# Bash completion is enabled in the bash-completion section.
 
-		# Key bindings
-		source "$(brew --prefix)/opt/fzf/shell/key-bindings.bash"
-	else
-		# Bash completion is enabled in the bash-completion section.
+	# key-bindings/fzf.bash was modified to use Ctrl-Y instead of Ctrl-R to search command history.
+	# This prevents conflicts with atuin which provides a better search experience.
 
-		# key-bindings/fzf.bash was modified to use Ctrl-Y instead of Ctrl-R to search command history.
-		# This prevents conflicts with atuin which provides a better search experience.
-
-		# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
-		# This works: env LC_ALL=en_US.UTF-8 perl -e exit
-		# This fails: env LC_ALL= perl -e exit
-		#	perl: warning: Setting locale failed.
-		#	perl: warning: Please check that your locale settings:
-		#			LANGUAGE = "en_US.UTF-8",
-		#			LC_ALL = "",
-		#			LC_MEASUREMENT = "en_US.UTF-8",
-		#			LC_MONETARY = "en_US.UTF-8",
-		#			LC_COLLATE = "C",
-		#			LC_NUMERIC = "en_US.UTF-8",
-		#			LC_TIME = "en_SE.UTF-8",
-		#			LANG = "en_US.UTF-8"
-		#		are supported and installed on your system.
-		#	perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
-		# See https://perldoc.perl.org/perllocale#PERL_SKIP_LOCALE_INIT
-		export PERL_SKIP_LOCALE_INIT=true
-	fi
+	# Ctrl-R causes Perl to complain about the locale not being set. However it IS set.
+	# This works: env LC_ALL=en_US.UTF-8 perl -e exit
+	# This fails: env LC_ALL= perl -e exit
+	#	perl: warning: Setting locale failed.
+	#	perl: warning: Please check that your locale settings:
+	#			LANGUAGE = "en_US.UTF-8",
+	#			LC_ALL = "",
+	#			LC_MEASUREMENT = "en_US.UTF-8",
+	#			LC_MONETARY = "en_US.UTF-8",
+	#			LC_COLLATE = "C",
+	#			LC_NUMERIC = "en_US.UTF-8",
+	#			LC_TIME = "en_SE.UTF-8",
+	#			LANG = "en_US.UTF-8"
+	#		are supported and installed on your system.
+	#	perl: warning: Falling back to a fallback locale ("en_US.UTF-8").
+	# See https://perldoc.perl.org/perllocale#PERL_SKIP_LOCALE_INIT
+	export PERL_SKIP_LOCALE_INIT=true
 fi
 
 
