@@ -87,6 +87,15 @@ config_link="../${base_dir}/${config_dir}/${file}"
 [[ -L "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
+# Yamllint config in ~/.config/yamllint/config
+file="config"
+config_dir="config/yamllint"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file_os}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
 # Alacritty config in ~/.config/alacritty/alacritty.yml
 os="unknown"
 [[ $(uname -s) = 'Darwin' ]] && os="mac"
