@@ -750,6 +750,7 @@ fi
 
 ######################################################################
 # ripgrep.sh
+# https://github.com/BurntSushi/ripgrep/blob/master/FAQ.md#does-ripgrep-have-support-for-shell-auto-completion
 ######################################################################
 [[ -s "${DOTFILES_DIR}/ripgreprc" ]] && export RIPGREP_CONFIG_PATH="${DOTFILES_DIR}/ripgreprc"
 
