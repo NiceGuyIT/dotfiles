@@ -20,8 +20,15 @@
 # Verbose logging
 VERBOSE=false
 
+# To get the environment, IntelliJ exec's bash as interactive and as a login script. This environmental variable
+# should be used to detect this environment to prevent programs from interacting with the user.
+# https://youtrack.jetbrains.com/articles/IDEA-A-19/Shell-Environment-Loading
+#if [ -z "$INTELLIJ_ENVIRONMENT_READER" ]; then
+#	return
+#fi
+
 # Require a tty
-tty -s || exit
+tty -s || return
 
 # Process global bashrc
 [[ -f /etc/bashrc ]] && source /etc/bashrc
