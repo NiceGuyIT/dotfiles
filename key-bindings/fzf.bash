@@ -10,6 +10,8 @@
 # - $FZF_CTRL_R_OPTS
 # - $FZF_ALT_C_COMMAND
 # - $FZF_ALT_C_OPTS
+#
+# Source: https://github.com/junegunn/fzf/blob/master/shell/key-bindings.bash
 
 # Key bindings
 # ------------
@@ -78,7 +80,8 @@ if (( BASH_VERSINFO[0] < 4 )); then
   bind -m vi-command '"\C-t": "\C-z\C-t\C-z"'
   bind -m vi-insert '"\C-t": "\C-z\C-t\C-z"'
 
-  # CTRL-R - Paste the selected command from history into the command line
+  # CTRL-R conflicts with Atuin
+  # CTRL-Y - Paste the selected command from history into the command line
   bind -m emacs-standard '"\C-y": "\C-e \C-u\C-y\ey\C-u"$(__fzf_history__)"\e\C-e\er"'
   bind -m vi-command '"\C-y": "\C-z\C-r\C-z"'
   bind -m vi-insert '"\C-y": "\C-z\C-r\C-z"'
@@ -88,7 +91,8 @@ else
   bind -m vi-command -x '"\C-t": fzf-file-widget'
   bind -m vi-insert -x '"\C-t": fzf-file-widget'
 
-  # CTRL-R - Paste the selected command from history into the command line
+  # CTRL-R conflicts with Atuin
+  # CTRL-Y - Paste the selected command from history into the command line
   bind -m emacs-standard -x '"\C-y": __fzf_history__'
   bind -m vi-command -x '"\C-y": __fzf_history__'
   bind -m vi-insert -x '"\C-y": __fzf_history__'
