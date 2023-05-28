@@ -328,6 +328,8 @@ alias x='chmod a+x'
 
 # Alias for xfreerdp
 alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
+# This size is better for 4k
+alias rdp4k="xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
 
 # fd all files and rg all files
 # "rga" is taken: https://github.com/phiresky/ripgrep-all
