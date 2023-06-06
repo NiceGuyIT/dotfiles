@@ -27,31 +27,13 @@ VERBOSE=false
 #	return
 #fi
 
-# Require a tty
-tty -s || return
-
-# Process global bashrc
-[[ -f /etc/bashrc ]] && source /etc/bashrc
-[[ -f /etc/bash.bashrc ]] && source /etc/bash.bashrc
-
-if [[ "$OSTYPE" == darwin* ]]
-then
-	# Mac's readline does not have --canonicalize argument
-	# http://stackoverflow.com/questions/7665/how-to-resolve-symbolic-links-in-a-shell-script
-	DOTFILES_DIR="$( dirname "$( /opt/homebrew/opt/coreutils/bin/grealpath "${BASH_SOURCE[0]}" )" )"
-elif [[ "$OSTYPE" == freebsd* ]]
-then
-	# FreeBSD doesn't have readline
-	DOTFILES_DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
-else
-	DOTFILES_DIR="$( dirname "$( readlink --canonicalize "${BASH_SOURCE[0]}" )" )"
-fi
-
+# Sharetribe requires the ruby environment setup as part of the login.
+# Move the path munging before tty detection.
+# TODO: Move all path related code before the tty detection.
 
 ######################################################################
 # 80-path.sh
 ######################################################################
-
 # https://www.cyberciti.biz/faq/redhat-linux-pathmunge-command-in-shell-script/
 pathmunge () {
 	[[ ! -d "${1}" ]] && return
@@ -123,6 +105,117 @@ pathmunge "."
 # JetBrains Toolbox App
 pathmunge "${HOME}/.local/share/JetBrains/Toolbox/scripts"
 
+
+################################################################################
+# Ruby Version Manager (rvm)
+################################################################################
+# rvm adds $HOME/.rvm/bin to the path even though it's already there
+if [[ -s "${HOME}/.rvm/scripts/rvm" ]]
+then
+	[[ -d "${HOME}/.rvm/bin" ]] && pathmunge "${HOME}/.rvm/bin"
+	[[ -f "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
+fi
+
+######################################################################
+# 99-ruby.sh
+# TODO: Is ruby needed if rvm is used?
+######################################################################
+#[[ -d "${HOME}/.gem/bin" ]] && export PATH="${PATH}:${HOME}/.gem/bin"
+## gem install directory
+#export GEM_HOME="${HOME}/.gem"
+#
+## Include gem in path
+#if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1;
+#then
+#
+#	if [[ -d "$(ruby -rrubygems -e 'puts Gem.user_dir')" ]]
+#	then
+#		# rvm wants .gem to be frist
+#		export PATH="$(ruby -rrubygems -e 'puts Gem.user_dir'):${PATH}"
+#	fi
+#fi
+
+
+######################################################################
+# 90-node.sh
+######################################################################
+# Node Version Manager
+# Check if NVM is installed
+if [[ -s "${HOME}/.nvm/nvm.sh" ]]
+then
+	export NVM_DIR="${HOME}/.nvm"
+
+	# Make a symlink to the current version
+	export NVM_SYMLINK_CURRENT=true
+
+	# Load nvm and bash_completion
+	[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"
+	[[ -s "${NVM_DIR}/bash_completion" ]] && . "${NVM_DIR}/bash_completion"
+
+fi
+
+
+######################################################################
+# Go language support
+######################################################################
+if type -P go >/dev/null 2>&1
+then
+
+	# openSUSE uses /etc/profile.d/go.sh to setup the environment
+	# 20190825: This might have changed sometime around go1.12 and/or openSUSE 15.1
+	pathmunge "$(go env GOPATH)/bin"
+
+	# Mac
+	# libexec needs to be included because Go expects to find src in $GOROOT/src/
+	pathmunge "$(go env GOROOT)"
+
+	# FreeNAS
+	[[ -d "/usr/local/go" ]] && export GOROOT="/usr/local/go"
+
+	# Private repos
+	# https://stackoverflow.com/questions/27500861/whats-the-proper-way-to-go-get-a-private-repository
+	export GOPRIVATE="*.niceguyit.biz"
+
+	# Disable telemetry
+	export GOTELEMETRY=off
+
+fi
+
+
+######################################################################
+# 99-python.sh
+######################################################################
+# Python support
+# https://stackoverflow.com/questions/38112756/how-do-i-access-packages-installed-by-pip-user
+#export PYTHONPATH="$(python -c "import site, os; print(os.path.join(site.USER_BASE, 'lib', 'python', 'site-packages'))"):$PYTHONPATH"
+
+# Python Virtualenv
+if type -P pyenv >/dev/null 2>&1
+then
+	#export PYENV_ROOT="$HOME/.pyenv"
+	eval "$(pyenv init -)"
+fi
+
+
+# Require a tty
+tty -s || return
+
+# Process global bashrc
+[[ -f /etc/bashrc ]] && source /etc/bashrc
+[[ -f /etc/bash.bashrc ]] && source /etc/bash.bashrc
+
+if [[ "$OSTYPE" == darwin* ]]
+then
+	# Mac's readline does not have --canonicalize argument
+	# http://stackoverflow.com/questions/7665/how-to-resolve-symbolic-links-in-a-shell-script
+	DOTFILES_DIR="$( dirname "$( /opt/homebrew/opt/coreutils/bin/grealpath "${BASH_SOURCE[0]}" )" )"
+elif [[ "$OSTYPE" == freebsd* ]]
+then
+	# FreeBSD doesn't have readline
+	DOTFILES_DIR="$( dirname "$( realpath "${BASH_SOURCE[0]}" )" )"
+else
+	DOTFILES_DIR="$( dirname "$( readlink --canonicalize "${BASH_SOURCE[0]}" )" )"
+fi
 
 
 ######################################################################
@@ -201,106 +294,6 @@ then
 	eval "$(atuin init bash --disable-up-arrow)"
 	eval "$(atuin gen-completions --shell bash)"
 fi
-
-
-######################################################################
-# 90-node.sh
-######################################################################
-# Node Version Manager
-# Check if NVM is installed
-if [[ -s "${HOME}/.nvm/nvm.sh" ]]
-then
-	export NVM_DIR="${HOME}/.nvm"
-
-	# Make a symlink to the current version
-	export NVM_SYMLINK_CURRENT=true
-
-	# Load nvm
-	[[ -s "${NVM_DIR}/nvm.sh" ]] && source "${NVM_DIR}/nvm.sh"
-
-	# Load nvm bash_completion
-	[[ -s "${NVM_DIR}/bash_completion" ]] && \. "${NVM_DIR}/bash_completion"
-
-	# 2022-08-01 - nvm was added twice to the path.
-	#if [[ -s "${NVM_DIR}/current" ]]
-	#then
-	#	pathmunge "${NVM_DIR}/current/bin"
-	#else
-	#	pathmunge "${NVM_DIR}/bin"
-	#fi
-fi
-
-
-################################################################################
-# Ruby Version Manager (rvm)
-################################################################################
-# rvm adds $HOME/.rvm/bin to the path even though it's already there
-if [[ -s "${HOME}/.rvm/scripts/rvm" ]]
-then
-	[[ -d "${HOME}/.rvm/bin" ]] && pathmunge "${HOME}/.rvm/bin"
-	[[ -f "${HOME}/.rvm/scripts/rvm" ]] && source "${HOME}/.rvm/scripts/rvm"
-fi
-
-
-######################################################################
-# Go language support
-######################################################################
-if type -P go >/dev/null 2>&1
-then
-
-	# openSUSE uses /etc/profile.d/go.sh to setup the environment
-	# 20190825: This might have changed sometime around go1.12 and/or openSUSE 15.1
-	pathmunge "$(go env GOPATH)/bin"
-
-	# Mac
-	# libexec needs to be included because Go expects to find src in $GOROOT/src/
-	pathmunge "$(go env GOROOT)"
-
-	# FreeNAS
-	[[ -d "/usr/local/go" ]] && export GOROOT="/usr/local/go"
-
-	# Private repos
-	# https://stackoverflow.com/questions/27500861/whats-the-proper-way-to-go-get-a-private-repository
-	export GOPRIVATE="*.niceguyit.biz"
-
-	# Disable telemetry
-	export GOTELEMETRY=off
-
-fi
-
-
-######################################################################
-# 99-python.sh
-######################################################################
-# Python support
-# https://stackoverflow.com/questions/38112756/how-do-i-access-packages-installed-by-pip-user
-#export PYTHONPATH="$(python -c "import site, os; print(os.path.join(site.USER_BASE, 'lib', 'python', 'site-packages'))"):$PYTHONPATH"
-
-# Python Virtualenv
-if type -P pyenv >/dev/null 2>&1
-then
-	#export PYENV_ROOT="$HOME/.pyenv"
-	eval "$(pyenv init -)"
-fi
-
-
-######################################################################
-# 99-ruby.sh
-######################################################################
-#[[ -d "${HOME}/.gem/bin" ]] && export PATH="${PATH}:${HOME}/.gem/bin"
-## gem install directory
-#export GEM_HOME="${HOME}/.gem"
-#
-## Include gem in path
-#if which ruby >/dev/null 2>&1 && which gem >/dev/null 2>&1;
-#then
-#
-#	if [[ -d "$(ruby -rrubygems -e 'puts Gem.user_dir')" ]]
-#	then
-#		# rvm wants .gem to be frist
-#		export PATH="$(ruby -rrubygems -e 'puts Gem.user_dir'):${PATH}"
-#	fi
-#fi
 
 
 ######################################################################
