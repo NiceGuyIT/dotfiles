@@ -226,7 +226,12 @@ if [[ $(uname -s) = 'Darwin' ]]
 then
 
 	# M1 MacOS
-	pathmunge "/opt/homebrew/bin" before
+	pathmunge "/opt/homebrew/bin"
+
+	# Opt out of analytics because it sends to Google Analytics
+	# https://docs.brew.sh/Analytics
+	# https://news.ycombinator.com/item?id=11566720
+	export HOMEBREW_NO_ANALYTICS=1
 
 	# Prefer Homebrew packages over system installed packages.
 	# coreutils
