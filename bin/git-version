@@ -28,7 +28,7 @@ echo "Publishing version ${version}"
 git pull
 git add --update
 git commit --message "${message}"
-git tag "${version}"
+git tag --annotate --message "Release ${version}" "${version}"
 git push origin "${version}"
 git push
 
