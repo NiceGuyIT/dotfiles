@@ -486,7 +486,7 @@ export VCPKG_DISABLE_METRICS=true
 [[ -f "${HOME}/projects/github/vcpkg/vcpkg" ]] && export VCPKG_ROOT="${HOME}/projects/github/vcpkg"
 
 # SOPS Age support
-[[ -f "${HOME}/.config/sops/age/keys.txt" ]] && export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
+#[[ -f "${HOME}/.config/sops/age/keys.txt" ]] && export SOPS_AGE_KEY_FILE=~/.config/sops/age/keys.txt
 
 
 if [[ $EUID -ne 0 ]] && tty >/dev/null

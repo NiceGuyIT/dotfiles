@@ -15,6 +15,9 @@
 [pull]
 	rebase = false
 
+[alias]
+	tag-release = "!f() { tag=v${1:-$(cat VERSION)} ; git tag -s ${tag} -m ${tag} && git push origin ${tag}; }; f"
+
 [core]
 	editor = vim -f
 	# https://www.kernel.org/pub/software/scm/git/docs/v1.7.10.1/git-config.html
