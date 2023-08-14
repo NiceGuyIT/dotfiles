@@ -78,6 +78,9 @@ pathmunge "${HOME}/.pyenv/bin"
 # "pip install --user" installs to ~/.local/bin/
 pathmunge "${HOME}/.local/bin"
 
+# Rancher Desktop
+pathmunge "${HOME}/.rd/bin"
+
 # Flutter
 pathmunge "${HOME}/projects/github/flutter/bin"
 
