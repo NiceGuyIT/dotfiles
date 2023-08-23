@@ -328,9 +328,16 @@ alias recode='recode -v UNICODE..UTF-8'
 alias x='chmod a+x'
 
 # Alias for xfreerdp
-alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
+# TODO: Upgrade to 2.7.0+ and use /network:auto
+#   https://github.com/FreeRDP/FreeRDP/issues/7915#issuecomment-1135447199
+#   As for FreeRDP with 2.7.0 it contains Backported #6786: Use /network:auto by default which means
+#   if you don´t add any /rfx, /gfx, /bpp or /network options it will announce everything we´ve got
+#   (so you end up with graphics of the latest GFX mode supported by the client and server)
+# See also:
+# https://techcommunity.microsoft.com/t5/security-compliance-and-identity/remote-desktop-protocol-rdp-10-avc-h-264-improvements-in-windows/ba-p/249588
+alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto"
 # This size is better for 4k
-alias rdp4k="xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:lan"
+alias rdp4k="xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto"
 
 # fd all files and rg all files
 # "rga" is taken: https://github.com/phiresky/ripgrep-all
