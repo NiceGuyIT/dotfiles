@@ -4,6 +4,9 @@
 ## Install the profile
 ##
 
+# TODO: Windows install
+# See this about creating symlinks in Windows: https://www.joshkel.com/2018/01/18/symlinks-in-windows/
+
 # base_dir is the base directory for the dotfiles repo, usually in ~/projects
 base_dir="projects/dotfiles"
 
