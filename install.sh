@@ -6,6 +6,14 @@
 
 # TODO: Windows install
 # See this about creating symlinks in Windows: https://www.joshkel.com/2018/01/18/symlinks-in-windows/
+# May need to turn on developer mode in Windows.
+# To install on Windows:
+#   export MSYS=winsymlinks:nativestrict
+#   cd ~
+#   ln -s projects/dotfiles/bashrc .bashrc
+#   ln -s projects/dotfiles/vimrc .vimrc
+#   ln -s projects/dotfiles/gitconfig .gitconfig
+#   ln -s projects/dotfiles/gitignore_global .gitignore_global
 
 # base_dir is the base directory for the dotfiles repo, usually in ~/projects
 base_dir="projects/dotfiles"
