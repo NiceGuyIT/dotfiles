@@ -107,6 +107,33 @@ config_link="../../${base_dir}/${config_dir}/${file}.yml"
 [[ -L "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
+# Helix config in ~/.config/lapce-stable/settings.toml
+file="settings.toml"
+config_dir="config/lapce-stable"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
+# Helix config in ~/.config/helix/config.toml
+file="config.toml"
+config_dir="config/helix"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
+# Helix config in ~/.config/helix/runtime/
+file="runtime"
+config_dir="config/helix"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
 # Alacritty config in ~/.config/alacritty/alacritty.yml
 os="unknown"
 [[ $(uname -s) = 'Darwin' ]] && os="mac"

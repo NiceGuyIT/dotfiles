@@ -895,3 +895,7 @@ fi
 ######################################################################
 # Prevent bashrc from being read twice
 export BASHRCREAD=true
+
+### MANAGED BY RANCHER DESKTOP START (DO NOT EDIT)
+export PATH="/Users/dev/.rd/bin:$PATH"
+### MANAGED BY RANCHER DESKTOP END (DO NOT EDIT)
