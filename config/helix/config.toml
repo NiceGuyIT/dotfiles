@@ -1,0 +1,22 @@
+# Themes
+#theme = "adwaita-dark"
+#theme = "autumn_night"
+#theme = "ayu-dark"
+#theme = "ayu_evolve"
+#theme = "base16_default"
+#theme = "base16_terminal"
+theme = "base16_transparent"
+#theme = "bogster"
+#theme = "onedark"
+
+[editor]
+#line-number = "relative"
+#mouse = false
+
+[editor.cursor-shape]
+#insert = "bar"
+#normal = "block"
+#select = "underline"
+
+[editor.file-picker]
+#hidden = false
