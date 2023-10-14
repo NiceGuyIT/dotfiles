@@ -107,7 +107,7 @@ config_link="../../${base_dir}/${config_dir}/${file}.yml"
 [[ -L "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
-# Helix config in ~/.config/lapce-stable/settings.toml
+# Lapce config in ~/.config/lapce-stable/settings.toml
 file="settings.toml"
 config_dir="config/lapce-stable"
 config_file="${HOME}/.${config_dir}/${file}"
@@ -125,9 +125,27 @@ config_link="../../${base_dir}/${config_dir}/${file}"
 [[ -L "${config_file}" ]] && rm "${config_file}"
 ln -s "${config_link}" "${config_file}"
 
-# Helix config in ~/.config/helix/runtime/
+# Helix runtime in ~/.config/helix/runtime/
 file="runtime"
 config_dir="config/helix"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
+# Nushell config.nu in ~/.config/nushell/
+file="config.nu"
+config_dir="config/nushell"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
+# Nushell env.nu in ~/.config/nushell/
+file="env.nu"
+config_dir="config/nushell"
 config_file="${HOME}/.${config_dir}/${file}"
 config_link="../../${base_dir}/${config_dir}/${file}"
 [[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
