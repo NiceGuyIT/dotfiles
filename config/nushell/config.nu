@@ -151,7 +151,7 @@ $env.config = {
     }
 
     cd: {
-        abbreviations: false # allows `cd s/o/f` to expand to `cd some/other/folder`
+        abbreviations: true # allows `cd s/o/f` to expand to `cd some/other/folder`
     }
 
     table: {
