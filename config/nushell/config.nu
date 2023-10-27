@@ -799,7 +799,10 @@ def lrs [] {
 # easier by short circuiting if the pull fails.
 def git-commit [message: string] {
 	git pull
+	print "---"
 	git add --update
+	print "---"
 	git commit --message "$1"
+	print "---"
 	git push
 }
