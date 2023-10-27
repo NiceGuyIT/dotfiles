@@ -173,7 +173,11 @@ $env.config = {
     # Behavior without this configuration point will be to "humanize" the datetime display,
     # showing something like "a day ago."
     datetime_format: {
+    	normal: '%a, %d %b %Y %H:%M:%S %z'
         # normal: '%a, %d %b %Y %H:%M:%S %z'    # shows up in displays of variables or other datetime's outside of tables
+
+    	# Short date with seconds
+    	table: '%Y-%m-%d %H:%M:%S'
         # table: '%m/%d/%y %I:%M:%S%p'          # generally shows up in tabular outputs such as ls. commenting this out will change it to the default human readable datetime format
     }
 
@@ -765,5 +769,37 @@ $env.config = {
 
 # Aliases
 # https://www.nushell.sh/book/aliases.html#persisting
-alias l = ls --long
-alias la = ls --all --long
+
+# General "ls -l" command
+def l [] {
+	ls --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+}
+
+# General "ls -la" command
+def la [] {
+	ls --all --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+}
+
+# "ls -la" command that shows the links
+def ll [] {
+	ls --all --long | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+}
+
+# "ls -lart" command
+def lrt [] {
+	ls --all --long | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+}
+
+# "ls -larS" command
+def lrs [] {
+	ls --all --long | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+}
+
+# "git commit --message 'my changes'" with syntactic sugar to pull changes first. This makes conflict resolution
+# easier by short circuiting if the pull fails.
+def git-commit [message: string] {
+	git pull
+	git add --update
+	git commit --message "$1"
+	git push
+}
