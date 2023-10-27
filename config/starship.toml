@@ -193,8 +193,9 @@ format = '\[[$symbol$workspace]($style)\]'
 
 [time]
 #format = '\[[$time]($style)\]'
-format = "🕙 $time($style) "
-time_format = "%T"
+#format = "🕙 $time($style) "
+#time_format = "%T"
+format = ""
 style = "bright-white"
 disabled = false
 
@@ -214,10 +215,10 @@ format = '\[[$symbol($version)]($style)\]'
 
 
 [character]
-success_symbol = "[#](bold green)"
-#error_symbol = "[✖](bold red) "
-error_symbol = "[x](bold red)"
-vicmd_symbol = "[#](bold green)"
+#success_symbol = "[#](bold green)"
+# error_symbol = "[✖](bold red) "
+#error_symbol = "[x](bold red)"
+#vicmd_symbol = "[#](bold green)"
 
 [git_commit]
 tag_symbol = " tag "

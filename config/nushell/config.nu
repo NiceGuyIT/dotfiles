@@ -765,4 +765,5 @@ $env.config = {
 
 # Aliases
 # https://www.nushell.sh/book/aliases.html#persisting
-alias l = ls --all --long
+alias l = ls --long
+alias la = ls --all --long
