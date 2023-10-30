@@ -1,0 +1,79 @@
+# Nushell functions and aliases
+# https://www.nushell.sh/book/aliases.html#persisting
+
+# General "ls -l" command
+export def l [...args: string] {
+	if ($args | is-empty) {
+		ls --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --long $it
+		} | flatten | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# General "ls -la" command
+export def la [...args: string] {
+	if ($args | is-empty) {
+		ls --all --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --all --long $it
+		} | flatten | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# "ls -la" command that shows the links
+export def ll [...args: string] {
+	if ($args | is-empty) {
+		ls --all --long | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --all --long $it
+		} | flatten | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# "ls -lat" command
+export def lt [...args: string] {
+	if ($args | is-empty) {
+		ls --all --long | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --all --long $it
+		} | flatten | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# "ls -lart" command
+export def lrt [...args: string] {
+	if ($args | is-empty) {
+		ls --all --long | sort-by --reverse modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --all --long $it
+		} | flatten | sort-by --reverse modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# "ls -larS" command
+export def lrs [...args: string] {
+	if ($args | is-empty) {
+		ls --all --long | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	} else {
+		$args | each {|it|
+			ls --all --long $it
+		} | flatten | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+	}
+}
+
+# "git commit --message 'my changes'" with syntactic sugar to pull changes first. This makes conflict resolution
+# easier by short circuiting if the pull fails.
+export def git-commit [message: string] {
+	git pull
+	print "---"
+	git add --update
+	git commit --message $"($message)"
+	print "---"
+	git push
+}

@@ -775,41 +775,8 @@ $env.config = {
 
 }
 
-# Aliases
-# https://www.nushell.sh/book/aliases.html#persisting
+# Starship
+use starship.nu
 
-# General "ls -l" command
-def l [] {
-	ls --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
-}
-
-# General "ls -la" command
-def la [] {
-	ls --all --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
-}
-
-# "ls -la" command that shows the links
-def ll [] {
-	ls --all --long | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
-}
-
-# "ls -lart" command
-def lrt [] {
-	ls --all --long | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
-}
-
-# "ls -larS" command
-def lrs [] {
-	ls --all --long | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
-}
-
-# "git commit --message 'my changes'" with syntactic sugar to pull changes first. This makes conflict resolution
-# easier by short circuiting if the pull fails.
-def git-commit [message: string] {
-	git pull
-	print "---"
-	git add --update
-	git commit --message "$1"
-	print "---"
-	git push
-}
+# Custom functions
+use functions.nu *

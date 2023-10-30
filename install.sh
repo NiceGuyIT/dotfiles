@@ -87,6 +87,15 @@ config_link="../${base_dir}/${config_dir}/${file}"
 [[ ! -L "${config_file}" ]] && [[ -f "${config_file}" ]] && mv "${config_file}" "${config_file}.orig"
 ln -s "${config_link}" "${config_file}"
 
+# Starship config for Nushell in ~/.cache/starship/starship.nu
+file="starship.nu"
+config_dir="cache/starship"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/config/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
 # Process ~/.config
 config_dir="config"
 
@@ -145,6 +154,15 @@ ln -s "${config_link}" "${config_file}"
 
 # Nushell env.nu in ~/.config/nushell/
 file="env.nu"
+config_dir="config/nushell"
+config_file="${HOME}/.${config_dir}/${file}"
+config_link="../../${base_dir}/${config_dir}/${file}"
+[[ ! -d "${HOME}/.${config_dir}" ]] && mkdir --parents "${HOME}/.${config_dir}"
+[[ -L "${config_file}" ]] && rm "${config_file}"
+ln -s "${config_link}" "${config_file}"
+
+# Nushell scripts in ~/.config/nushell/scripts/
+file="scripts"
 config_dir="config/nushell"
 config_file="${HOME}/.${config_dir}/${file}"
 config_link="../../${base_dir}/${config_dir}/${file}"
