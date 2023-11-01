@@ -771,6 +771,18 @@ $env.config = {
 			mode: emacs
 			event: {edit: capitalizechar}
 		}
+		{
+			# Reload the Nushell config with F5
+			# https://discord.com/channels/601130461678272522/601130461678272524/1169019137411002428
+			name: reload_config
+			modifier: none
+			keycode: f5
+			mode: [ emacs vi_insert vi_normal ]
+			event: [
+				{ edit: clear }
+				{ send: executehostcommand cmd: $"source ($nu.env-path); source ($nu.config-path)" }
+			]
+		}
 	]
 
 }
