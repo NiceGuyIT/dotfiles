@@ -4,66 +4,108 @@
 # General "ls -l" command
 export def l [...args: string] {
 	if ($args | is-empty) {
-		ls --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --long |
+			select name user group mode size modified |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --long $it
-		} | flatten | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			select name user group mode size modified |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
 # General "ls -la" command
 export def la [...args: string] {
 	if ($args | is-empty) {
-		ls --all --long | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --all --long |
+			select name user group mode size modified |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --all --long $it
-		} | flatten | select name user group mode size modified | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			select name user group mode size modified |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
 # "ls -la" command that shows the links
 export def ll [...args: string] {
 	if ($args | is-empty) {
-		ls --all --long | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --all --long |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --all --long $it
-		} | flatten | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
 # "ls -lat" command
 export def lt [...args: string] {
 	if ($args | is-empty) {
-		ls --all --long | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --all --long |
+			sort-by modified |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --all --long $it
-		} | flatten | sort-by modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			sort-by modified |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
 # "ls -lart" command
 export def lrt [...args: string] {
 	if ($args | is-empty) {
-		ls --all --long | sort-by --reverse modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --all --long |
+			sort-by --reverse modified |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --all --long $it
-		} | flatten | sort-by --reverse modified | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			sort-by --reverse modified |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
 # "ls -larS" command
 export def lrs [...args: string] {
 	if ($args | is-empty) {
-		ls --all --long | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		ls --all --long |
+			sort-by size |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	} else {
 		$args | each {|it|
 			ls --all --long $it
-		} | flatten | sort-by size | select name user group mode size modified target | update modified {format date "%Y-%m-%d %H:%M:%S"}
+		} | flatten |
+			sort-by size |
+			select name user group mode size modified target |
+			update modified {format date "%Y-%m-%d %H:%M:%S"} |
+			table --width 999
 	}
 }
 
@@ -73,7 +115,7 @@ export def git-commit [message: string] {
 	git pull
 	print "---"
 	git add --update
-	git commit --message $"($message)"
+	git commit --signoff --message $"($message)"
 	print "---"
 	git push
 }

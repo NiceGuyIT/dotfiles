@@ -35,3 +35,33 @@ window:
   dimensions:
     columns: 120
     lines: 38
+
+# Any items in the `env` entry below will be added as environment variables.
+# Some entries may override variables set by alacritty itself.
+env:
+
+  # PATH variable
+  #
+  # Alacritty on the Mac has a very basic $PATH which does not include the extra paths added in .bashrc.
+  # This $PATH variable sets the path similar to .bashrc.
+  PATH: /usr/local/bin:/opt/homebrew/opt/coreutils/libexec/gnubin:/usr/bin:/bin:/usr/sbin:/sbin:~/bin:~/go/bin:~/.cargo/bin:~/.local/bin:~/.rd/bin:/opt/homebrew/bin
+  # Here's the original path using bash and .bashrc
+  #   /opt/homebrew/opt/coreutils/libexec/gnubin
+  #   /usr/local/bin
+  #   /System/Cryptexes/App/usr/bin
+  #   /usr/bin
+  #   /bin
+  #   /usr/sbin
+  #   /sbin
+  #   /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin
+  #   /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin
+  #   /var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin
+  #   /Users/dev/.cargo/bin
+  #   /Users/dev/bin
+  #   /Users/dev/go/bin
+  #   /Users/dev/.local/bin
+  #   /Users/dev/.rd/bin
+  #   /Users/dev/projects/server-profile/bin
+  #   /Users/dev/projects/dotfiles/bin
+  #   /Users/dev
+  #   /opt/homebrew/bin
