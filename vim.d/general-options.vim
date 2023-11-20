@@ -201,3 +201,16 @@ match RedundantSpaces /\s\+$/
 "map <C-V> "+gP
 "map <C-A> gggH<C-O>G
 
+" Make the cursor a block cursor
+" https://stackoverflow.com/questions/6488683/how-to-change-the-cursor-between-normal-and-insert-modes-in-vim
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+" reset the cursor on start (for older versions of vim, usually not required)
+augroup myBlockCursor
+au!
+" Make the cursor a block cursor
+autocmd VimEnter * silent !echo -ne "\e[2 q"
+" Highlight the line when in edit mode
+autocmd InsertEnter,InsertLeave * set cursorline!
+augroup END
