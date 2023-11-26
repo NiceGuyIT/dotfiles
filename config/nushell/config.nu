@@ -792,3 +792,6 @@ use starship.nu
 
 # Custom functions
 use functions.nu *
+
+# Discord functions
+use discord.nu *
