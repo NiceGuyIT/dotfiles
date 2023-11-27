@@ -45,6 +45,7 @@ export def "discord install" [
 }
 
 # Upgrade Discord in ~/local/Discord.
+# TODO: Use XDG Base Directory Specification: https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html
 export def "discord upgrade" [
     --platform: string = "linux",
     --format: string = "tar.gz",
