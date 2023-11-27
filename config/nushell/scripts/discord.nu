@@ -78,7 +78,7 @@ export def "discord upgrade" [
         | uniq-by --count ppid
         | flatten
         | where count > 1
-        | get ppid.0)
+        | get ppid.0?)
     if not ($pid | is-empty) {
         print $"Killing existing Discord process `($pid)`..."
         kill --signal 3 $pid
