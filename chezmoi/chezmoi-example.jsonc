@@ -1,0 +1,9 @@
+{
+	// Copy this to ~/.config/chezmoi/chezmoi.jsonc
+	// The chezmoi source files are stored here
+	"sourceDir": "/home/USER/projects/dotfiles",
+	"data": {
+		"email": "Me@example.com",
+		"name": "Your Name"
+	}
+}

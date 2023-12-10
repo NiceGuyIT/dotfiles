@@ -1,0 +1,60 @@
+[user]
+name = {{ .name | quote }}
+email = {{ .email | quote }}
+
+[init]
+defaultBranch = main
+
+[safe]
+# Use this to suppress the git warning when the uid of the files are different than the uid of the user.
+#directory = /path/to/safe/repository
+
+[push]
+default = simple
+
+[pull]
+rebase = false
+
+[alias]
+tag-release = "!f() { tag=v${1:-$(cat VERSION)} ; git tag -s ${tag} -m ${tag} && git push origin ${tag}; }; f"
+
+[core]
+editor = vim -f
+# https://www.kernel.org/pub/software/scm/git/docs/v1.7.10.1/git-config.html
+# https://git-scm.com/docs/gitattributes/1.7.3.3
+safecrlf = true
+autocrlf = false
+# https://github.com/github/gitignore
+excludesfile = ~/.gitignore_global
+pager = less
+
+[diff]
+tool = vimdiff
+
+[difftool]
+prompt = false
+
+[color]
+diff = auto
+status = auto
+branch = auto
+interactive = auto
+ui = true
+pager = true
+
+# https://golang.org/doc/faq#git_https
+# This affects brew and git submodule checkout
+[url "ssh://git@github.com/"]
+insteadOf = https://github.com/
+
+[url "ssh://git@gitlab.com/"]
+insteadOf = https://gitlab.com/
+
+# The URL is case sensitive for SSH.
+# FIXME: Change the URL to something longer term.
+[url "ssh://git@git.n.niceguyit.biz/"]
+insteadOf = https://gitea.n.niceguyit.biz/
+
+################################################################################
+# vim: filetype=dosini
+################################################################################

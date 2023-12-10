@@ -1,0 +1,24 @@
+[Desktop Entry]
+Type=Application
+# https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#recognized-keys
+# TryExec: Path to an executable file on disk used to determine if the program is actually
+# installed. If the path is not an absolute path, the file is looked up in the $PATH environment
+# variable. If the file is not present or if it is not executable, the entry may be ignored (not be
+# used in menus, for example).
+TryExec=alacritty
+Exec=alacritty --command /usr/local/bin/nu
+# Copy the icons to one of these locations.
+Icon={{ .chezmoi.homeDir }}/.local/share/alacritty/alacritty-term.svg
+#Icon=/usr/local/share/applications/alacritty-term.svg
+Terminal=false
+Categories=System;TerminalEmulator;
+
+Name=Alacritty
+GenericName=Terminal
+Comment=A fast, cross-platform, OpenGL terminal emulator
+StartupWMClass=Alacritty
+Actions=New;
+
+[Desktop Action New]
+Name=New Terminal
+Exec=alacritty --command /usr/local/bin/nu
