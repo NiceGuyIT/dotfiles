@@ -141,7 +141,11 @@ export def rdp [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto $args
+		if not (which xfreerdp | is-empty) {
+			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto $args
+		} else if not (which wlfreerdp | is-empty) {
+			^wlfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto $args
+		}
 	}
 }
 

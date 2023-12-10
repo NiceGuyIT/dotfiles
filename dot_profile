@@ -28,5 +28,6 @@ test -z "$PROFILEREAD" && . /etc/profile || true
 #fi
 
 
+# TODO: Add this to Nushell
 # Added by Toolbox App
 export PATH="$PATH:/home/dev/.local/share/JetBrains/Toolbox/scripts"

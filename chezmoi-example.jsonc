@@ -4,6 +4,7 @@
 	"sourceDir": "/home/USER/projects/dotfiles",
 	"data": {
 		"email": "Me@example.com",
-		"name": "Your Name"
+		"name": "Your Name",
+		"firefox_profile_name": "dev",
 	}
 }
