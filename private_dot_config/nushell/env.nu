@@ -94,5 +94,26 @@ $env.NU_PLUGIN_DIRS = [
 	($nu.default-config-dir | path join 'plugins') # add <nushell-config-dir>/plugins
 ]
 
+# Add SSH agent
+# https://www.nushell.sh/cookbook/ssh_agent.html#workarounds
+# Run manually: ssh-agent -a ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
+# In each terminal: $env.SSH_AUTH_SOCK = ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
+# TODO: Add ssh-agent as a service.
+let sshAgentFilePath = $"/tmp/ssh-agent-($env.USER).nuon"
+if ($sshAgentFilePath | path exists) and ($"/proc/((open $sshAgentFilePath).SSH_AGENT_PID)" | path exists) {
+	# loading it
+	load-env (open $sshAgentFilePath)
+} else {
+	# creating it
+	^ssh-agent -c
+		| lines
+		| first 2
+		| parse "setenv {name} {value};"
+		| transpose -r
+		| into record
+		| save --force $sshAgentFilePath
+	load-env (open $sshAgentFilePath)
+}
+
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
