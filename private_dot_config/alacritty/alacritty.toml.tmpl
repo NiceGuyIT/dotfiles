@@ -82,6 +82,9 @@ mods = "Control"
 [shell]
 {{ if ne .chezmoi.os "windows" }}
 program = "/usr/local/bin/nu"
+#args = [
+#	"--config", "~/.config/nushell/config.nu"
+#]
 {{ end }}
 
 [window.dimensions]

@@ -117,3 +117,7 @@ if ($sshAgentFilePath | path exists) and ($"/proc/((open $sshAgentFilePath).SSH_
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
+
+# Less options
+# Discord: https://discord.com/channels/601130461678272522/601130461678272524/1178387079449808967
+$env.LESS = "-FRXS"
