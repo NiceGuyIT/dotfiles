@@ -82,12 +82,10 @@ mods = "Control"
 [shell]
 {{ if ne .chezmoi.os "windows" }}
 program = "/usr/local/bin/nu"
-{{ if eq .chezmoi.os "darwin" }}
 args = [
 	"--config", "{{ .chezmoi.homeDir }}/.config/nushell/config.nu",
 	"--env-config", "{{ .chezmoi.homeDir }}/.config/nushell/env.nu"
 ]
-{{ end }}
 {{ end }}
 
 [window.dimensions]
