@@ -80,15 +80,15 @@ key = "K"
 mods = "Control"
 
 [shell]
-{{ if ne .chezmoi.os "windows" }}
+{{ if ne .chezmoi.os "windows" -}}
 program = "/usr/local/bin/nu"
-{{ if eq .chezmoi.os "darwin" }}
+{{ if eq .chezmoi.os "darwin" -}}
 args = [
 	"--config", "{{ .chezmoi.homeDir }}/.config/nushell/config.nu",
 	"--env-config", "{{ .chezmoi.homeDir }}/.config/nushell/env.nu"
 ]
-{{ end }}
-{{ end }}
+{{- end }}
+{{- end }}
 
 [window.dimensions]
 # macOS Retina (2560x1600) display with 2 terminals wide and 2 terminals high.

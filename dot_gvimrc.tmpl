@@ -21,5 +21,4 @@ set columns=120
 set vb t_vb=
 
 " Include local configurations
-call SourceIfExists('~/.gvimrc-local')
-
+call SourceIfExists('{{ .chezmoi.homeDir }}/.gvimrc-local')
