@@ -112,6 +112,7 @@ export def lrs [...args: string]: nothing -> nothing {
 # dl will download a file from a URL
 export def dl [url: string]: nothing -> nothing {
 	mut filename: string = (($url | url parse).path | path basename)
+	# TODO: Check the Location header for a filename
     if not ($filename =~ '\.') {
         print $"Filename does not have an extension: ($filename). Using a generated filename"
     }

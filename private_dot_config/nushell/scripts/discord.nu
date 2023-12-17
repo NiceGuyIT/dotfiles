@@ -23,10 +23,25 @@ export def "discord install" [
 	} | url join
 	let tmp_dl = $nu.temp-path | path join "discord.tar.gz"
 
-	print $"Downloading ($url)..."
+	# FIXME: The general download didn't work on one computer.
+	# This version uses xh to get the Location header to download.
+	# The download can be verified with the following.
+	# open discord-0.0.38.tar.gz | hash md5 --binary | encode base64
+	# which matches header:
+	# x-goog-hash: md5=9SDtJ2xlngeoWOHx/xoFgA==
+	#let location = (
+	#	^xh --headers $"(url)"
+	#		| lines
+	#		| parse "{header}: {value}"
+	#		| where header == location
+	#		| get value.0
+	#)
+	#print $"Downloading ($location)"
+	#http get $location | save --force --progress $tmp_dl
+	print $"Downloading ($url)"
 	http get $url | save --force --progress $tmp_dl
 
-	print $"Extracting the archive to `($install_directory)`..."
+	print $"Extracting the archive to `($install_directory)`"
 	ouch decompress --accessible --yes --dir $install_directory $tmp_dl
 	rm $tmp_dl
 

@@ -3,6 +3,7 @@
 __MACOSX
 Thumbs.db
 
+# Firefox desktop entries are generated from profiles.ini
 local/share/applications/firefox*.desktop
 
 

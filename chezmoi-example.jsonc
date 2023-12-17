@@ -3,8 +3,12 @@
 	// The chezmoi source files are stored here
 	"sourceDir": "/home/USER/projects/dotfiles",
 	"data": {
-		"email": "Me@example.com",
-		"name": "Your Name",
-		"firefox_profile_name": "dev",
+		"git": {
+			"email": "Me@example.com",
+			"name": "Your Name",
+		},
+		"firefox": {
+			"profile_name": "dev",
+		}
 	}
 }

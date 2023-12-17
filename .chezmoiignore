@@ -1,9 +1,9 @@
 # https://www.chezmoi.io/user-guide/manage-machine-to-machine-differences/
-#{{ if ne .chezmoi.os "darwin" }}
+{{ if ne .chezmoi.os "darwin" }}
 Library/
 Library/Application Support/
 Library/Application Support/nushell/
-#{{ end }}
+{{ end }}
 
 .idea/
 .vscode/
