@@ -1,8 +1,15 @@
 # https://www.chezmoi.io/user-guide/manage-machine-to-machine-differences/
+
+# A symlink is created for Nushell on macOS.
 {{ if ne .chezmoi.os "darwin" }}
 Library/
 Library/Application Support/
 Library/Application Support/nushell/
+{{ end }}
+
+# Linux can create the Firefox profiles. macOS and Windows cannot.
+{{ if ne .chezmoi.os "linux" }}
+.local/share/applications/firefox*.desktop
 {{ end }}
 
 .idea/

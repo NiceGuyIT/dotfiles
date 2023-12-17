@@ -1,11 +1,25 @@
 #!/usr/bin/env nu
 
-# This script will create a desktop icon for every Firefox profile.
-# profiles.ini hash: {{ include (joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini") | sha256sum }}
+# This script will create a desktop icon for every Firefox profile on Linux.
+# {{ $profiles := joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini" }}
+# {{ if stat $profiles }}{{ include $profiles | sha256sum }}{{ end }}
 
 let desktop_file = "/usr/share/applications/firefox.desktop"
 let firefox_dir = "~/.mozilla/firefox"
 let firefox_bin = (which firefox)
+
+if ($desktop_file | is-empty) {
+	print $"Sample desktop file not found: ($desktop_file)"
+	exit 0
+}
+if ($firefox_dir | is-empty) {
+	print $"Firefox config directory not found: ($firefox_dir)"
+	exit 0
+}
+if ($firefox_bin | is-empty) {
+	print $"Firefox binary was not found in path: ($firefox_bin)"
+	exit 0
+}
 
 let profiles = ($firefox_dir | path join "profiles.ini")
 let profile_paths = (open $profiles
