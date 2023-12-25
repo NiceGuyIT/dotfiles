@@ -17,6 +17,7 @@ Library/Application Support/nushell/
 {{ if eq .chezmoi.username "root" }}
 .profile
 .bashrc
+.local/share/applications/*.desktop
 {{ end }}
 
 .idea/
