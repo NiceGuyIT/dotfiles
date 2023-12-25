@@ -18,6 +18,7 @@ Library/Application Support/nushell/
 .profile
 .bashrc
 .local/share/applications/*.desktop
+.local/share/applications/firefox-create-profiles*
 {{ end }}
 
 .idea/
