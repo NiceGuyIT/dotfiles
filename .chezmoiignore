@@ -8,9 +8,9 @@ Library/Application Support/nushell/
 {{ end }}
 
 # Linux can create the Firefox profiles. macOS and Windows cannot.
-# Don't add desktop entries for root.
-{{ if or (ne .chezmoi.os "linux") (eq .chezmoi.username "root") }}
+{{ if ne .chezmoi.os "linux" }}
 .local/share/applications/firefox*.desktop
+.local/share/applications/firefox-create-profiles.nu
 {{ end }}
 
 # Do not manage some certain files for root.
@@ -18,7 +18,7 @@ Library/Application Support/nushell/
 .profile
 .bashrc
 .local/share/applications/*.desktop
-.local/share/applications/firefox-create-profiles*
+.local/share/applications/firefox-create-profiles.nu
 {{ end }}
 
 .idea/
