@@ -22,6 +22,10 @@ if ($firefox_bin | is-empty) {
 }
 
 let profiles = ($firefox_dir | path join "profiles.ini")
+if ($profiles | is-empty) {
+	# NO profiles to process
+	exit
+}
 let profile_paths = (open $profiles
 	| transpose section value
 	| where section =~ "Profile"
