@@ -7,6 +7,7 @@
 let desktop_file = "/usr/share/applications/firefox.desktop"
 let firefox_dir = "~/.mozilla/firefox"
 let firefox_bin = (which firefox)
+let profiles = ($firefox_dir | path join "profiles.ini")
 
 if ($desktop_file | is-empty) {
 	print $"Sample desktop file not found: ($desktop_file)"
@@ -20,12 +21,11 @@ if ($firefox_bin | is-empty) {
 	print $"Firefox binary was not found in path: ($firefox_bin)"
 	exit 0
 }
-
-let profiles = ($firefox_dir | path join "profiles.ini")
 if ($profiles | is-empty) {
-	# NO profiles to process
+	print $"Firefox profiles was not found in config: ($profiles)"
 	exit
 }
+
 let profile_paths = (open $profiles
 	| transpose section value
 	| where section =~ "Profile"
