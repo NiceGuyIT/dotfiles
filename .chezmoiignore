@@ -9,7 +9,7 @@ Library/Application Support/nushell/
 
 # Linux can create the Firefox profiles. macOS and Windows cannot.
 # Don't add desktop entries for root.
-{{ if ne .chezmoi.os "linux" or eq .chezmoi.username "root" }}
+{{ if or (ne .chezmoi.os "linux") (eq .chezmoi.username "root") }}
 .local/share/applications/firefox*.desktop
 {{ end }}
 
