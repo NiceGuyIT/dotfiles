@@ -12,6 +12,12 @@ Library/Application Support/nushell/
 .local/share/applications/firefox*.desktop
 {{ end }}
 
+# Do not manage .profile or .bashrc for root
+{{ if eq .chezmoi.username "root" }}
+.profile
+.bashrc
+{{ end }}
+
 .idea/
 .vscode/
 bash-completion/
