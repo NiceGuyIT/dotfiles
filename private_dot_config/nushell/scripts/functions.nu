@@ -169,6 +169,11 @@ export def "mount keepassxc" []: nothing -> nothing {
 	mount gocryptfs --name 'niceguyit.biz-vault'
 }
 
+# TODO: Make this dynamic
+#let mountpoints = {
+#	"niceguyit.biz-vault-crypt": "niceguyit.biz-vault-plain",
+#}
+
 # Mount all gocryptfs encrypted directories
 export def "mount all" []: nothing -> nothing {
 	mount gocryptfs --name 'niceguyit.biz-docs'

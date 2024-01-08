@@ -42,10 +42,7 @@
 #
 #done
 
-#let mountpoints = {
-#	"niceguyit.biz-vault-crypt": "niceguyit.biz-vault-plain",
-#}
-
+# TODO: Check if this works for macOS.
 # Get the mountpoints as a table.
 export def "get mountpoints" []: nothing -> table {
 	^mount
