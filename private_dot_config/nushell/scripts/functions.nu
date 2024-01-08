@@ -176,9 +176,9 @@ export def "mount keepassxc" []: nothing -> nothing {
 
 # Mount all gocryptfs encrypted directories
 export def "mount all" []: nothing -> nothing {
+	use gocryptfs.nu *
 	mount gocryptfs --name 'niceguyit.biz-docs'
 	mount gocryptfs --name 'niceguyit.biz-imaging'
-	mount gocryptfs --name 'niceguyit.biz-imaging-processing'
 	mount gocryptfs --name 'niceguyit.biz-pics'
 	mount gocryptfs --name 'niceguyit.biz-vault'
 	mount gocryptfs --name 'niceguyit.biz-vids'

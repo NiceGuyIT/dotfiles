@@ -62,24 +62,26 @@ export def "mount gocryptfs" [
 	let crypt_dir = $crypt_dir | path expand
 	let mount_dir = $mount_dir | path expand
 
+	let $crypt_path = ($crypt_dir | path join ([$name, 'crypt'] | str join '-'))
+	let $mount_path = ($mount_dir | path join ([$name, 'plain'] | str join '-'))
+	print $"mount_path: ($mount_path)"
+	print $"crypt_path: ($crypt_path)"
+
 	# This prevents an error due to inode conflicts
 	# https://github.com/rfjakob/gocryptfs/blob/master/Documentation/MANPAGE.md#-sharedstorage
 	# More than likely this was caused by Syncthing and may be fixed in gocryptfs v2.0.
 	# https://github.com/rfjakob/gocryptfs/issues/549
 	let options = '-sharedstorage'
 
-	let $crypt_path = ($crypt_dir | path join ([$name, 'crypt'] | str join '-'))
-	let $mount_path = ($mount_dir | path join ([$name, 'plain'] | str join '-'))
-	print $"mount_path: ($mount_path)"
-	print $"crypt_path: ($crypt_path)"
-
 	# Create the mount point if it doesn't exist.
 	if not ($mount_path | path exists) {
+		print $"Creating directory: ($mount_path)"
 		mkdir $mount_path
 	}
 
 	if (get mountpoints | where mountpoint == $mount_path | is-empty) {
 		# Directory is not mounted. Mount it
+		print $"Running command: gocryptfs ($options) ($crypt_path) ($mount_path)"
 		^gocryptfs $options $crypt_path $mount_path
 	}
 }
