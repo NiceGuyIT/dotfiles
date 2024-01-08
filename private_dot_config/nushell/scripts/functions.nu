@@ -163,3 +163,22 @@ export def rdp4k [...args: string]: nothing -> nothing {
 		}
 	}
 }
+
+# Mount the keepassxc encrypted directory
+export def "mount keepassxc" []: nothing -> nothing {
+	mount gocryptfs --name 'niceguyit.biz-vault'
+}
+
+# Mount all gocryptfs encrypted directories
+export def "mount all" []: nothing -> nothing {
+	mount gocryptfs --name 'niceguyit.biz-docs'
+	mount gocryptfs --name 'niceguyit.biz-imaging'
+	mount gocryptfs --name 'niceguyit.biz-imaging-processing'
+	mount gocryptfs --name 'niceguyit.biz-pics'
+	mount gocryptfs --name 'niceguyit.biz-vault'
+	mount gocryptfs --name 'niceguyit.biz-vids'
+	mount gocryptfs --name 'niceguyit.biz-working'
+	mount gocryptfs --name 'pugtsurani.com-divorce'
+	mount gocryptfs --name 'pugtsurani.com-docs'
+	mount gocryptfs --name 'pugtsurani.com-imaging'
+}
