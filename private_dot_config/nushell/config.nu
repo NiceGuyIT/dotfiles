@@ -793,5 +793,8 @@ use starship.nu
 # Custom functions
 use functions.nu *
 
+# Gocryptfs - Encrypted directories
+use gocryptfs.nu *
+
 # Discord functions
 use discord.nu *

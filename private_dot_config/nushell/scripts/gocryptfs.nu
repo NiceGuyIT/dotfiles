@@ -54,7 +54,7 @@ export def "get mountpoints" []: nothing -> table {
 # Mount a gocryptfs encrypted directory, creating the mountpoint if necessary.
 #   mount gocryptfs my-files
 # will mount $"($crypt_dir)/my-files-crypt" to $"($mount_dir)/my-files-plain"
-export def "mount gocryptfs" [
+export def "mount-gocryptfs" [
 	--name: string,												# Directory to mount
 	--crypt-dir: string = "/srv/c1/app-data/syncthing/data",	# Encrypted directory to mount
 	--mount-dir: string = "~/gocryptfs",						# Mount directory
