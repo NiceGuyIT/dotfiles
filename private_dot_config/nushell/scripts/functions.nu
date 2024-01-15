@@ -18,6 +18,7 @@ export def l [...args: string]: nothing -> nothing {
 	}
 }
 
+
 # General "ls -la" command
 export def la [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
@@ -35,6 +36,7 @@ export def la [...args: string]: nothing -> nothing {
 	}
 }
 
+
 # "ls -la" command that shows the links
 export def ll [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
@@ -51,6 +53,7 @@ export def ll [...args: string]: nothing -> nothing {
 			table --width 999
 	}
 }
+
 
 # "ls -lat" command
 export def lt [...args: string]: nothing -> nothing {
@@ -71,6 +74,7 @@ export def lt [...args: string]: nothing -> nothing {
 	}
 }
 
+
 # "ls -lart" command
 export def lrt [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
@@ -89,6 +93,7 @@ export def lrt [...args: string]: nothing -> nothing {
 			table --width 999
 	}
 }
+
 
 # "ls -larS" command
 export def lrs [...args: string]: nothing -> nothing {
@@ -109,6 +114,19 @@ export def lrs [...args: string]: nothing -> nothing {
 	}
 }
 
+
+# ripgrep all files. Not the same as repgrep-all.
+export def rga []: nothing -> nothing {
+	^rg --hidden --no-ignore
+}
+
+
+# fd (find) all files.
+export def fda []: nothing -> nothing {
+	^fd --hidden --no-ignore
+}
+
+
 # dl will download a file from a URL
 export def dl [url: string]: nothing -> nothing {
 	mut filename: string = (($url | url parse).path | path basename)
@@ -119,11 +137,12 @@ export def dl [url: string]: nothing -> nothing {
 	if ($filename | is-empty) or (($filename | str length) == 0) or (not ($filename =~ '\.')) {
 		$filename = $"dl-(random uuid).bin"
 	}
-	http get $url | save $filename
+	http get $url | save --progress $filename
     let response = (http get --full $url)
     $response.headers
 	# https://discord.com/api/download?platform=linux&format=tar.gz
 }
+
 
 # "git commit --message 'my changes'" with syntactic sugar to pull changes first. This makes conflict resolution
 # easier by short circuiting if the pull fails.
@@ -135,6 +154,7 @@ export def git-commit [message: string]: nothing -> nothing {
 	print "---"
 	git push
 }
+
 
 # rdp4k will use xfreerdp or wlfreerdp to RDP to a client with an HD resolution.
 export def rdp [...args: string]: nothing -> nothing {
@@ -150,6 +170,7 @@ export def rdp [...args: string]: nothing -> nothing {
 	}
 }
 
+
 # rdp4k will use xfreerdp or wlfreerdp to RDP to a client with a resolution suitable for a 4k monitor.
 export def rdp4k [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
@@ -164,10 +185,20 @@ export def rdp4k [...args: string]: nothing -> nothing {
 	}
 }
 
-# Mount the keepassxc encrypted directory
-export def "mount-keepassxc" []: nothing -> nothing {
-	mount-gocryptfs --name 'niceguyit.biz-vault'
+
+# TODO: Check if this works for macOS.
+# Get the mountpoints as a table.
+export def "get-mountpoints" []: nothing -> table {
+	if (which mount | is-empty) {
+		print $"The 'mount' command is not found. Please install 'mount' and try again."
+        exit 1
+	}
+	^mount
+		| from ssv --minimum-spaces 1
+		| rename proc on_word mountpoint type_word options
+		| select proc mountpoint options
 }
+
 
 # TODO: Make this dynamic
 #let mountpoints = {
@@ -177,13 +208,28 @@ export def "mount-keepassxc" []: nothing -> nothing {
 # Mount all gocryptfs encrypted directories
 export def "mount-all" []: nothing -> nothing {
 	use gocryptfs.nu *
-	mount-gocryptfs --name 'niceguyit.biz-docs'
-	mount-gocryptfs --name 'niceguyit.biz-imaging'
-	mount-gocryptfs --name 'niceguyit.biz-pics'
-	mount-gocryptfs --name 'niceguyit.biz-vault'
-	mount-gocryptfs --name 'niceguyit.biz-vids'
-	mount-gocryptfs --name 'niceguyit.biz-working'
-	mount-gocryptfs --name 'pugtsurani.com-divorce'
-	mount-gocryptfs --name 'pugtsurani.com-docs'
-	mount-gocryptfs --name 'pugtsurani.com-imaging'
+	gocryptfs-mount --name 'niceguyit.biz-docs'
+	gocryptfs-mount --name 'niceguyit.biz-imaging'
+	gocryptfs-mount --name 'niceguyit.biz-pics'
+	gocryptfs-mount --name 'niceguyit.biz-vault'
+	gocryptfs-mount --name 'niceguyit.biz-vids'
+	gocryptfs-mount --name 'niceguyit.biz-working'
+	gocryptfs-mount --name 'pugtsurani.com-divorce'
+	gocryptfs-mount --name 'pugtsurani.com-docs'
+	gocryptfs-mount --name 'pugtsurani.com-imaging'
+}
+
+# Get certificate information for a domain or file.
+export def "cert-get" [cert: string]: nothing -> nothing {
+	if (which cfssl-certinfo | is-empty) {
+		print $"Could not find 'cfssl-certinfo' binary. Please install 'cfssl-certinfo' and try again."
+		exit 1
+	}
+	mut option = "-domain"
+	if ($cert | path exists) and (($cert | path type) == "file") {
+		$option = "-file"
+	}
+	^cfssl-certinfo [
+		$option $cert
+	] | from json | select subject sans not_after not_before issuer
 }

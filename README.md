@@ -12,16 +12,21 @@ Need more inspiration? Check out [Awesome dotfiles](), [dotfiles]() and the [dot
 
 ## Install
 
-This is meant to reside in `~/projects/dotfiles`. The installer makes symlinks to this repo so that updates are applied
-via `git pull`.
+[chezmoi]() manages this repository. Installation of single binary files, a.k.a. packages, is done by [get-packages]()
+in the [justfile]() repository. Follow the installation instructions in the justfile repo.
 
-```bash
-git clone https://github.com/NiceGuyIT/dotfiles
-cd dotfiles
-./install.sh
-```
 
-The vim plugins are not pulled automatically. They are submodules in `vim/pack/plugins/start/`.
+
+[chezmoi]: https://github.com/twpayne/chezmoi
+
+[get-packages]: https://github.com/NiceGuyIT/justfiles/tree/main/packages
+
+[justfile]: https://github.com/NiceGuyIT/justfiles/
+
+## TODO
+
+The vim plugins are not pulled automatically. They are submodules in `vim/pack/plugins/start/`. Need to add these
+to chezmoi.
 
 ## Useful utilities
 
@@ -82,18 +87,6 @@ set +o allexport
 
 ### Certs
 
-Check domain for certificate expiration.
-
-```bash
-cfssl-certinfo -domain github.com
-```
-
-Display only the important information with colors!
-
-```bash
-cfssl-certinfo -domain github.com | gojq '{subject: .subject, sans: .sans, expired: .not_after}'
-```
-
 Check a PEM certificate for expiration. The server cert is the first cert in the PEM file with the intermediary and root
 certs afterwards.
 
@@ -101,26 +94,4 @@ certs afterwards.
 sed -e '/^-----END CERTIFICATE-----$/q' /etc/letsencrypt/live/example.com/fullchain.pem | \
     cfssl-certinfo -cert - | \
     gojq '{subject: .subject, sans: .sans, expired: .not_after}'
-```
-
-### Searching through files
-
-Recursively search for `findme` in the current directory.
-```bash
-rg findme
-```
-
-Search all files, including hidden and \[git]ignored files.
-```bash
-rg --no-ignore --hidden findme
-```
-
-Don't search `node_modules`.
-```bash
-rg --glob \!node_modules findme
-```
-
-Search all files, including hidden and \[git]ignored files _except_ `node_modules` and `.git`.
-```bash
-rg --no-ignore --hidden --glob \!node_modules --glob \!.git findme
 ```

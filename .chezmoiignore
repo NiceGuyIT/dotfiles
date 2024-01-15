@@ -21,8 +21,14 @@ Library/Application Support/nushell/
 .local/share/applications/firefox-create-profiles.nu
 {{ end }}
 
+# justfile is used to install the chezmoi example config.
+justfile
+
+*.sops.json
+
 .idea/
 .vscode/
+atuin/
 bash-completion/
 bin/
 cargo/
