@@ -1,5 +1,9 @@
 #!/usr/bin/env nu
 
+# Mount gocryptfs
+# 2020-08-31: Added -sharedstorage option to prevent inode collisions
+# 2018-09-23: KeePass is no longer encrypted.
+
 # Get the mountpoints as a table.
 # Original is in functions.nu
 def "get-mountpoints" []: nothing -> table {
@@ -57,12 +61,17 @@ if (which gocryptfs | is-empty) {
 	exit 1
 }
 
-let age_key_file = ($"($env.HOME)/.config/sops/age/key.txt" | path expand)
+let age_key_file = ($"($env.HOME)/.config/sops/age/keys.txt" | path expand)
 let gocryptfs_sops_file = ($"($env.HOME)/.config/gocryptfs-config.sops.json" | path expand)
 
 # Decrypt the gocryptfs config and then use it to mount the gocryptfs directories.
 $env.SOPS_AGE_KEY_FILE = $age_key_file
 let cfg = (^sops --decrypt $gocryptfs_sops_file | from json)
+print $"$env.SOPS_AGE_KEY_FILE = ($env.SOPS_AGE_KEY_FILE)"
+print $"age_key_file: ($age_key_file)"
+print $"gocryptfs_sops_file: ($gocryptfs_sops_file)"
+$cfg
+
 $cfg.gocryptfs | each {|it|
 	let crypt_dir = ($cfg.defaults.crypt_dir | path join $"($it.name)-crypt" | path join $it.subdir)
 	let mount_dir = ($cfg.defaults.mount_dir | path join $"($it.name)-plain")

@@ -1,19 +1,20 @@
 # Enable statically compiled executables.
 # https://stackoverflow.com/questions/31770604/how-to-generate-statically-linked-executables
 #
-# This may need to be commented out.
+# Rather than comment this out, turn off static binaries and enable them only when necessary.
+# $env.RUSTFLAGS = "-C target-feature=-crt-static" cargo build --release --target=x86_64-unknown-linux-gnu
 # Issue: https://github.com/rust-lang/rust/issues/78210
 [target.x86_64-unknown-linux-gnu]
-rustflags = ["-C", "target-feature=+crt-static"]
+rustflags = ["-C", "target-feature=-crt-static"]
 
 [target.x86_64-unknown-linux-musl]
-rustflags = ["-C", "target-feature=+crt-static"]
+rustflags = ["-C", "target-feature=-crt-static"]
 
 [target.x86_64-unknown-linux-gnucargo]
-rustflags = ["-C", "target-feature=+crt-static"]
+rustflags = ["-C", "target-feature=-crt-static"]
 
 [target.x86_64-pc-windows-gnu]
-rustflags = ["-C", "target-feature=+crt-static"]
+rustflags = ["-C", "target-feature=-crt-static"]
 
 [target.aarch64-apple-darwin]
-rustflags = ["-C", "target-feature=+crt-static"]
+rustflags = ["-C", "target-feature=-crt-static"]

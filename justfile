@@ -9,7 +9,7 @@ set export
 
 # SOPS_AGE_KEY_FILE is used by SOPS and points to the AGE key file
 # age-genkey does not save the key. It needs to be explicitly saved in this location for SOPS to find it.
-export SOPS_AGE_KEY_FILE := clean('~/.config/sops/age/keys.txt')
+export SOPS_AGE_KEY_FILE := clean(join(env_var('HOME'), '.config/sops/age/keys.txt'))
 
 
 # default recipe to display help information
@@ -88,9 +88,12 @@ age-genkeys: (require-command "age-keygen")
 		print $"AGE key file '($env.SOPS_AGE_KEY_FILE)' exists."
 		exit
 	}
-	print $"SOPS_AGE_KEY_FILE: ($env.SOPS_AGE_KEY_FILE)"
-	let age_dir = ($env.SOPS_AGE_KEY_FILE | path baseename)
-	mkdir $age_dir
+	print $"$env.SOPS_AGE_KEY_FILE = ($env.SOPS_AGE_KEY_FILE)"
+	let age_dir = ($env.SOPS_AGE_KEY_FILE | path dirname)
+	if not ($age_dir | path exists) {
+		print $"Creating age_dir: '($age_dir)'"
+		mkdir $age_dir
+	}
 	^age-keygen --output $env.SOPS_AGE_KEY_FILE
 
 

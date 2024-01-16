@@ -200,25 +200,6 @@ export def "get-mountpoints" []: nothing -> table {
 }
 
 
-# TODO: Make this dynamic
-#let mountpoints = {
-#	"niceguyit.biz-vault-crypt": "niceguyit.biz-vault-plain",
-#}
-
-# Mount all gocryptfs encrypted directories
-export def "mount-all" []: nothing -> nothing {
-	use gocryptfs.nu *
-	gocryptfs-mount --name 'niceguyit.biz-docs'
-	gocryptfs-mount --name 'niceguyit.biz-imaging'
-	gocryptfs-mount --name 'niceguyit.biz-pics'
-	gocryptfs-mount --name 'niceguyit.biz-vault'
-	gocryptfs-mount --name 'niceguyit.biz-vids'
-	gocryptfs-mount --name 'niceguyit.biz-working'
-	gocryptfs-mount --name 'pugtsurani.com-divorce'
-	gocryptfs-mount --name 'pugtsurani.com-docs'
-	gocryptfs-mount --name 'pugtsurani.com-imaging'
-}
-
 # Get certificate information for a domain or file.
 export def "cert-get" [cert: string]: nothing -> nothing {
 	if (which cfssl-certinfo | is-empty) {
