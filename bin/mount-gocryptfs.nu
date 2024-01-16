@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-# Mount gocryptfs
+# Decrypt and mount a gocryptfs directory onto a plain directory.
 # 2020-08-31: Added -sharedstorage option to prevent inode collisions
 # 2018-09-23: KeePass is no longer encrypted.
 
@@ -62,7 +62,7 @@ if (which gocryptfs | is-empty) {
 }
 
 let age_key_file = ($"($env.HOME)/.config/sops/age/keys.txt" | path expand)
-let gocryptfs_sops_file = ($"($env.HOME)/.config/gocryptfs-config.sops.json" | path expand)
+let gocryptfs_sops_file = ($"($env.HOME)/.config/sops/gocryptfs-config.sops.json" | path expand)
 
 # Decrypt the gocryptfs config and then use it to mount the gocryptfs directories.
 $env.SOPS_AGE_KEY_FILE = $age_key_file
