@@ -45,7 +45,6 @@ vim-local.d/
 .gitignore
 .gitmodules
 bash-preexec.sh
-bashrc
 gitconfig
 gitignore_global
 gvimrc
@@ -55,7 +54,6 @@ install.sh
 LICENSE.md
 markdownlint.rc.yaml
 npmrc
-profile
 README.md
 ripgreprc
 vimrc
