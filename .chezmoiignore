@@ -24,7 +24,12 @@ Library/Application Support/nushell/
 # justfile is used to install the chezmoi example config.
 justfile
 
+# Don't manage encryption files
 *.sops.json
+
+# Don't manage bashrc and profile files. These are here for legacy reasons.
+bashrc
+profile
 
 .idea/
 .vscode/
@@ -58,5 +63,3 @@ README.md
 ripgreprc
 vimrc
 zshrc
-
-#!dot_bashrc
