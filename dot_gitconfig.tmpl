@@ -9,11 +9,26 @@ defaultBranch = main
 # Use this to suppress the git warning when the uid of the files are different than the uid of the user.
 #directory = /path/to/safe/repository
 
+[fetch]
+# Remove any remote-tracking references that no longer exist on the remote.
+# https://git-scm.com/docs/git-fetch#Documentation/git-fetch.txt---prune
+prune = true
+
 [push]
+# https://git-scm.com/docs/git-push#Documentation/git-push.txt-pushdefault
 default = simple
 
 [pull]
-rebase = false
+# Use rebase instead of merge when pulling code.
+# Going to see if this is helpful or not.
+# https://spin.atomicobject.com/git-configurations-default/
+rebase = true
+
+[rebase]
+# https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autosquash
+autoSquash = true
+# https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autostash
+autoStash = true
 
 [alias]
 tag-release = "!f() { tag=v${1:-$(cat VERSION)} ; git tag -s ${tag} -m ${tag} && git push origin ${tag}; }; f"
@@ -30,6 +45,8 @@ pager = less
 
 [diff]
 tool = vimdiff
+# https://git-scm.com/docs/git-diff#Documentation/git-diff.txt---color-movedltmodegt
+colorMoved = zebra
 
 [difftool]
 prompt = false
