@@ -145,9 +145,9 @@ format = '\[[$symbol($version)]($style)\]'
 # The fill module fills any extra space on the line with a symbol. If multiple fill modules are present in a line
 # they will split the space evenly between them. This is useful for aligning other modules.
 [fill]
-# Uncomment these lines to see the effect of this module.
-#symbol = '-'
-#style = 'bold green'
+# Fill with a blank space instead of the default of period.
+symbol = ' '
+style = ''
 
 [gcloud]
 format = '\[[$symbol$account(@$domain)(\($region\))]($style)\]'
