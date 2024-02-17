@@ -121,4 +121,6 @@ $env.PATH = ($env.PATH | split row (char esep) | append ($env.HOME | path join '
 
 # Less options
 # Discord: https://discord.com/channels/601130461678272522/601130461678272524/1178387079449808967
-$env.LESS = "-FRXS"
+# The -X flag prevents faux scrolling (a.k.a. scrolling with the mouse)
+# https://github.com/alacritty/alacritty/issues/2576#issuecomment-1375529269
+$env.LESS = "--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --search-skip-screen --ignore-case --LONG-PROMPT --jump-target=5"

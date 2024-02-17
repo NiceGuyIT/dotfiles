@@ -214,3 +214,37 @@ export def "cert-get" [cert: string]: nothing -> nothing {
 		$option $cert
 	] | from json | select subject sans not_after not_before issuer
 }
+
+# find_dir will traverse the directories up until it finds the "name"d directory.
+export def find_dir [name: string]: [nothing -> string, nothing -> nothing] {
+	mut $dir = $env.PWD
+	mut $parent_dir = ($dir | path dirname)
+	mut $count = 0
+	# Maximum number of iterations (directories) before exiting.
+	let max_count = 20
+
+	while ($parent_dir != $dir) {
+		if ($dir | path join $name | path exists) {
+			return ($dir | path join $name)
+		}
+		$dir = $parent_dir
+		$parent_dir = ($parent_dir | path dirname)
+		$count += 1
+		if ($count > $max_count) {
+			print $"Maximum number of iterations reached"
+			print $"count: ($count)"
+			print $"max_count: ($max_count)"
+			return null
+		}
+	}
+	if ($parent_dir == $dir) {
+		# Did not find the directory
+		return null
+	} else {
+		# This is an error condition and should not be reached.
+		print $"Did not find '($name)' directory in loop, and did not reach root of drive."
+		print $"dir: ($dir)"
+		print $"parent_dir: ($parent_dir)"
+		return null
+	}
+}
