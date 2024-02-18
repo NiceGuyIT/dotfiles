@@ -210,13 +210,13 @@ export def "cert-get" [cert: string]: nothing -> nothing {
 	if ($cert | path exists) and (($cert | path type) == "file") {
 		$option = "-file"
 	}
-	^cfssl-certinfo [
+	^cfssl-certinfo ...[
 		$option $cert
 	] | from json | select subject sans not_after not_before issuer
 }
 
 # find_dir will traverse the directories up until it finds the "name"d directory.
-export def find_dir [name: string]: [nothing -> string, nothing -> nothing] {
+export def find-dir-parent [name: string]: [nothing -> string, nothing -> nothing] {
 	mut $dir = $env.PWD
 	mut $parent_dir = ($dir | path dirname)
 	mut $count = 0
