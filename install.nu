@@ -28,7 +28,7 @@ def "install symlink" [
 	--directory: path		# Directory is the location of the symlink.
 	--target: string		# Target of the symlink. Can be file or directory.
 	--name: string			# (Optional) Name of the symlink.
-	--force: bool = false	# If true, forcefully install the symlink.
+	--force = false			# If true, forcefully install the symlink.
 ]: nothing -> nothing {
 	mut directory = $directory | path expand
 	# Expanding the target path prevents relative paths.
