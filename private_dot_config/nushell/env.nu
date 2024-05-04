@@ -105,20 +105,29 @@ $env.NU_PLUGIN_DIRS = [
 # Run manually: ssh-agent -a ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
 # In each terminal: $env.SSH_AUTH_SOCK = ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
 # TODO: Add ssh-agent as a service.
-let sshAgentFilePath = $"/tmp/ssh-agent-($env.USER).nuon"
-if ($sshAgentFilePath | path exists) and ($"/proc/((open $sshAgentFilePath).SSH_AGENT_PID)" | path exists) {
-	# loading it
-	load-env (open $sshAgentFilePath)
-} else {
-	# creating it
-	^ssh-agent -c
-		| lines
-		| first 2
-		| parse "setenv {name} {value};"
-		| transpose -r
-		| into record
-		| save --force $sshAgentFilePath
-	load-env (open $sshAgentFilePath)
+do --env {
+    let ssh_agent_file = (
+        $nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME?).nuon"
+    )
+
+    if ($ssh_agent_file | path exists) {
+        let ssh_agent_env = open ($ssh_agent_file)
+        if ($"/proc/($ssh_agent_env.SSH_AGENT_PID)" | path exists) {
+            load-env $ssh_agent_env
+            return
+        } else {
+            rm $ssh_agent_file
+        }
+    }
+
+    let ssh_agent_env = ^ssh-agent -c
+        | lines
+        | first 2
+        | parse "setenv {name} {value};"
+        | transpose --header-row
+        | into record
+    load-env $ssh_agent_env
+    $ssh_agent_env | save --force $ssh_agent_file
 }
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
