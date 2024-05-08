@@ -27,7 +27,7 @@ echo "Publishing version ${version}"
 
 git pull
 git add --update
-git commit --message "${message}"
+git commit --signoff --message "${message}"
 git checkout main
 git merge develop
 git tag --annotate --message "Release ${version}" "${version}"
