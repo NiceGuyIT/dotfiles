@@ -74,6 +74,10 @@ const STARSHIP_CACHE = ("~/.cache/starship" | path expand)
 $env.NU_LIB_DIRS = [
 	# FIXME: This default is not implemented in rust code as of 2023-09-06.
 	($nu.default-config-dir | path join 'scripts') # add <nushell-config-dir>/scripts
+
+	# Modules
+	($nu.default-config-dir | path join 'modules')
+
 	# Add $STARSHIP_CACHE directory to search for 'use' scripts
 	$STARSHIP_CACHE
 ]
@@ -82,6 +86,8 @@ $env.NU_LIB_DIRS = [
 if not (which starship | is-empty) {
 	# Starship is installed
 	mkdir $STARSHIP_CACHE
+	# FIXME: Nu does not have the concept of umask. Need to set the permissions explicitly
+	chmod g-w,o-rwx $STARSHIP_CACHE
 	if (($STARSHIP_CACHE | path join "starship.nu") | is-empty) {
 		# Create new config only if it doesn't exist.
 		starship init nu | save ($STARSHIP_CACHE | path join "starship.nu")

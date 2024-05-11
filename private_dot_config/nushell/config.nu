@@ -791,12 +791,6 @@ $env.config = {
 # The location is defined in env.nu
 use starship.nu
 
-# Useful Docker functions
-# https://github.com/nushell/nu_scripts/blob/main/modules/docker/docker.nu
-# Note: This contains a 'dl' alias which conflicts with the 'dl' alias in functions.nu.
-# TODO: `use` dos not persist outside the if statement.
-use ('~/projects/github/nu_scripts/modules/docker/docker.nu' | path expand) *
-
 # Location is defined by $env.NU_LIB_DIRS in env.nu
 # Custom functions
 # Note: This is after docker.nu to override their 'dl' alias.
@@ -805,3 +799,11 @@ use functions.nu *
 # Discord functions
 use discord.nu *
 
+# Useful Docker functions
+# https://github.com/nushell/nu_scripts/blob/main/modules/docker/mod.nu
+# The Nu module is copied to alleviate the need to clone the git repo.
+# Note: This contains a 'dl' alias which conflicts with the 'dl' alias in functions.nu.
+use docker/
+
+# Package module to download binaries
+use package/
