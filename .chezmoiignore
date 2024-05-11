@@ -44,7 +44,6 @@ key-bindings/
 local/
 src/
 vim/
-vim.d/
 vim-local.d/
 .chezmoiignore
 .gitignore
