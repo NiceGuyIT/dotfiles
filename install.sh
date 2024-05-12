@@ -198,10 +198,11 @@ if ! infocmp alacritty >/dev/null 2>&1; then
 	if type -P tic >/dev/null 2>&1; then
 		# It seems infocmp does not list $HOME/.terminfo as a known directory when run as root
 		# If tic can't write to /usr/share/terminfo, it will default to $HOME/.terminfo
-		tic -s -x -e alacritty,alacritty-direct ~/projects/dotfiles/local/share/alacritty/alacritty.info
+		tic -s -x -e alacritty,alacritty-direct ~/projects/dotfiles/private_dot_local/share/alacritty/alacritty.info
 		# umask might make the file unreadable for regular users (o-r)
 		[[ -f "/usr/share/terminfo/a/alacritty" ]] && chmod go+r /usr/share/terminfo/a/alacritty*
 	else
+		# TODO: zypper install ncurses-devel
 		echo "tic is not installed. Please install ncurses-devel and run install.sh again."
 	fi
 fi

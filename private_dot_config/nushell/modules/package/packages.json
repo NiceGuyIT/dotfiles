@@ -143,7 +143,7 @@
 	{
 		"repo": "nushell/nushell",
 		"description": "A new type of shell",
-		"filter": "musl-full"
+		"filter": "musl"
 	},
 	{
 		"repo": "ouch-org/ouch",
