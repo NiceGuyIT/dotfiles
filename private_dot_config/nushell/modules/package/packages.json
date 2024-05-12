@@ -155,6 +155,10 @@
 		"description": "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
 	},
 	{
+		"repo": "pion/stun",
+		"description": "Pion STUN: A Go implementation of STUN"
+	},
+	{
 		"repo": "pkolaczk/fclones",
 		"description": "Efficient duplicate file finder and remover"
 	},
@@ -188,7 +192,8 @@
 	},
 	{
 		"repo": "starship/starship",
-		"description": "The minimal, blazing-fast, and infinitely customizable prompt for any shell!"
+		"description": "The minimal, blazing-fast, and infinitely customizable prompt for any shell!",
+		"filter": "musl"
 	},
 	{
 		"repo": "tomwright/dasel",

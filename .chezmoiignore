@@ -15,8 +15,6 @@ Library/Application Support/nushell/
 
 # Do not manage some certain files for root.
 {{ if eq .chezmoi.username "root" }}
-.profile
-.bashrc
 .local/share/applications/*.desktop
 .local/share/applications/firefox-create-profiles.nu
 {{ end }}
