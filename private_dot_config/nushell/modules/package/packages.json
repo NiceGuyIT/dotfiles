@@ -12,6 +12,10 @@
 		"description": "A customizable cross-platform graphical process/system monitor for the terminal. Inspired by gtop, gotop, and htop."
 	},
 	{
+		"repo": "Dj-Codeman/doge",
+		"description": "doge is a command-line DNS client, like dig forked from the amazing work done here."
+	},
+	{
 		"repo": "FiloSottile/age",
 		"description": "A simple, modern and secure encryption tool (and Go library) with small explicit keys, no config options, and UNIX-style composability"
 	},
@@ -55,6 +59,10 @@
 	{
 		"repo": "containrrr/watchtower",
 		"description": "A process for automating Docker container base image updates"
+	},
+	{
+		"repo": "dandyvica/dqy",
+		"description": "A DNS query tool inspired by dig, drill and dog."
 	},
 	{
 		"repo": "denoland/deno",
