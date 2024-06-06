@@ -191,12 +191,16 @@
 		"description": "The CLI text viewer tool that works like less command on small pane within the terminal window"
 	},
 	{
+		"repo": "sclevine/yj",
+		"description": "CLI - Convert between YAML, TOML, JSON, and HCL. Preserves map order"
+	},
+	{
 		"repo": "sharkdp/fd",
 		"description": "A simple, fast and user-friendly alternative to 'find'"
 	},
 	{
-		"repo": "sclevine/yj",
-		"description": "CLI - Convert between YAML, TOML, JSON, and HCL. Preserves map order"
+		"repo": "slackhq/nebula",
+		"description": "A scalable overlay networking tool with a focus on performance, simplicity and security "
 	},
 	{
 		"repo": "starship/starship",
