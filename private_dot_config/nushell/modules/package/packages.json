@@ -9,7 +9,8 @@
 	},
 	{
 		"repo": "ClementTsang/bottom",
-		"description": "A customizable cross-platform graphical process/system monitor for the terminal. Inspired by gtop, gotop, and htop."
+		"description": "A customizable cross-platform graphical process/system monitor for the terminal. Inspired by gtop, gotop, and htop.",
+		"filter": "musl"
 	},
 	{
 		"repo": "Dj-Codeman/doge",
