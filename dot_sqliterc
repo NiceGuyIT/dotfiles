@@ -1,2 +1,3 @@
+# https://sqlite.org/cli.html#special_commands_to_sqlite3_dot_commands_
 .headers ON
 .mode columns
