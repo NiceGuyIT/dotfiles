@@ -13,4 +13,4 @@ let method = 'org.kde.PlasmaShell.evaluateScript'
 let script = (open dump-widget-config.js)
 
 # qdbus6 org.kde.plasmashell /PlasmaShell org.kde.PlasmaShell.evaluateScript $script
-qdbus6 $servicename $path $method $script | from json
+qdbus6 $servicename $path $method $script
