@@ -6,6 +6,8 @@ Thumbs.db
 # Firefox desktop entries are generated from profiles.ini
 local/share/applications/firefox*.desktop
 
+# Ignore JSON data files generated from scripts.
+scripts/*.json
 
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode
