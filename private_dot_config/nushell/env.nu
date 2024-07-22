@@ -139,3 +139,6 @@ $env.PATH = ($env.PATH | split row (char esep) | append ($env.HOME | path join '
 # The -X flag prevents faux scrolling (a.k.a. scrolling with the mouse)
 # https://github.com/alacritty/alacritty/issues/2576#issuecomment-1375529269
 $env.LESS = "--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --search-skip-screen --ignore-case --LONG-PROMPT --jump-target=5"
+
+# Use ripgrep config
+$env.RIPGREP_CONFIG_PATH = $"($env.HOME)/.ripgreprc"

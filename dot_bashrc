@@ -510,7 +510,8 @@ then
 	# @see https://d.niceguyit.biz/en/internal/troubleshooting
 	# 2018-01-01 - Add group write and other read permissions for Apache for WordPress-Network
 	# 2022-01-13 - This was causing issues with zypper on openSUSE Leap 15.3. Disabled it.
-	umask g-w,o-rwx
+	# 2024-07-21 - chezmoi does not handle group permissions. private_ removes group and world.
+	umask g-rwx,o-rwx
 	# Disabling for now to prevent conflict with the above.
 	# Unix on Windows doesn't set correct umask
 	# @see https://github.com/Microsoft/BashOnWindows/issues/352

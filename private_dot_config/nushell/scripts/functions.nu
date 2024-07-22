@@ -2,115 +2,108 @@
 # https://www.nushell.sh/book/aliases.html#persisting
 
 # General "ls -l" command
-export def l [...args: string]: nothing -> nothing {
+export def l [...args: glob]: nothing -> nothing {
+	# When $args is empty, "ls ...$args" returns nothing
 	if ($args | is-empty) {
-		ls --long --short-names |
-			select name user group mode size modified |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --long --short-names
+			| select name user group mode size modified
+			| update name {path basename}
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --long --short-names $it
-		} | flatten |
-			select name user group mode size modified |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --long --short-names ...$args
+			| select name user group mode size modified
+			| update name {path basename}
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
 
 # General "ls -la" command
-export def la [...args: string]: nothing -> nothing {
+export def la [...args: glob]: nothing -> nothing {
 	if ($args | is-empty) {
-		ls --all --long --short-names |
-			select name user group mode size modified |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names
+			| select name user group mode size modified
+			| update name {path basename}
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --all --long --short-names $it
-		} | flatten |
-			select name user group mode size modified |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names ...$args
+			| select name user group mode size modified
+			| update name {path basename}
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
 
 # "ls -la" command that shows the links
-export def ll [...args: string]: nothing -> nothing {
+export def ll [...args: glob]: nothing -> nothing {
 	if ($args | is-empty) {
-		ls --all --long --short-names |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --all --long --short-names $it
-		} | flatten |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names ...$args
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
 
 # "ls -lat" command
-export def lt [...args: string]: nothing -> nothing {
+export def lt [...args: glob]: nothing -> nothing {
 	if ($args | is-empty) {
-		ls --all --long --short-names |
-			sort-by modified |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names
+			| sort-by modified
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --all --long --short-names $it
-		} | flatten |
-			sort-by modified |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names ...$args
+			| sort-by modified
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
 
 # "ls -lart" command
-export def lrt [...args: string]: nothing -> nothing {
+export def lrt [...args: glob]: nothing -> nothing {
 	if ($args | is-empty) {
-		ls --all --long --short-names |
-			sort-by --reverse modified |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names
+			| sort-by --reverse modified
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --all --long --short-names $it
-		} | flatten |
-			sort-by --reverse modified |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names ...$args
+			| sort-by --reverse modified
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
 
 # "ls -larS" command
-export def lrs [...args: string]: nothing -> nothing {
+export def lrs [...args: glob]: nothing -> nothing {
 	if ($args | is-empty) {
-		ls --all --long --short-names |
-			sort-by size |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names
+			| sort-by size
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	} else {
-		$args | each {|it|
-			ls --all --long --short-names $it
-		} | flatten |
-			sort-by size |
-			select name user group mode size modified target |
-			update modified {format date "%Y-%m-%d %H:%M:%S"} |
-			table --width 999
+		ls --all --long --short-names ...$args
+			| sort-by size
+			| select name user group mode size modified target
+			| update modified {format date "%Y-%m-%d %H:%M:%S"}
+			| table --width 999
 	}
 }
 
@@ -128,19 +121,31 @@ export def fda []: nothing -> nothing {
 
 
 # dl will download a file from a URL
-export def dl [url: string]: nothing -> nothing {
-	mut filename: string = (($url | url parse).path | path basename)
-	# TODO: Check the Location header for a filename
-    if not ($filename =~ '\.') {
-        print $"Filename does not have an extension: ($filename). Using a generated filename"
-    }
-	if ($filename | is-empty) or (($filename | str length) == 0) or (not ($filename =~ '\.')) {
-		$filename = $"dl-(random uuid).bin"
+export def dl [url: string, --force (-f)]: nothing -> table<name: string, value: string> {
+	use std log
+	let response_headers = (http head $url)
+	let content_disposition = ($response_headers | where name =~ 'content-disposition' | get value | parse --regex '.*filename=(?<filename>[^ ]+)')
+	mut filename = ""
+	if not ($content_disposition | is-empty) {
+		# Content-Disposition header might have the filename.
+		$filename = ($content_disposition | get filename.0)
+	} else {
+		if ($url | str ends-with '/') {
+			log warning $"URL ends with a path and the HTTP headers do not have a filename. Using a generated filename"
+			$filename = $"dl-(random uuid).bin"
+		} else {
+			$filename = (($url | url parse).path | path basename)
+		}
 	}
-	http get $url | save --progress $filename
-    let response = (http get --full $url)
-    $response.headers
-	# https://discord.com/api/download?platform=linux&format=tar.gz
+	# "http get" streams the response while "http get --full" buffers the request. Separating the response headers
+	# from the body is not possible.
+	# https://discordapp.com/channels/601130461678272522/601130461678272524/1209936591267569675
+	if $force {
+		http get $url | save --progress --force $filename
+	} else {
+		http get $url | save --progress $filename
+	}
+	$response_headers
 }
 
 
@@ -162,10 +167,10 @@ export def rdp [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
-		} else if not (which wlfreerdp | is-empty) {
+		if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+		} else if not (which xfreerdp | is-empty) {
+			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		}
 	}
 }
@@ -177,10 +182,10 @@ export def rdp4k [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
-		} else if not (which wlfreerdp | is-empty) {
+		if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+		} else if not (which xfreerdp | is-empty) {
+			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		}
 	}
 }
