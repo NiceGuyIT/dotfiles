@@ -1,0 +1,88 @@
+{
+  "cSpell.maxNumberOfProblems": 250,
+  "cSpell.minWordLength": 3,
+  "cSpell.enableFiletypes": ["nushell"],
+  "cSpell.userWords": [
+    "coloredlogs",
+    "Deno",
+    "dotenv",
+    "env",
+    "fitz",
+    "gcloud",
+    "gradio",
+    "Hetzner",
+    "HUGGINGFACE",
+    "INTERVENTIONAL",
+    "MSP",
+    "nctid",
+    "num",
+    "pydantic"
+  ],
+  "codeium.enableConfig": {
+    "*": true,
+    "nushell": true
+  },
+  "diffEditor.maxComputationTime": 0,
+  "editor.detectIndentation": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.indentSize": "tabSize",
+  "editor.insertSpaces": false,
+  "editor.rulers": [120],
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "onFocusChange",
+  "files.trimTrailingWhitespace": true,
+  "files.watcherExclude": {
+    "/ctg-data/**": true
+  },
+  "githubPullRequests.pullBranch": "never",
+  "prettier.printWidth": 120,
+  "prettier.proseWrap": "always",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "redhat.telemetry.enabled": false,
+  "yaml.format.enable": true,
+  "remote.autoForwardPortsSource": "hybrid",
+  "tabnine.experimentalAutoImports": true,
+  "update.showReleaseNotes": false,
+  "workbench.startupEditor": "none",
+  "[github-actions-workflow]": {
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": false
+  },
+  "[dockercompose]": {
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": false
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [
+      "*.github/workflows/*.yaml",
+      "*.github/workflows/*.yml"
+    ],
+    "https://json.schemastore.org/github-action.json": ["action.yaml", "action.yml"]
+  },
+  "[yaml]": {
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": false
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  },
+  "workbench.editor.enablePreview": false
+}
