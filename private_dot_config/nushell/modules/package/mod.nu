@@ -314,7 +314,7 @@ export def search [
 	name: string		# Binary to search for
 ]: nothing -> nothing {
 	if not ("NU_LOG_LEVEL" in $env) {
-		$env.NU_LOG_LEVEL = DEBUG
+		$env.NU_LOG_LEVEL = "DEBUG"
 	}
 
 	log info $"Searching for '($name)'"
@@ -401,7 +401,7 @@ export def install [
 	--filter (-f): string	# Filter the results if a single release can't be determined
 ]: nothing -> any {
 	if not ("NU_LOG_LEVEL" in $env) {
-		$env.NU_LOG_LEVEL = DEBUG
+		$env.NU_LOG_LEVEL = "DEBUG"
 	}
 
 	# TODO: $env.CURRENT_FILE and $env.FILE_PWD do not work in modules. Need to traverse $env.NU_LIB_DIRS
