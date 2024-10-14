@@ -1,9 +1,3 @@
 {
-	"cSpell.words": [
-		"cryptsetup",
-		"env",
-		"gocryptfs",
-		"luks",
-		"Nushell"
-	]
+  "cSpell.words": ["chezmoi", "cryptsetup", "env", "gocryptfs", "luks", "Nushell"]
 }

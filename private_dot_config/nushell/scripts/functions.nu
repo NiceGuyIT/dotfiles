@@ -120,6 +120,33 @@ export def fda []: nothing -> nothing {
 }
 
 
+# Get the hash of one or more files.
+export def get-hash [...args: glob]: nothing -> table<file: string, hash: string> {
+	use std log
+	if ($args | is-empty) {
+		use std log
+		log error "No files specified"
+		return 1
+	}
+	[...$args] | each {|it|
+		log info $"Glob: ($it)"
+		glob ($it | into string)
+	} | flatten | each {|it|
+		{
+			file: ($it | path basename),
+			hash: (open --raw $it | hash sha256)
+		}
+	} | sort-by hash
+}
+
+
+# Use a private instance of Chezmoi
+export def chezmoi-private []: nothing -> nothing {
+	let config = ($env.HOME | path join ".config/chezmoi-private/chezmoi.jsonc")
+	^chezmoi --config $config
+}
+
+
 # dl will download a file from a URL
 export def dl [url: string, --force (-f)]: nothing -> table<name: string, value: string> {
 	use std log
