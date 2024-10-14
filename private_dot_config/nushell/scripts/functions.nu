@@ -141,9 +141,9 @@ export def get-hash [...args: glob]: nothing -> table<file: string, hash: string
 
 
 # Use a private instance of Chezmoi
-export def chezmoi-private []: nothing -> nothing {
+export def chezmoi-private [...args: string]: nothing -> nothing {
 	let config = ($env.HOME | path join ".config/chezmoi-private/chezmoi.jsonc")
-	^chezmoi --config $config
+	^chezmoi --config $config ...$args
 }
 
 
