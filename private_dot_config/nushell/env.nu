@@ -148,9 +148,10 @@ do --env {
 # $env.PATH = ($env.PATH | split row (char esep) | prepend '/some/path')
 
 # An alternate way to add entries to $env.PATH is to use the custom command `path add`
-# which is built into the nushell stdlib:use std "path add"
+# which is built into the nushell stdlib:
+use std "path add"
 $env.PATH = ($env.PATH | split row (char esep))
-path add ($env.CARGO_HOME | path join "bin")
+# path add ($env.CARGO_HOME | path join "bin")
 path add ($env.HOME | path join ".local" "bin")
 path add ($env.HOME | path join "projects" "dotfiles" "bin")
 path add "/usr/local/bin"
