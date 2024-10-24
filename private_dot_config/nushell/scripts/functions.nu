@@ -206,16 +206,16 @@ export def git-version [
 	let cur_version = (^git describe --tags --abbrev=0)
 	if $env.LAST_EXIT_CODE == 0 {
 		# Repo already has a tagged version. Use it.
-		version = ($cur_version | str replace --regex '^v' '')
+		$version = ($cur_version | str replace --regex '^v' '')
 	}
 
 	# Increment the version to publish
 	if $major {
-		version = ($version | inc --major)
+		$version = ($version | inc --major)
 	} else if $minor {
-		version = ($version | inc --minor)
+		$version = ($version | inc --minor)
 	} else {
-		version = ($version | inc --patch)
+		$version = ($version | inc --patch)
 	}
 
 	log info $"Publishing version ($version)"
