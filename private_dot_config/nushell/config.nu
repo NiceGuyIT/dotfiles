@@ -944,6 +944,14 @@ $env.config = {
 
 }
 
+# Do not shadow /usr/bin/open on macOS.
+alias nu-open = open
+alias open = ^open
+
+# Do not shadow /usr/bin/uname on Linux.
+alias nu-uname = uname
+alias uname = ^uname
+
 # Starship
 # The location is defined in env.nu
 use starship.nu

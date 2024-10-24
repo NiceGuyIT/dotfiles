@@ -188,6 +188,57 @@ export def git-commit [message: string]: nothing -> nothing {
 }
 
 
+# Push a new version
+export def git-version [
+	message: string,
+	version: string = "0.0.0"
+	--major (-M) = false
+	--minor (-m) = false
+	--patch (-p) = false
+]: nothing -> nothing {
+	use std log
+
+	if (which inc | is-empty) {
+		log error "inc plugin is not installed"
+		return
+	}
+
+	let cur_version = (^git describe --tags --abbrev=0)
+	if $env.LAST_EXIT_CODE == 0 {
+		# Repo already has a tagged version. Use it.
+		version = ($cur_version | str replace --regex '^v' '')
+	}
+
+	# Increment the version to publish
+	if $major {
+		version = ($version | inc --major)
+	} else if $minor {
+		version = ($version | inc --minor)
+	} else {
+		version = ($version | inc --patch)
+	}
+
+	log info $"Publishing version ($version)"
+
+	git pull
+	git add --update
+	git commit --signoff --message $message
+	git checkout main
+	# FIXME: Determine the branch dynamically.
+	git merge develop
+	git tag --annotate --message $"Release ($version)" $version
+	git push origin $version
+	git push
+}
+
+
+# Backup the specified directory to the current directory or optional backup directory.
+export def backup [dir: string]: nothing -> nothing {
+	#^tar --create --use-compress-program zstd --file $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zstd" $dir
+	ouch compress --format zst $dir $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zsd"
+}
+
+
 # rdp4k will use xfreerdp or wlfreerdp to RDP to a client with an HD resolution.
 export def rdp [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
