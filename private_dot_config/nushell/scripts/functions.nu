@@ -203,22 +203,23 @@ export def git-version [
 		return
 	}
 
+	mut new_version = $version
 	let cur_version = (^git describe --tags --abbrev=0)
 	if $env.LAST_EXIT_CODE == 0 {
 		# Repo already has a tagged version. Use it.
-		$version = ($cur_version | str replace --regex '^v' '')
+		$new_version = ($cur_version | str replace --regex '^v' '')
 	}
 
 	# Increment the version to publish
 	if $major {
-		$version = ($version | inc --major)
+		$new_version = ($new_version | inc --major)
 	} else if $minor {
-		$version = ($version | inc --minor)
+		$new_version = ($new_version | inc --minor)
 	} else {
-		$version = ($version | inc --patch)
+		$new_version = ($new_version | inc --patch)
 	}
 
-	log info $"Publishing version ($version)"
+	log info $"Publishing version ($new_version)"
 
 	git pull
 	git add --update
@@ -226,8 +227,8 @@ export def git-version [
 	git checkout main
 	# FIXME: Determine the branch dynamically.
 	git merge develop
-	git tag --annotate --message $"Release ($version)" $version
-	git push origin $version
+	git tag --annotate --message $"Release ($new_version)" $new_version
+	git push origin $new_version
 	git push
 }
 
