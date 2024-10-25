@@ -1,0 +1,110 @@
+{
+  "cSpell.maxNumberOfProblems": 250,
+  "cSpell.minWordLength": 3,
+  "cSpell.enableFiletypes": ["nushell"],
+  "cSpell.userWords": [
+    "coloredlogs",
+    "datetime",
+    "Deno",
+    "dotenv",
+    "env",
+    "fitz",
+    "gcloud",
+    "gradio",
+    "HUGGINGFACE",
+    "INTERVENTIONAL",
+    "nctid",
+    "pdftotext",
+    "pydantic"
+  ],
+  "codeium.enableConfig": {
+    "*": true,
+    "nushell": true
+  },
+  "diffEditor.maxComputationTime": 0,
+  "editor.detectIndentation": false,
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": true,
+  "editor.indentSize": "tabSize",
+  "editor.insertSpaces": false,
+  "editor.rulers": [120],
+  "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+"files.autoSave": "onFocusChange",
+  "files.watcherExclude": {
+    "/ctg-data/**": true
+  },
+  "githubPullRequests.pullBranch": "never",
+  "prettier.printWidth": 120,
+  "prettier.proseWrap": "always",
+  "powershell.powerShellAdditionalExePaths": {
+    "pwsh": "/home/drandall/local/powershell/pwsh"
+  },
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.typeCheckingMode": "basic",
+  "redhat.telemetry.enabled": false,
+  "yaml.format.enable": true,
+  "remote.autoForwardPortsSource": "hybrid",
+  "tabnine.experimentalAutoImports": true,
+  "update.showReleaseNotes": false,
+  "workbench.startupEditor": "none",
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.list.openMode": "doubleClick",
+  "workbench.enableExperiments": false,
+  "workbench.editor.enablePreview": false,
+  "diffEditor.ignoreTrimWhitespace": true,
+	"workbench.editor.revealIfOpen": true,
+	"yaml.format.enable": true,
+  "[dockercompose]": {
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": false
+  },
+  "[github-actions-workflow]": {
+    // Even though the redhat.vscode-yaml formatter is installed, auto-formatting does not work. The workaround
+    // is to change the language at the bottom right from "GitHub Actions Workflow" to "YAML", format the file,
+    // and then change the language back.
+    // https://github.com/github/vscode-github-actions/issues/195
+    // https://stackoverflow.com/questions/76819800/there-is-no-formatter-for-github-actions-workflow-files-installed
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+		"editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true
+  },
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": [
+      "*.github/workflows/*.yaml",
+      "*.github/workflows/*.yml",
+      "file:///workspaces/llm-eval/.github/workflows/build.yml"
+    ],
+    "https://json.schemastore.org/github-action.json": ["action.yaml", "action.yml"]
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  },
+  "[jsonc]": {
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+	"[yaml]": {
+		"editor.autoIndent": "full",
+		"editor.defaultFormatter": "redhat.vscode-yaml",
+		"editor.formatOnPaste": true,
+		"editor.formatOnSave": true,
+		"editor.formatOnType": true,
+		"editor.insertSpaces": true,
+		"editor.tabSize": 2
+	}
+}
