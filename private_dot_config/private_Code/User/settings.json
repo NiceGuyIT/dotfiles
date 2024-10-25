@@ -1,27 +1,26 @@
 {
-  "cSpell.maxNumberOfProblems": 250,
-  "cSpell.minWordLength": 3,
-  "cSpell.enableFiletypes": ["nushell"],
-  "cSpell.userWords": [
-    "coloredlogs",
-    "datetime",
-    "Deno",
-    "dotenv",
-    "env",
-    "fitz",
-    "gcloud",
-    "gradio",
-    "HUGGINGFACE",
-    "INTERVENTIONAL",
-    "nctid",
-    "pdftotext",
-    "pydantic"
-  ],
   "codeium.enableConfig": {
     "*": true,
     "nushell": true
   },
+  "cSpell.enableFiletypes": ["nushell"],
+  "cSpell.maxNumberOfProblems": 250,
+  "cSpell.minWordLength": 3,
+  "cSpell.userWords": [
+    "codeium",
+    "coloredlogs",
+    "datetime",
+    "Deno",
+    "dockercompose",
+    "dotenv",
+    "env",
+    "esbenp",
+    "HUGGINGFACE",
+    "nushell"
+  ],
+  "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.maxComputationTime": 0,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.detectIndentation": false,
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
@@ -31,32 +30,29 @@
   "editor.rulers": [120],
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 120,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-"files.autoSave": "onFocusChange",
+  "files.autoSave": "onFocusChange",
   "files.watcherExclude": {
     "/ctg-data/**": true
   },
   "githubPullRequests.pullBranch": "never",
   "prettier.printWidth": 120,
   "prettier.proseWrap": "always",
-  "powershell.powerShellAdditionalExePaths": {
-    "pwsh": "/home/drandall/local/powershell/pwsh"
-  },
   "python.analysis.autoImportCompletions": true,
   "python.analysis.typeCheckingMode": "basic",
   "redhat.telemetry.enabled": false,
-  "yaml.format.enable": true,
   "remote.autoForwardPortsSource": "hybrid",
-  "tabnine.experimentalAutoImports": true,
   "update.showReleaseNotes": false,
-  "workbench.startupEditor": "none",
   "workbench.editor.closeOnFileDelete": true,
-  "workbench.list.openMode": "doubleClick",
-  "workbench.enableExperiments": false,
   "workbench.editor.enablePreview": false,
-  "diffEditor.ignoreTrimWhitespace": true,
-	"workbench.editor.revealIfOpen": true,
-	"yaml.format.enable": true,
+  "workbench.editor.revealIfOpen": true,
+  "workbench.enableExperiments": false,
+  "workbench.list.openMode": "doubleClick",
+  "workbench.startupEditor": "none",
+  "yaml.format.enable": true,
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ["*.github/workflows/*.yaml", "*.github/workflows/*.yml"],
+    "https://json.schemastore.org/github-action.json": ["action.yaml", "action.yml"]
+  },
   "[dockercompose]": {
     "editor.autoIndent": "full",
     "editor.defaultFormatter": "redhat.vscode-yaml",
@@ -72,39 +68,46 @@
     // https://stackoverflow.com/questions/76819800/there-is-no-formatter-for-github-actions-workflow-files-installed
     "editor.autoIndent": "full",
     "editor.defaultFormatter": "redhat.vscode-yaml",
-		"editor.formatOnPaste": true,
+    "editor.formatOnPaste": true,
     "editor.formatOnSave": true,
     "editor.formatOnType": true,
     "editor.insertSpaces": true
   },
-  "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": [
-      "*.github/workflows/*.yaml",
-      "*.github/workflows/*.yml",
-      "file:///workspaces/llm-eval/.github/workflows/build.yml"
-    ],
-    "https://json.schemastore.org/github-action.json": ["action.yaml", "action.yml"]
-  },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
-  },
-  "[markdown]": {
-    "editor.wordWrap": "wordWrapColumn",
-    "editor.wordWrapColumn": 120
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
   },
   "[jsonc]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true,
     "editor.quickSuggestions": {
       "strings": true
     },
-    "editor.suggest.insertMode": "replace"
+    "editor.suggest.insertMode": "replace",
+    "editor.tabSize": 2
   },
-	"[yaml]": {
-		"editor.autoIndent": "full",
-		"editor.defaultFormatter": "redhat.vscode-yaml",
-		"editor.formatOnPaste": true,
-		"editor.formatOnSave": true,
-		"editor.formatOnType": true,
-		"editor.insertSpaces": true,
-		"editor.tabSize": 2
-	}
+  "[markdown]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 120
+  },
+  "[yaml]": {
+    "editor.autoIndent": "full",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.formatOnType": true,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  }
 }
