@@ -22,7 +22,7 @@ set show-all-if-unmodified on
 # If set to on, words which have more than one possible completion cause the
 # matches to be listed immediately instead of ringing the bell.
 #
-#set show-all-if-ambiguous on
+set show-all-if-ambiguous on
 
 #
 # Treat symlinks as directories as far as tab completion.
