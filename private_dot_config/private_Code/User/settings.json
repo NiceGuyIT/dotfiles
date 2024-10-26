@@ -6,18 +6,7 @@
   "cSpell.enableFiletypes": ["nushell"],
   "cSpell.maxNumberOfProblems": 250,
   "cSpell.minWordLength": 3,
-  "cSpell.userWords": [
-    "codeium",
-    "coloredlogs",
-    "datetime",
-    "Deno",
-    "dockercompose",
-    "dotenv",
-    "env",
-    "esbenp",
-    "HUGGINGFACE",
-    "nushell"
-  ],
+  "cSpell.userWords": ["codeium", "coloredlogs", "datetime", "Deno", "dockercompose", "dotenv", "env", "nushell"],
   "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.maxComputationTime": 0,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -61,11 +50,6 @@
     "editor.insertSpaces": false
   },
   "[github-actions-workflow]": {
-    // Even though the redhat.vscode-yaml formatter is installed, auto-formatting does not work. The workaround
-    // is to change the language at the bottom right from "GitHub Actions Workflow" to "YAML", format the file,
-    // and then change the language back.
-    // https://github.com/github/vscode-github-actions/issues/195
-    // https://stackoverflow.com/questions/76819800/there-is-no-formatter-for-github-actions-workflow-files-installed
     "editor.autoIndent": "full",
     "editor.defaultFormatter": "redhat.vscode-yaml",
     "editor.formatOnPaste": true,
