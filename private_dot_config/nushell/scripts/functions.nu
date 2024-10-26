@@ -235,8 +235,14 @@ export def git-version [
 
 # Backup the specified directory to the current directory or optional backup directory.
 export def backup [dir: string]: nothing -> nothing {
-	#^tar --create --use-compress-program zstd --file $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zstd" $dir
-	ouch compress --format zst $dir $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zsd"
+	#^tar --use-compress-program zstd --create --file $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zstd" $dir
+	ouch compress --format tar.zst $dir $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zst"
+}
+
+# Restore the backup to the current directory.
+export def restore [archive: string]: nothing -> nothing {
+	#^tar --use-compress-program zstd --expand --file $archive
+	ouch decompress $archive
 }
 
 
