@@ -949,10 +949,15 @@ $env.config = {
 use std/dirs shells-aliases *
 
 # Do not shadow /usr/bin/open on macOS.
+# Definitions and aliases must be statically resolvable and cannot be in an if statement.
+# Think compiled language
+# One possible solution is to put this in login.nu so it affects only login shells.
 alias nu-open = open
 alias open = ^open
 
 # Do not shadow /usr/bin/uname on Linux.
+# Definitions and aliases must be statically resolvable and cannot be in an if statement.
+# Think compiled language
 alias nu-uname = uname
 alias uname = ^uname
 
