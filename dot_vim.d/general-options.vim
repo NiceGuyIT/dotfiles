@@ -209,8 +209,11 @@ let &t_EI = "\e[2 q"
 " reset the cursor on start (for older versions of vim, usually not required)
 augroup myBlockCursor
 au!
+
 " Make the cursor a block cursor
-autocmd VimEnter * silent !echo -ne "\e[2 q"
+" This causes an error in Nushell because it has an internal echo.
+"autocmd VimEnter * silent !echo -ne "\e[2 q"
+
 " Highlight the line when in edit mode
 autocmd InsertEnter,InsertLeave * set cursorline!
 augroup END
