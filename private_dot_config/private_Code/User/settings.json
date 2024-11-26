@@ -1,7 +1,8 @@
 {
   "codeium.enableConfig": {
     "*": true,
-    "nushell": true
+    "nushell": true,
+    "just": true
   },
   "cSpell.enableFiletypes": ["nushell"],
   "cSpell.maxNumberOfProblems": 250,
