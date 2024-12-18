@@ -5,8 +5,13 @@
 
 use std log
 
-# github-assets-get will download the latest GitHub release JSON and return the assets as a record.
-def github-assets-get [repo: string]: nothing -> table<record> {
+export-env {
+	# Use this to set the log level.
+	$env.NU_LOG_LEVEL = "DEBUG"
+}
+
+# github assets get will download the latest GitHub release JSON and return the assets as a record.
+def "github assets get" [repo: string]: nothing -> table<record> {
 	# TODO: Use this to skip the download and prevent hitting GitHub's rate limit.
 	#open $"github-yq.json"
 	http get $"https://api.github.com/repos/($repo)/releases/latest"
@@ -14,14 +19,14 @@ def github-assets-get [repo: string]: nothing -> table<record> {
 		| select browser_download_url name content_type size
 }
 
-# github-asset-downloads downloads the GitHub asset and returns a list of files.
-def github-asset-download [
+# github asset downloads downloads the GitHub asset and returns a list of files.
+def "github asset download" [
 	--dest-dir (-d): string,		# Destination directory to save the files
 	--remote-name (-f): string,		# Name of the remote file to save locally
 	--decompress (-u),			# If true, decompress (uncompress) the files
 ]: string -> list {
 	let url: string = $in
-	mut url_name = ($url | url-filename)
+	mut url_name = ($url | (url parse).path | path basename)
 	if not ($remote_name | is-empty) {
 		$url_name = $remote_name
 	}
@@ -45,6 +50,74 @@ def github-asset-download [
 	} else {
 		return (ls $save_file | each {|it| ([ $dest_dir $it.name ] | path join)})
 	}
+}
+
+# github download will return the download URL for the given repo.
+def "github download" [
+	repo: string			# GitHub repo name in owner/repo format
+	--name (-n): string		# Binary name to install. Default: "repo" in "owner/repo"
+	--filter (-f): string	# Filter the results if a single release can't be determined
+]: nothing -> string {
+	mut assets: table<record: any> = (github assets get $repo
+		| filter-content-type
+		| filter-os
+		| filter-arch
+	)
+	#print ($assets)
+	if ($assets | length) == 0 {
+		log error $"Filtering by content type, OS and architecture resulted in 0 assets"
+		return $assets
+	}
+
+	# Check if the asset names use flavors, i.e. musl, gnu, etc., and filter them
+	mut flavor: table<record: any> = $assets
+	if not ($flavor | is-empty) {
+		$flavor = ($assets | filter-flavor $filter)
+	} else if ($assets | has-flavor) {
+		$flavor = ($assets | filter-flavor)
+	}
+	if ($flavor | length) == 0 {
+		log error "Filtering on flavor resulted in 0 assets. Resetting to previous asset list"
+		$flavor = $assets
+	}
+	$assets = $flavor
+	log info "List of assets after filtering for content type, os, arch, and flavor"
+	print ($assets | table --width 200)
+
+	mut bin_name: string = ($repo | split column '/' | get column2.0)
+	if (not ($name | is-empty)) and ($name | str length) > 0 {
+		$bin_name = $name
+	}
+
+	# The content_type uniqueness determines if the assets are compressed. If all of them are
+	# "application/octet-stream", the assets are uncompressed.
+	# Exceptions:
+	# This fails for mikefarah/yq due to the following. In this case, prefer the uncompressed over the compressed.
+	#   1. The uncompressed binary is called "yq_linux_amd64"
+	#   2. Releases contain both compressed and uncompressed binaries.
+	if $repo =~ "mikefarah/yq" {
+		log info $"Repo ($repo) has mixed assets. Treating as uncompressed"
+		let results = ($assets | where content_type == "application/octet-stream" | dl-uncompressed --name 'yq' --filter $filter)
+		#print ($results)
+		return $results
+	} else {
+		let ct_count = $assets | get content_type | uniq --count
+		log info $"Count of assets by content type"
+		print ($ct_count)
+		if ($ct_count | length) == 1 and ($ct_count.value.0 == "application/octet-stream") {
+			log info $"Repo ($repo) has uncompressed assets"
+			let results = ($assets | dl-uncompressed --name $bin_name --filter $filter)
+			#print ($results)
+			return $results
+		} else {
+			log info $"Repo ($repo) has compressed assets"
+			# Compressed assets need to be filtered by extension.
+			let results = ($assets | dl-compressed --name $bin_name --filter $filter)
+			#print ($results)
+			return $results
+		}
+	}
+	return
 }
 
 # install-binaries will install the files into bin_dir
@@ -80,21 +153,6 @@ def get-bin-dir []: string -> string {
 		}
 	}
 	return $bin_dir
-}
-
-# file-basename will return the basename of the filename.
-def file-basename []: string -> string {
-	split column '.' | get column1.0
-}
-
-# file-extension will return the extension of the filename.
-def file-extension []: string -> string {
-	str replace --regex '^[^\.]+\.' ''
-}
-
-# url-filename will extract the filename from the URL.
-def url-filename []: string -> string {
-	(url parse).path | path basename
 }
 
 # filter-os will filter out binaries that do not match the current OS
@@ -271,7 +329,7 @@ def dl-compressed [
 	let tmp_dir: string = ({ parent: $nu.temp-path, stem: $"package-(random uuid)" } | path join)
 	mkdir $tmp_dir
 	let files = ($input.browser_download_url.0
-		| github-asset-download --dest-dir $tmp_dir --decompress)
+		| github asset download --dest-dir $tmp_dir --decompress)
 	log info $"Files: ($files)"
 
 	let bin_dir = get-bin-dir
@@ -298,7 +356,7 @@ def dl-uncompressed [
 	let tmp_dir: string = ({ parent: $nu.temp-path, stem: $"package-(random uuid)" } | path join)
 	log debug $"name: ($name)"
 	let files = ($input.browser_download_url.0
-		| github-asset-download --dest-dir $tmp_dir --remote-name $name --decompress)
+		| github asset download --dest-dir $tmp_dir --remote-name $name --decompress)
 	log info $"Files: ($files)"
 
 	let bin_dir = get-bin-dir
@@ -313,11 +371,7 @@ def dl-uncompressed [
 export def search [
 	name: string		# Binary to search for
 ]: nothing -> nothing {
-	if not ("NU_LOG_LEVEL" in $env) {
-		$env.NU_LOG_LEVEL = "DEBUG"
-	}
-
-	log info $"Searching for '($name)'"
+	log info $"Searching packages for '($name)'"
 	# TODO: $env.CURRENT_FILE and $env.FILE_PWD do not work in modules. Need to traverse $env.NU_LIB_DIRS
 	# to find the module directory. Until this is fixed, use the path relative to $env.HOME
 	let packages_filename = ($env.HOME | path join ".config/nushell/modules/package/packages.json")
@@ -326,84 +380,12 @@ export def search [
 		| where {|it| ($it.repo =~ $"\(?i:($name)\)") or ($it.description =~ $"\(?i:($name)\)")}
 }
 
-# github-download will return the download URL for the given repo.
-def github-download [
-	repo: string			# GitHub repo name in owner/repo format
-	--name (-n): string		# Binary name to install. Default: "repo" in "owner/repo"
-	--filter (-f): string	# Filter the results if a single release can't be determined
-]: nothing -> string {
-	mut assets: table<record: any> = (github-assets-get $repo
-		| filter-content-type
-		| filter-os
-		| filter-arch
-	)
-	#print ($assets)
-	if ($assets | length) == 0 {
-		log error $"Filtering by content type, OS and architecture resulted in 0 assets"
-		return $assets
-	}
-
-	# Check if the asset names use flavors, i.e. musl, gnu, etc., and filter them
-	mut flavor: table<record: any> = $assets
-	if not ($flavor | is-empty) {
-		$flavor = ($assets | filter-flavor $filter)
-	} else if ($assets | has-flavor) {
-		$flavor = ($assets | filter-flavor)
-	}
-	if ($flavor | length) == 0 {
-		log error "Filtering on flavor resulted in 0 assets. Resetting to previous asset list"
-		$flavor = $assets
-	}
-	$assets = $flavor
-	log info "List of assets after filtering for content type, os, arch, and flavor"
-	print ($assets | table --width 200)
-
-	mut bin_name: string = ($repo | split column '/' | get column2.0)
-	if (not ($name | is-empty)) and ($name | str length) > 0 {
-		$bin_name = $name
-	}
-
-	# The content_type uniqueness determines if the assets are compressed. If all of them are
-	# "application/octet-stream", the assets are uncompressed.
-	# Exceptions:
-	# This fails for mikefarah/yq due to the following. In this case, prefer the uncompressed over the compressed.
-	#   1. The uncompressed binary is called "yq_linux_amd64"
-	#   2. Releases contain both compressed and uncompressed binaries.
-	if $repo =~ "mikefarah/yq" {
-		log info $"Repo ($repo) has mixed assets. Treating as uncompressed"
-		let results = ($assets | where content_type == "application/octet-stream" | dl-uncompressed --name 'yq' --filter $filter)
-		#print ($results)
-		return $results
-	} else {
-		let ct_count = $assets | get content_type | uniq --count
-		log info $"Count of assets by content type"
-		print ($ct_count)
-		if ($ct_count | length) == 1 and ($ct_count.value.0 == "application/octet-stream") {
-			log info $"Repo ($repo) has uncompressed assets"
-			let results = ($assets | dl-uncompressed --name $bin_name --filter $filter)
-			#print ($results)
-			return $results
-		} else {
-			log info $"Repo ($repo) has compressed assets"
-			# Compressed assets need to be filtered by extension.
-			let results = ($assets | dl-compressed --name $bin_name --filter $filter)
-			#print ($results)
-			return $results
-		}
-	}
-	return
-}
-
 # Install a package
 export def install [
 	repo: string			# GitHub repo name in owner/repo format
 	--name (-n): string		# Binary name to install. Default: "repo" in "owner/repo"
 	--filter (-f): string	# Filter the results if a single release can't be determined
 ]: nothing -> any {
-	if not ("NU_LOG_LEVEL" in $env) {
-		$env.NU_LOG_LEVEL = "DEBUG"
-	}
-
 	# TODO: $env.CURRENT_FILE and $env.FILE_PWD do not work in modules. Need to traverse $env.NU_LIB_DIRS
 	# to find the module directory. Until this is fixed, use the path relative to $env.HOME
 	let packages_filename = ($env.HOME | path join ".config/nushell/modules/package/packages.json")
@@ -422,7 +404,7 @@ export def install [
 			log info $"Filter: ($filter)"
 		}
 
-		github-download --name $pkg.name?.0 --filter $pkg.filter?.0 $pkg.repo.0
+		github download --name $pkg.name?.0 --filter $pkg.filter?.0 $pkg.repo.0
 	} else {
 		log info $"No packages found for '($repo)'. Attempting download anyway"
 		if not ($name | is-empty) {
@@ -432,7 +414,7 @@ export def install [
 			log info $"Filter: ($filter)"
 		}
 
-		github-download --name $name --filter $filter $repo
+		github download --name $name --filter $filter $repo
 	}
 
 }
@@ -440,20 +422,29 @@ export def install [
 
 # Package module
 export def main [
+	action: string			# Action to take: search, download, install
 	repo: string			# GitHub repo name in owner/repo format
 	--name (-n): string		# Binary name to install. Default: "repo" in "owner/repo"
 	--filter (-f): string	# Filter the results if a single release can't be determined
 ]: nothing -> nothing {
 	use std log
 
-	log info $"Downloading ($repo)"
-	if not ($name | is-empty) {
-		log info $"Name: ($name)"
+	if $action == "search" {
+		# Search for a package.
+		log info $"Searching for package: '($repo)'"
+		search $repo
+	
+	} else if $action == "download" {
+		# Download the package into the current directory.
+		log info $"Downloading ($repo)"
+		print (github download --name $name --filter $filter $repo)
+	
+	} else if $action == "install" {
+		# Install a package into the into the bin directory for the user or system.
+		log info $"Installing package: '($repo)'"
+		install --name $name --filter $filter $repo
 	}
-	if not ($filter | is-empty) {
-		log info $"Filter: ($filter)"
-	}
-	print (github-download --name $name --filter $filter $repo)
+
 }
 
 

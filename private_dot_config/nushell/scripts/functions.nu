@@ -233,10 +233,18 @@ export def git-version [
 }
 
 
-# Backup the specified directory to the current directory or optional backup directory.
+# Backup the specified directory to the current directory.
+# TODO: Save the backup in another directory.
 export def backup [dir: string]: nothing -> nothing {
-	#^tar --use-compress-program zstd --create --file $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zstd" $dir
-	ouch compress --format tar.zst $dir $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zst"
+	# use std log
+	# This is the equivalent tar command.
+	#   ^tar --use-compress-program zstd --create --file $"($dir)-(date now | format date "%Y%m%dT%H%M%S").tar.zstd" $dir
+	let d = ($dir | path expand | path basename)
+	if not ($d | path exists) {
+		# log error $"Directory to backup does not exist: '($d)'"
+		error make {msg: $"Directory does not exist: '($d)'"}
+	}
+	ouch compress --format tar.zst $d $"($d)-(date now | format date "%Y%m%dT%H%M%S").tar.zst"
 }
 
 # Restore the backup to the current directory.

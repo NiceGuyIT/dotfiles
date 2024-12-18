@@ -1,249 +1,258 @@
 [
-	{
-		"repo": "BurntSushi/ripgrep",
-		"description": "ripgrep recursively searches directories for a regex pattern while respecting your gitignore"
-	},
-	{
-		"repo": "Byron/dua-cli",
-		"description": "View disk space usage and delete unwanted data, fast."
-	},
-	{
-		"repo": "ClementTsang/bottom",
-		"description": "A customizable cross-platform graphical process/system monitor for the terminal. Inspired by gtop, gotop, and htop.",
-		"filter": "musl"
-	},
-	{
-		"repo": "Dj-Codeman/doge",
-		"description": "doge is a command-line DNS client, like dig forked from the amazing work done here."
-	},
-	{
-		"repo": "FiloSottile/age",
-		"description": "A simple, modern and secure encryption tool (and Go library) with small explicit keys, no config options, and UNIX-style composability"
-	},
-	{
-		"repo": "01mf02/jaq",
-		"description": "jaq is a jq clone with an emphasis on correctness, speed, and simplicity."
-	},
-	{
-		"repo": "adnanh/webhook",
-		"description": "webhook is a lightweight incoming webhook server to run shell commands"
-	},
-	{
-		"repo": "alacritty/alacritty",
-		"description": "A cross-platform, OpenGL terminal emulator",
-		"notes": "Does not provide Linux binaries"
-	},
-	{
-		"repo": "atuinsh/atuin",
-		"description": "Atuin replaces your existing shell history with a SQLite database, and records additional context for your commands"
-	},
-	{
-		"repo": "bailey27/cppcryptfs",
-		"description": "cppcryptfs is an implementation of the gocryptfs encrypted overlay filesystem in C++ for Windows"
-	},
-	{
-		"repo": "bootandy/dust",
-		"description": "A more intuitive version of du in rust"
-	},
-	{
-		"repo": "casey/just",
-		"description": "just is a handy way to save and run project-specific commands"
-	},
-	{
-		"repo": "cli/cli",
-		"description": "gh is GitHub on the command line. It brings pull requests, issues, and other GitHub concepts to the terminal next to where you are already working with git and your code."
-	},
-	{
-		"repo": "cloudflare/cfssl",
-		"description": "CFSSL is CloudFlare's PKI/TLS swiss army knife. It is both a command line tool and an HTTP API server for signing, verifying, and bundling TLS certificates"
-	},
-	{
-		"repo": "containrrr/watchtower",
-		"description": "A process for automating Docker container base image updates"
-	},
-	{
-		"repo": "dandyvica/dqy",
-		"description": "A DNS query tool inspired by dig, drill and dog."
-	},
-	{
-		"repo": "denoland/deno",
-		"description": "Deno is a simple, modern and secure runtime for JavaScript and TypeScript that uses V8 and is built in Rust"
-	},
-	{
-		"repo": "docker/buildx",
-		"description": "Docker CLI plugin for extended build capabilities with BuildKit"
-	},
-	{
-		"repo": "docker/compose",
-		"description": "Define and run multi-container applications with Docker"
-	},
-	{
-		"repo": "dundee/gdu",
-		"description": "Fast disk usage analyzer with console interface written in Go"
-	},
-	{
-		"repo": "ducaale/xh",
-		"description": "Friendly and fast tool for sending HTTP requests"
-	},
-	{
-		"repo": "evanw/esbuild",
-		"description": "An extremely fast bundler for the web"
-	},
-	{
-		"repo": "fujiapple852/trippy",
-		"description": "Trippy combines the functionality of traceroute and ping and is designed to assist with the analysis of networking issues"
-	},
-	{
-		"repo": "getzola/zola",
-		"description": "A fast static site generator in a single binary with everything built-in"
-	},
-	{
-		"repo": "go-acme/lego",
-		"description": "Let's Encrypt client and ACME library written in Go"
-	},
-	{
-		"repo": "go-task/task",
-		"description": "A task runner / simpler Make alternative written in Go"
-	},
-	{
-		"repo": "gohugoio/hugo",
-		"description": "A fast and flexible static site generator built with love by bep, spf13, and friends in Go"
-	},
-	{
-		"repo": "hairyhenderson/gomplate",
-		"description": "A flexible commandline tool for template rendering. Supports lots of local and remote datasources"
-	},
-	{
-		"repo": "helix-editor/helix",
-		"description": "A post-modern modal text editor"
-	},
-	{
-		"repo": "hirose31/pinger",
-		"description": "Pinger helps you to monitor many hosts using ICMP ECHO_REQUEST"
-	},
-	{
-		"repo": "imsnif/diskonaut",
-		"description": "Terminal disk space navigator"
-	},
-	{
-		"repo": "junegunn/fzf",
-		"description": "fzf is a general-purpose command-line fuzzy finder"
-	},
-	{
-		"repo": "kopia/kopia",
-		"description": "Cross-platform backup tool for Windows, macOS & Linux with fast, incremental backups, client-side end-to-end encryption, compression and data deduplication. CLI and GUI included"
-	},
-	{
-		"repo": "lapce/lapce",
-		"description": "Lightning-fast and Powerful Code Editor written in Rust"
-	},
-	{
-		"repo": "mikefarah/yq",
-		"description": "yq is a portable command-line YAML, JSON, XML, CSV, TOML and properties processor"
-	},
-	{
-		"repo": "mozilla/sops",
-		"description": "Simple and flexible tool for managing secrets"
-	},
-	{
-		"repo": "mr-karan/doggo",
-		"description": "Command-line DNS Client for Humans. Written in Golang"
-	},
-	{
-		"repo": "nushell/nushell",
-		"description": "A new type of shell",
-		"filter": "musl"
-	},
-	{
-		"repo": "ouch-org/ouch",
-		"description": "Painless compression and decompression in the terminal. ouch stands for Obvious Unified Compression Helper.",
-		"filter": "musl"
-	},
-	{
-		"repo": "phiresky/ripgrep-all",
-		"description": "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
-	},
-	{
-		"repo": "pion/stun",
-		"description": "Pion STUN: A Go implementation of STUN"
-	},
-	{
-		"repo": "pkolaczk/fclones",
-		"description": "Efficient duplicate file finder and remover"
-	},
-	{
-		"repo": "rclone/rclone",
-		"description": "Rclone (\"rsync for cloud storage\") is a command-line program to sync files and directories to and from different cloud storage providers"
-	},
-	{
-		"repo": "restic/restic",
-		"description": "Fast, secure, efficient backup program"
-	},
-	{
-		"repo": "rfjakob/gocryptfs",
-		"description": "Encrypted overlay filesystem written in Go"
-	},
-	{
-		"repo": "rustic-rs/rustic",
-		"description": "rustic is a backup tool that provides fast, encrypted, deduplicated backups"
-	},
-	{
-		"repo": "ryochack/peep",
-		"description": "The CLI text viewer tool that works like less command on small pane within the terminal window"
-	},
-	{
-		"repo": "sclevine/yj",
-		"description": "CLI - Convert between YAML, TOML, JSON, and HCL. Preserves map order"
-	},
-	{
-		"repo": "sharkdp/fd",
-		"description": "A simple, fast and user-friendly alternative to 'find'"
-	},
-	{
-		"repo": "slackhq/nebula",
-		"description": "A scalable overlay networking tool with a focus on performance, simplicity and security "
-	},
-	{
-		"repo": "starship/starship",
-		"description": "The minimal, blazing-fast, and infinitely customizable prompt for any shell!",
-		"filter": "musl"
-	},
-	{
-		"repo": "str4d/rage",
-		"description": "A simple, secure and modern file encryption tool (and Rust library) with small explicit keys, no config options, and UNIX-style composability"
-	},
-	{
-		"repo": "tomwright/dasel",
-		"description": "Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool. Supports conversion between formats and can be used as a Go package"
-	},
-	{
-		"repo": "trufflesecurity/trufflehog",
-		"description": "Find leaked credentials."
-	},
-	{
-		"repo": "twpayne/chezmoi",
-		"description": "Manage your dotfiles across multiple diverse machines, securely",
-		"filter": "musl"
-	},
-	{
-		"repo": "uutils/coreutils",
-		"description": "Cross-platform Rust rewrite of the GNU coreutils"
-	},
-	{
-		"repo": "wader/fq",
-		"description": "jq for binary formats - tool, language and decoders for working with binary and text formats"
-	},
-	{
-		"repo": "watchexec/watchexec",
-		"description": "Executes commands in response to file modifications"
-	},
-	{
-		"repo": "xxxserxxx/gotop",
-		"description": "A terminal based graphical activity monitor inspired by gtop and vtop"
-	},
-	{
-		"repo": "zyedidia/micro",
-		"description": "micro is a terminal-based text editor that aims to be easy to use and intuitive, while also taking advantage of the capabilities of modern terminals",
-		"notes": "Mixes OS and ARCH in the release name making selection hard"
-	}
+  {
+    "repo": "BurntSushi/ripgrep",
+    "description": "ripgrep recursively searches directories for a regex pattern while respecting your gitignore"
+  },
+  {
+    "repo": "Byron/dua-cli",
+    "description": "View disk space usage and delete unwanted data, fast."
+  },
+  {
+    "repo": "ClementTsang/bottom",
+    "description": "A customizable cross-platform graphical process/system monitor for the terminal. Inspired by gtop, gotop, and htop.",
+    "filter": "musl"
+  },
+  {
+    "repo": "Dj-Codeman/doge",
+    "description": "doge is a command-line DNS client, like dig forked from the amazing work done here."
+  },
+  {
+    "repo": "FiloSottile/age",
+    "description": "A simple, modern and secure encryption tool (and Go library) with small explicit keys, no config options, and UNIX-style composability"
+  },
+  {
+    "repo": "01mf02/jaq",
+    "description": "jaq is a jq clone with an emphasis on correctness, speed, and simplicity."
+  },
+  {
+    "repo": "adnanh/webhook",
+    "description": "webhook is a lightweight incoming webhook server to run shell commands"
+  },
+  {
+    "repo": "alacritty/alacritty",
+    "description": "A cross-platform, OpenGL terminal emulator",
+    "notes": "Does not provide Linux binaries"
+  },
+  {
+    "repo": "atuinsh/atuin",
+    "description": "Atuin replaces your existing shell history with a SQLite database, and records additional context for your commands"
+  },
+  {
+    "repo": "bailey27/cppcryptfs",
+    "description": "cppcryptfs is an implementation of the gocryptfs encrypted overlay filesystem in C++ for Windows"
+  },
+  {
+    "repo": "bootandy/dust",
+    "description": "A more intuitive version of du in rust"
+  },
+  {
+    "repo": "casey/just",
+    "description": "just is a handy way to save and run project-specific commands"
+  },
+  {
+    "repo": "cli/cli",
+    "description": "gh is GitHub on the command line. It brings pull requests, issues, and other GitHub concepts to the terminal next to where you are already working with git and your code."
+  },
+  {
+    "repo": "cloudflare/cfssl",
+    "description": "CFSSL is CloudFlare's PKI/TLS swiss army knife. It is both a command line tool and an HTTP API server for signing, verifying, and bundling TLS certificates"
+  },
+  {
+    "repo": "containrrr/watchtower",
+    "description": "A process for automating Docker container base image updates"
+  },
+  {
+    "repo": "dandyvica/dqy",
+    "description": "A DNS query tool inspired by dig, drill and dog."
+  },
+  {
+    "repo": "denoland/deno",
+    "description": "Deno is a simple, modern and secure runtime for JavaScript and TypeScript that uses V8 and is built in Rust"
+  },
+  {
+    "repo": "docker/buildx",
+    "description": "Docker CLI plugin for extended build capabilities with BuildKit"
+  },
+  {
+    "repo": "docker/compose",
+    "description": "Define and run multi-container applications with Docker"
+  },
+  {
+    "repo": "dundee/gdu",
+    "description": "Fast disk usage analyzer with console interface written in Go"
+  },
+  {
+    "repo": "ducaale/xh",
+    "description": "Friendly and fast tool for sending HTTP requests"
+  },
+  {
+    "repo": "evanw/esbuild",
+    "description": "An extremely fast bundler for the web"
+  },
+  {
+    "repo": "fujiapple852/trippy",
+    "description": "Trippy combines the functionality of traceroute and ping and is designed to assist with the analysis of networking issues"
+  },
+  {
+    "repo": "getzola/zola",
+    "description": "A fast static site generator in a single binary with everything built-in"
+  },
+  {
+    "repo": "go-acme/lego",
+    "description": "Let's Encrypt client and ACME library written in Go"
+  },
+  {
+    "repo": "go-task/task",
+    "description": "A task runner / simpler Make alternative written in Go"
+  },
+  {
+    "repo": "gohugoio/hugo",
+    "description": "A fast and flexible static site generator built with love by bep, spf13, and friends in Go"
+  },
+  {
+    "repo": "hairyhenderson/gomplate",
+    "description": "A flexible commandline tool for template rendering. Supports lots of local and remote datasources"
+  },
+  {
+    "repo": "helix-editor/helix",
+    "description": "A post-modern modal text editor"
+  },
+  {
+    "repo": "hirose31/pinger",
+    "description": "Pinger helps you to monitor many hosts using ICMP ECHO_REQUEST"
+  },
+  {
+    "repo": "icann/icann-rdap",
+    "description": "ICANN implementation of the Registry Data Access Protocol (RDAP)"
+  },
+  {
+    "repo": "imsnif/diskonaut",
+    "description": "Terminal disk space navigator"
+  },
+  {
+    "repo": "junegunn/fzf",
+    "description": "fzf is a general-purpose command-line fuzzy finder"
+  },
+  {
+    "repo": "kopia/kopia",
+    "description": "Cross-platform backup tool for Windows, macOS & Linux with fast, incremental backups, client-side end-to-end encryption, compression and data deduplication. CLI and GUI included"
+  },
+  {
+    "repo": "lapce/lapce",
+    "description": "Lightning-fast and Powerful Code Editor written in Rust"
+  },
+  {
+    "repo": "mikefarah/yq",
+    "description": "yq is a portable command-line YAML, JSON, XML, CSV, TOML and properties processor"
+  },
+  {
+    "repo": "mozilla/sops",
+    "description": "Simple and flexible tool for managing secrets"
+  },
+  {
+    "repo": "mr-karan/doggo",
+    "description": "Command-line DNS Client for Humans. Written in Golang"
+  },
+  {
+    "repo": "nushell/nushell",
+    "description": "A new type of shell",
+    "filter": "musl"
+  },
+  {
+    "repo": "ouch-org/ouch",
+    "description": "Painless compression and decompression in the terminal. ouch stands for Obvious Unified Compression Helper.",
+    "filter": "musl"
+  },
+  {
+    "repo": "phiresky/ripgrep-all",
+    "description": "rga: ripgrep, but also search in PDFs, E-Books, Office documents, zip, tar.gz, etc."
+  },
+  {
+    "repo": "pion/stun",
+    "description": "Pion STUN: A Go implementation of STUN"
+  },
+  {
+    "repo": "pkolaczk/fclones",
+    "description": "Efficient duplicate file finder and remover"
+  },
+  {
+    "repo": "rclone/rclone",
+    "description": "Rclone (\"rsync for cloud storage\") is a command-line program to sync files and directories to and from different cloud storage providers"
+  },
+  {
+    "repo": "restic/restic",
+    "description": "Fast, secure, efficient backup program"
+  },
+  {
+    "repo": "rfjakob/gocryptfs",
+    "description": "Encrypted overlay filesystem written in Go"
+  },
+  {
+    "repo": "rustic-rs/rustic",
+    "description": "rustic is a backup tool that provides fast, encrypted, deduplicated backups"
+  },
+  {
+    "repo": "ryochack/peep",
+    "description": "The CLI text viewer tool that works like less command on small pane within the terminal window"
+  },
+  {
+    "repo": "sclevine/yj",
+    "description": "CLI - Convert between YAML, TOML, JSON, and HCL. Preserves map order"
+  },
+  {
+    "repo": "shadowsocks/shadowsocks-rust",
+    "description": " A Rust port of shadowsocks: a fast tunnel proxy that helps you bypass firewalls.",
+    "filter": "musl"
+  },
+  {
+    "repo": "sharkdp/fd",
+    "description": "A simple, fast and user-friendly alternative to 'find'"
+  },
+  {
+    "repo": "slackhq/nebula",
+    "description": "A scalable overlay networking tool with a focus on performance, simplicity and security "
+  },
+  {
+    "repo": "starship/starship",
+    "description": "The minimal, blazing-fast, and infinitely customizable prompt for any shell!",
+    "filter": "musl"
+  },
+  {
+    "repo": "str4d/rage",
+    "description": "A simple, secure and modern file encryption tool (and Rust library) with small explicit keys, no config options, and UNIX-style composability"
+  },
+  {
+    "repo": "tomwright/dasel",
+    "description": "Select, put and delete data from JSON, TOML, YAML, XML and CSV files with a single tool. Supports conversion between formats and can be used as a Go package"
+  },
+  {
+    "repo": "trufflesecurity/trufflehog",
+    "description": "Find leaked credentials."
+  },
+  {
+    "repo": "twpayne/chezmoi",
+    "description": "Manage your dotfiles across multiple diverse machines, securely",
+    "filter": "musl"
+  },
+  {
+    "repo": "uutils/coreutils",
+    "description": "Cross-platform Rust rewrite of the GNU coreutils"
+  },
+  {
+    "repo": "wader/fq",
+    "description": "jq for binary formats - tool, language and decoders for working with binary and text formats"
+  },
+  {
+    "repo": "watchexec/watchexec",
+    "description": "Executes commands in response to file modifications"
+  },
+  {
+    "repo": "xxxserxxx/gotop",
+    "description": "A terminal based graphical activity monitor inspired by gtop and vtop"
+  },
+  {
+    "repo": "zyedidia/micro",
+    "description": "micro is a terminal-based text editor that aims to be easy to use and intuitive, while also taking advantage of the capabilities of modern terminals",
+    "notes": "Mixes OS and ARCH in the release name making selection hard"
+  }
 ]

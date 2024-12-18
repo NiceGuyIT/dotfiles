@@ -977,4 +977,4 @@ use discord.nu *
 use docker/
 
 # Package module to download binaries
-use package/
+# use package/
