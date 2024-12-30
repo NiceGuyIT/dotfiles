@@ -94,5 +94,7 @@
     "editor.formatOnType": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2
-  }
+  },
+  "codeium.disableSupercomplete": true,
+  "codeium.enableExplainProblem": false
 }
