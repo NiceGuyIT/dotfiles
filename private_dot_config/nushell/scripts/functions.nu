@@ -151,7 +151,7 @@ export def chezmoi-private [...args: string]: nothing -> nothing {
 export def dl [url: string, --force (-f)]: nothing -> table<name: string, value: string> {
 	use std log
 	let response_headers = (http head $url)
-	let content_disposition = ($response_headers | where name =~ 'content-disposition' | get value | parse --regex '.*filename=(?<filename>[^ ]+)')
+	let content_disposition = ($response_headers | where name =~ 'content-disposition' | get value | parse --regex '.*filename="?(?<filename>[^ "]+)"?')
 	mut filename = ""
 	if not ($content_disposition | is-empty) {
 		# Content-Disposition header might have the filename.

@@ -946,7 +946,7 @@ $env.config = {
 
 
 # The 'std dirs' module will no longer automatically be loaded in the next release.
-use std/dirs shells-aliases *
+use std dirs shells-aliases *
 
 # Do not shadow /usr/bin/open on macOS.
 # This is the minority so do not use it.
