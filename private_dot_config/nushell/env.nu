@@ -90,6 +90,8 @@ $env.NU_LIB_DIRS = [
 
 	# Modules
 	($nu.default-config-dir | path join 'modules')
+	# Private modules
+	($env.HOME | path join 'projects/niceguyit/nu-modules-private')
 
 	# Add $STARSHIP_CACHE directory to search for 'use' scripts
 	$STARSHIP_CACHE
@@ -116,32 +118,34 @@ $env.NU_PLUGIN_DIRS = [
 
 # Add SSH agent
 # https://www.nushell.sh/cookbook/ssh_agent.html#workarounds
-# Run manually: ssh-agent -a ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
-# In each terminal: $env.SSH_AUTH_SOCK = ($env.XDG_RUNTIME_DIR | path join "ssh-agent.socket")
+# Forwarding the agent sets $SSH_AUTH_SOCK with the PID of the SSH process.
+# Nothing needs to be done when forwarding the agent.
 # TODO: Add ssh-agent as a service.
 do --env {
-    let ssh_agent_file = (
-        $nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME?).nuon"
-    )
+	if not ('SSH_AUTH_SOCK' in $env) {
+		let ssh_agent_file = (
+			$nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME?).nuon"
+		)
 
-    if ($ssh_agent_file | path exists) {
-        let ssh_agent_env = open ($ssh_agent_file)
-        if (ps | where pid == ($ssh_agent_env.SSH_AGENT_PID | into int) | length) > 0 {
-            load-env $ssh_agent_env
-            return
-        } else {
-            rm $ssh_agent_file
-        }
-    }
+		if ($ssh_agent_file | path exists) {
+			let ssh_agent_env = open ($ssh_agent_file)
+			if ($"/proc/($ssh_agent_env.SSH_AGENT_PID)" | path exists) {
+				load-env $ssh_agent_env
+				return
+			} else {
+				rm $ssh_agent_file
+			}
+		}
 
-    let ssh_agent_env = ^ssh-agent -c
-        | lines
-        | first 2
-        | parse "setenv {name} {value};"
-        | transpose --header-row
-        | into record
-    load-env $ssh_agent_env
-    $ssh_agent_env | save --force $ssh_agent_file
+		let ssh_agent_env = ^ssh-agent -c
+			| lines
+			| first 2
+			| parse "setenv {name} {value};"
+			| transpose --header-row
+			| into record
+		load-env $ssh_agent_env
+		$ssh_agent_env | save --force $ssh_agent_file
+	}
 }
 
 # To add entries to PATH (on Windows you might use Path), you can use the following pattern:
