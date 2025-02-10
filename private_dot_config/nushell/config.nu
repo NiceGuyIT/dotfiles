@@ -948,20 +948,6 @@ $env.config = {
 # The 'std dirs' module will no longer automatically be loaded in the next release.
 use std dirs shells-aliases *
 
-# Do not shadow /usr/bin/open on macOS.
-# This is the minority so do not use it.
-#alias nu-open = open
-#alias open = ^open
-
-# Do not shadow /usr/bin/uname on Linux.
-# This is the minority so do not use it.
-#alias nu-uname = uname
-#alias uname = ^uname
-
-# Starship
-# The location is defined in env.nu
-use starship.nu
-
 # Location is defined by $env.NU_LIB_DIRS in env.nu
 # Custom functions
 # Note: This is after docker.nu to override their 'dl' alias.
