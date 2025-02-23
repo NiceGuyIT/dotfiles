@@ -4,7 +4,9 @@
 # version = "0.99.2"
 
 def create_left_prompt [] {
-    let dir = match (do --ignore-shell-errors { $env.PWD | path relative-to $nu.home-path }) {
+	# FIXME: Update this to the latest.
+	# --ignore-shell-errors throws a warning. -i works.
+    let dir = match (do -i { $env.PWD | path relative-to $nu.home-path }) {
         null => $env.PWD
         '' => '~'
         $relative_pwd => ([~ $relative_pwd] | path join)
