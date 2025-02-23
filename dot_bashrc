@@ -1,3 +1,12 @@
+# There are 3 different types of shells in bash: the login shell, normal shell
+# and interactive shell. Login shells read ~/.profile and interactive shells
+# read ~/.bashrc; in our setup, /etc/profile sources ~/.bashrc - thus all
+# settings made here will also take effect in a login shell.
+#
+# NOTE: It is recommended to make language settings in ~/.profile rather than
+# here, since multilingual X sessions would not work properly if LANG is over-
+# ridden in every subshell.
+
 # Command line fuzzy search and the like:
 #   - https://github.com/cantino/mcfly
 #   - https://github.com/urbainvaes/fzf-marks
@@ -289,11 +298,12 @@ fi
 # atuin
 # https://github.com/ellie/atuin
 ######################################################################
-if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
-then
-	eval "$(atuin init bash --disable-up-arrow)"
-	eval "$(atuin gen-completions --shell bash)"
-fi
+# FIXME: This prevents starship from starting on AWS. Need to research why.
+#if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
+#then
+#	eval "$(atuin init bash --disable-up-arrow)"
+#	eval "$(atuin gen-completions --shell bash)"
+#fi
 
 
 ######################################################################
