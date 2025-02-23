@@ -62,11 +62,13 @@ pager = true
 
 # https://golang.org/doc/faq#git_https
 # This affects brew and git submodule checkout
-[url "ssh://git@github.com/"]
-insteadOf = https://github.com/
+# 2025-02-23: Disable for now to prevent servers from failing due to lack of SSH keys.
+#[url "ssh://git@github.com/"]
+#insteadOf = https://github.com/
 
-[url "ssh://git@gitlab.com/"]
-insteadOf = https://gitlab.com/
+# 2025-02-23: Disable for now to prevent servers from failing due to lack of SSH keys.
+#[url "ssh://git@gitlab.com/"]
+#insteadOf = https://gitlab.com/
 
 # The URL is case sensitive for SSH.
 # FIXME: Change the URL to something longer term.
