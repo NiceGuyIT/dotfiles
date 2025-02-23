@@ -299,11 +299,12 @@ fi
 # atuin
 # https://github.com/ellie/atuin
 ######################################################################
-if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
-then
-	eval "$(atuin init bash --disable-up-arrow)"
-	eval "$(atuin gen-completions --shell bash)"
-fi
+# FIXME: This prevents starship from starting on AWS. Need to research why.
+#if [[ -n $BASH_VERSION ]] && type -P atuin >/dev/null 2>&1
+#then
+#	eval "$(atuin init bash --disable-up-arrow)"
+#	eval "$(atuin gen-completions --shell bash)"
+#fi
 
 
 ######################################################################
