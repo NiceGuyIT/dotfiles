@@ -20,6 +20,11 @@
   "editor.rulers": [120],
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 120,
+  "files.associations": {
+    "*.nuon": "nushell",
+    "*.toml": "toml",
+    ".gcloudignore": "ignore"
+  },
   "files.autoSave": "onFocusChange",
   "files.watcherExclude": {
     "/ctg-data/**": true
