@@ -956,6 +956,9 @@ use functions.nu *
 # Discord functions
 use discord.nu *
 
+# Betterbird functions
+use betterbird.nu *
+
 # Useful Docker functions
 # https://github.com/nushell/nu_scripts/blob/main/modules/docker/mod.nu
 # The Nu module is copied to alleviate the need to clone the git repo.

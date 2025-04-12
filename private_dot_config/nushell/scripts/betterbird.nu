@@ -1,17 +1,11 @@
 # Install Betterbird
-# URL format:
-# Base: https://www.betterbird.eu/downloads/get.php?os=linux&lang=en-US&version=release
-# Parameters:
-#   os: linux | mac | mac-arm64
-#   lang: en-US
-#   version: release
 export def "betterbird install" [
 	--install-directory: path = "~/.local/share/",
 	--applications-directory: path = "~/.local/share/applications/",
 ]: nothing -> nothing {
 	let install_directory = $install_directory | path expand
 	let applications_directory = $applications_directory | path expand
-	let os = $nu.os-info
+	let os = $nu.os-info.name
 	let lang = "en-US"
 	let version = "release"
 
@@ -24,6 +18,12 @@ export def "betterbird install" [
 		desktop_icon: "betterbird/chrome/icons/default/default256.png"
 	}
 
+	# URL format:
+	# Base: https://www.betterbird.eu/downloads/get.php?os=linux&lang=en-US&version=release
+	# Parameters:
+	#   os: linux | mac | mac-arm64
+	#   lang: en-US
+	#   version: release
 	let bin_url = {
 		scheme: https,
 		host: www.betterbird.eu,
@@ -43,7 +43,7 @@ export def "betterbird install" [
 	} | url join
 
 	# Check if the app is running
-	if (ps --long | where name =~ $app.bin) {
+	if (ps --long | where name =~ $app.bin | length) > 0 {
 		print $"Application ($app.name) is already running"
 		return
 	}
@@ -68,7 +68,7 @@ export def "betterbird install" [
 	print "Installing desktop file..."
 	http get $desktop_url
 		| lines
-		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join $app.desktop_bin)"
+		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join $app.desktop_exec)"
 		| str replace --regex '^Icon=.*' $"Icon=($install_directory | path join $app.desktop_icon)"
 		| to text
 		| save --force ($applications_directory | path join $app.desktop_name)
