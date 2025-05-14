@@ -20,9 +20,10 @@ default = simple
 
 [pull]
 # Use rebase instead of merge when pulling code.
-# Going to see if this is helpful or not.
 # https://spin.atomicobject.com/git-configurations-default/
-rebase = true
+# Note: This causes any merge conflicts to work through all the git commits.
+# Changing to false to use "merge" rather than "rebase" for "git pull".
+rebase = false
 
 [rebase]
 # https://git-scm.com/docs/git-rebase#Documentation/git-rebase.txt---autosquash
