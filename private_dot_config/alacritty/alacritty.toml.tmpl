@@ -1,3 +1,5 @@
+[general]
+
 # Alacritty themes
 # Bright colors
 # - ~/projects/github/alacritty-theme/themes/hyper.yaml
@@ -79,7 +81,7 @@ command = "reset-and-clear.sh"
 key = "K"
 mods = "Control"
 
-[shell]
+[terminal.shell]
 {{ if ne .chezmoi.os "windows" -}}
 program = "/usr/local/bin/nu"
 {{ if eq .chezmoi.os "darwin" -}}
@@ -91,6 +93,17 @@ args = [
 {{- end }}
 
 [window.dimensions]
-# macOS Retina (2560x1600) display with 2 terminals wide and 2 terminals high.
-columns = {{ if eq .chezmoi.os "darwin" }}120{{ else }}159{{ end }}
-lines = {{ if eq .chezmoi.os "linux" }}35{{ else if eq .chezmoi.os "darwin" }}38{{ else }}31{{ end }}
+{{ if eq .chezmoi.os "darwin" }}
+# macOS Retina (2560x1600) display with 2 terminals wide and 2 terminals high:
+# 2023-12-16: 120 x 35
+# 2025-05-25: 160 x 50
+columns = 150
+lines = 50
+{{ else if eq .chezmoi.os "linux" }}
+columns = 159
+lines = 35
+{{ else }}
+columns = 159
+lines = 31
+{{ end }}
+
