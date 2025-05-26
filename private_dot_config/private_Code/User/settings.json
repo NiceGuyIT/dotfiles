@@ -12,6 +12,7 @@
   "diffEditor.maxComputationTime": 0,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.detectIndentation": false,
+  "editor.find.seedSearchStringFromSelection": "selection",
   "editor.formatOnPaste": true,
   "editor.formatOnSave": true,
   "editor.formatOnType": true,

@@ -29,6 +29,10 @@ justfile
 bashrc
 profile
 
+# Ignore GTK settings
+.config/gtk-3.0/gtk.css
+.config/gtk-4.0/gtk.css
+
 .idea/
 .vscode/
 atuin/
