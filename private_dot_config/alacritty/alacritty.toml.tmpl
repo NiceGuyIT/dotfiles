@@ -95,15 +95,15 @@ args = [
 [window.dimensions]
 {{ if eq .chezmoi.os "darwin" }}
 # macOS Retina (2560x1600) display with 2 terminals wide and 2 terminals high:
-# 2023-12-16: 120 x 35
-# 2025-05-25: 160 x 50
+# 2560x1600 = 160 x 49; font size = 13.0
+# 2048x1280 = 146 x 42; font size = 12.0
+# 1680x1050 = 140 x 43; font size = 10.0
 columns = 160
-lines = 50
+lines = 49
 {{ else if eq .chezmoi.os "linux" }}
 columns = 159
 lines = 35
 {{ else }}
 columns = 159
 lines = 31
-{{ end }}
-
+{{ end -}}
