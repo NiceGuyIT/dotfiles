@@ -1,50 +1,66 @@
 #!/usr/bin/env nu
 
-# This script will create a desktop icon for every Firefox profile on Linux.
-# {{ $profiles := joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini" }}
-# {{ if stat $profiles }}{{ include $profiles | sha256sum }}{{ end }}
+export def "main" [] {
+	use std log
+	# This script will create a desktop icon for every Firefox profile on Linux.
+	# {{ $profiles := joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini" }}
+	# {{ if stat $profiles }}{{ include $profiles | sha256sum }}{{ end }}
+	
+	# 'from ini' requires formats plugin
+	plugin add (which nu_plugin_formats | get path?.0)
+	plugin use formats
 
-let desktop_file = "/usr/share/applications/firefox.desktop"
-let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
-let firefox_bin = (which firefox)
-let profiles = ($firefox_dir | path join 'profiles.ini')
+	let desktop_file = '/usr/share/applications/firefox.desktop'
+	let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
+	let firefox_bin = (which firefox | get path?.0)
+	let profiles = ($firefox_dir | path join 'profiles.ini')
 
-if ($desktop_file | is-empty) {
-	print $"Sample desktop file not found: ($desktop_file)"
-	exit 0
-}
-if ($firefox_dir | is-empty) {
-	print $"Firefox config directory not found: ($firefox_dir)"
-	exit 0
-}
-if ($firefox_bin | is-empty) {
-	print $"Firefox binary was not found in path: ($firefox_bin)"
-	exit 0
-}
-if ($profiles | is-empty) {
-	print $"Firefox profiles was not found in config: ($profiles)"
-	exit
-}
-
-let profile_paths = (open $profiles
-	| transpose section value
-	| where section =~ "Profile"
-	| where value.Path !~ "default"
-	| select section value.Path
-	| insert name {|it|
-		$it.value_Path
-			| split column '.'
-			| get 0.column2
+	if ($desktop_file | is-empty) {
+		log warning $"Sample desktop file not found: ($desktop_file)"
+		print $"Sample desktop file not found: ($desktop_file)"
+		exit 0
 	}
-)
+	if ($firefox_dir | is-empty) {
+		log warning $"Firefox config directory not found: ($firefox_dir)"
+		print $"Firefox config directory not found: ($firefox_dir)"
+		exit 0
+	}
+	if ($firefox_bin | is-empty) {
+		log warning $"Firefox binary was not found in path: ($firefox_bin)"
+		print $"Firefox binary was not found in path: ($firefox_bin)"
+		exit 0
+	}
+	if ($profiles | is-empty) {
+		log warning $"Firefox profiles was not found in config: ($profiles)"
+		print $"Firefox profiles was not found in config: ($profiles)"
+		exit
+	}
 
-$profile_paths | each {|it|
-	let filename = $"firefox-($it.name).desktop"
-	open $desktop_file
-		| lines
-		| str replace --regex '^Exec=(.*) %u' $"Exec=$1 -P \"($it.name)\" %u"
-		| str replace --regex '^Name(.*)=(.*)' $"Name$1=$2 \(($it.name)\)"
-		| to text
-		| save --force $filename
-	print $"Saving ($filename)"
+	let profile_paths = (open $profiles
+		| transpose section value
+		| where section =~ "Profile"
+		| where value.Path !~ "default"
+		| select section value.Path
+		| rename section path
+		| insert name {|it|
+			if ($it.path =~ '\.') {
+				$it.path
+				| split column '.'
+				| get column2?.0
+			} else {
+				$it.path
+			}
+		}
+	)
+
+	$profile_paths | each {|it|
+		let filename = $"firefox-($it.name).desktop"
+		open $desktop_file
+			| lines
+			| str replace --regex '^Exec=(.*) %u' $"Exec=$1 -P \"($it.name)\" %u"
+			| str replace --regex '^Name(.*)=(.*)' $"Name$1=$2 \(($it.name)\)"
+			| to text
+			| save --force $filename
+		print $"Saving ($filename)"
+	}
 }
