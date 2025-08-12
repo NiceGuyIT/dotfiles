@@ -6,11 +6,19 @@
 export def "discord install" [
 	--platform: string = "linux",
 	--format: string = "tar.gz",
-	--install-directory: path = "~/.local/share/",
+	--install-directory: path = "~/.local/share/Discord/",
 	--applications-directory: path = "~/.local/share/applications/",
 ]: nothing -> nothing {
 	let install_directory = $install_directory | path expand
 	let applications_directory = $applications_directory | path expand
+
+	print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
+	print "Previous versions moved the old directory into the --dir directory."
+	print "New versions (0.6.1 and possibly 0.6.0) REPLACES the --dir directory."
+	print "See https://github.com/ouch-org/ouch/issues/813"
+	print ""
+	print "Until that is fixed, this installer/updater has been disabled."
+	return
 
 	let url = {
 		scheme: https,
@@ -39,6 +47,9 @@ export def "discord install" [
 	#print $"Downloading ($location)"
 	#http get $location | save --force --progress $tmp_dl
 	print $"Downloading ($url)"
+	print $"tmp_dl: ($tmp_dl)"
+	# See https://github.com/ouch-org/ouch/issues/813
+	print $"install_directory: ($install_directory)"
 	http get $url | save --force --progress $tmp_dl
 
 	print $"Extracting the archive to `($install_directory)`"
