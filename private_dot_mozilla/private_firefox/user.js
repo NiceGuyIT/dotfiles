@@ -12,6 +12,9 @@ user_pref("widget.use-xdg-desktop-portal.mime-handler", 1);
 user_pref("widget.use-xdg-desktop-portal.open-uri", 1);
 user_pref("widget.use-xdg-desktop-portal.settings", 1);
 
+// Disable unused options
+user_pref("media.webspeech.synth.dont_notify_on_error", true);
+
 // Reduce the spacing.
 user_pref("browser.uidensity", 1);
 // Hide the download complete popup.
