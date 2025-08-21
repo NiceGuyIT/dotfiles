@@ -12,9 +12,6 @@ user_pref("widget.use-xdg-desktop-portal.mime-handler", 1);
 user_pref("widget.use-xdg-desktop-portal.open-uri", 1);
 user_pref("widget.use-xdg-desktop-portal.settings", 1);
 
-// Disable unused options
-user_pref("media.webspeech.synth.dont_notify_on_error", true);
-
 // Reduce the spacing.
 user_pref("browser.uidensity", 1);
 // Hide the download complete popup.
@@ -32,6 +29,13 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 
 // Disable the popup asking to set as default browser
 user_pref("browser.shell.checkDefaultBrowser", false);
+
+// Disable the popup stating speech synthesis is not available.
+user_pref("media.webspeech.synth.dont_notify_on_error", true);
+
+// Disable tab groups
+user_pref("browser.tabs.groups.enabled", false);
+user_pref("browser.tabs.groups.smart.enabled", false);
 
 // Do not show the menu when hitting Alt. Prevents the menu from showing when moving to a different desktop.
 user_pref("ui.key.menuAccessKeyFocuses", false);
