@@ -40,6 +40,9 @@ user_pref("browser.tabs.groups.smart.enabled", false);
 // Do not show the menu when hitting Alt. Prevents the menu from showing when moving to a different desktop.
 user_pref("ui.key.menuAccessKeyFocuses", false);
 
+// Do not ask to quit (warn) with Ctrl-Q
+user_pref("browser.warnOnQuit", false);
+
 // Prevents the download box from appearing when downloading invoices.
 user_pref("browser.download.alwaysOpenPanel", false);
 
