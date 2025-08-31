@@ -1,0 +1,4 @@
+# Install Node packages in the user directory.
+# https://stackoverflow.com/a/13021677
+prefix = ${HOME}/.npm-packages
+progress = false

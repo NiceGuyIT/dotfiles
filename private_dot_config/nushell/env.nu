@@ -144,8 +144,13 @@ $env.PATH = ($env.PATH | split row (char esep))
 # path add ($env.CARGO_HOME | path join "bin")
 path add ($env.HOME | path join ".local" "bin")
 path add ($env.HOME | path join "projects" "dotfiles" "bin")
+path add ($env.HOME | path join ".npm-packages" "bin")
 path add "/usr/local/bin"
 $env.PATH = ($env.PATH | uniq)
+
+# Install Node packages in the user directory.
+# https://stackoverflow.com/a/13021677
+$env.NODE_PATH = ($env.NODE_PATH? | append ([$env.HOME ".npm-packages" "lib" "node_modules"] | path join))
 
 # Less options
 # Discord: https://discord.com/channels/601130461678272522/601130461678272524/1178387079449808967

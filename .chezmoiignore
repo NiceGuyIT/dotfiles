@@ -50,6 +50,8 @@ vim-local.d/
 .chezmoiignore
 .gitignore
 .gitmodules
+# Need to write a script to add this to the various profiles.
+.mozilla/firefox/user.js
 bash-preexec.sh
 gitconfig
 gitignore_global
@@ -59,7 +61,6 @@ install.nu
 install.sh
 LICENSE.md
 markdownlint.rc.yaml
-npmrc
 README.md
 ripgreprc
 vimrc
