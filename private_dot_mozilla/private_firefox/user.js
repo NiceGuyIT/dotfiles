@@ -33,6 +33,10 @@ user_pref("browser.shell.checkDefaultBrowser", false);
 // Disable the popup stating speech synthesis is not available.
 user_pref("media.webspeech.synth.dont_notify_on_error", true);
 
+// Disable the refresh message:
+// It looks like you haven't started Firefox in a while. Do you want to clean it up for a fresh, like-new experience?
+user_pref("browser.disableResetPrompt", true);
+
 // Disable tab groups
 user_pref("browser.tabs.groups.enabled", false);
 user_pref("browser.tabs.groups.smart.enabled", false);
