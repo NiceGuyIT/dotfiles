@@ -146,32 +146,72 @@ export def chezmoi-private [...args: string]: nothing -> nothing {
 	^chezmoi --config $config ...$args
 }
 
+# Extract the filename from the URL headers.
+export def url-filename []: string -> string {
+	let url = $in
+	let content_disposition = (
+		http head $url
+		| where name =~ 'content-disposition'
+		| get value
+		| parse --regex '.*filename="?(?<filename>[^";]+)[;"]?'
+	)
 
-# dl will download a file from a URL
-export def dl [url: string, --force (-f)]: nothing -> table<name: string, value: string> {
-	use std log
-	let response_headers = (http head $url)
-	let content_disposition = ($response_headers | where name =~ 'content-disposition' | get value | parse --regex '.*filename="?(?<filename>[^";]+)[;"]?')
-	mut filename = ""
 	if not ($content_disposition | is-empty) {
 		# Content-Disposition header might have the filename.
-		$filename = ($content_disposition | get filename.0)
+		return ($content_disposition | get filename.0)
 	} else {
 		if ($url | str ends-with '/') {
+			use std log
 			log warning $"URL ends with a path and the HTTP headers do not have a filename. Using a generated filename"
-			$filename = $"dl-(random uuid).bin"
+			return $"dl-(random uuid).bin"
 		} else {
-			$filename = (($url | url parse).path | path basename)
+			return (($url | url parse).path | path basename)
 		}
 	}
+}
+
+# dl will download a file from a URL.
+export def dl [
+	url: string						# URL to download
+	--force (-f) 					# Overwrite the file if it exists
+	--path (-p): path				# Path to save the file
+	--filename (-n): string			# Filename of the file. Detected from the headers.
+	--save_path (-s): string		# Full path of the file to save. Overrides --path and --filename, and assumes --force
+]: nothing -> table<name: string, value: string> {
+	let save_path = $save_path
+	let force = (
+		if ($save_path | is-not-empty) {
+			true
+		} else {
+			$force
+		}
+	)
+	let path = (
+		if ($save_path | is-not-empty) {
+			$save_path | path dirname
+		} else {
+			$path | default "." | path expand
+		}
+	)
+	let filename = (
+		if ($save_path | is-not-empty) {
+			$save_path | path basename
+		} else {
+			$filename | default ($url | url-filename)
+		}
+	)
+	let response_headers = (http head $url)
+	let full_path = ($path | path join $filename)
+
 	# "http get" streams the response while "http get --full" buffers the request. Separating the response headers
 	# from the body is not possible.
 	# https://discordapp.com/channels/601130461678272522/601130461678272524/1209936591267569675
 	if $force {
-		http get $url | save --progress --force $filename
+		http get $url | save --progress --force $full_path
 	} else {
-		http get $url | save --progress $filename
+		http get $url | save --progress $full_path
 	}
+	print $"Saved file to '($full_path)'"
 	$response_headers
 }
 
