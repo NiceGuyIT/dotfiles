@@ -18,6 +18,16 @@ export def "betterbird install" [
 		desktop_icon: "betterbird/chrome/icons/default/default256.png"
 	}
 
+	if (^ouch --version) != 'ouch 0.5.1' {
+		print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
+		print "Previous versions moved the old directory into the --dir directory."
+		print "New versions (0.6.1 and possibly 0.6.0) REPLACES the --dir directory."
+		print "See https://github.com/ouch-org/ouch/issues/813"
+		print ""
+		print "ouch 0.5.1 is supported. Please install ouch 0.5.1 and try again."
+		return
+	}
+
 	# URL format:
 	# Base: https://www.betterbird.eu/downloads/get.php?os=linux&lang=en-US&version=release
 	# Parameters:

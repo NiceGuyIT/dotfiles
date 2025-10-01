@@ -12,7 +12,7 @@ export def "discord install" [
 	let install_directory = $install_directory | path expand
 	let applications_directory = $applications_directory | path expand
 
-	if (ouch --version) != 'ouch 0.5.1' {
+	if (^ouch --version) != 'ouch 0.5.1' {
 		print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
 		print "Previous versions moved the old directory into the --dir directory."
 		print "New versions (0.6.1 and possibly 0.6.0) REPLACES the --dir directory."
