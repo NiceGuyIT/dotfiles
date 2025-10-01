@@ -12,13 +12,15 @@ export def "discord install" [
 	let install_directory = $install_directory | path expand
 	let applications_directory = $applications_directory | path expand
 
-	print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
-	print "Previous versions moved the old directory into the --dir directory."
-	print "New versions (0.6.1 and possibly 0.6.0) REPLACES the --dir directory."
-	print "See https://github.com/ouch-org/ouch/issues/813"
-	print ""
-	print "Until that is fixed, this installer/updater has been disabled."
-	return
+	if (ouch --version) != 'ouch 0.5.1' {
+		print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
+		print "Previous versions moved the old directory into the --dir directory."
+		print "New versions (0.6.1 and possibly 0.6.0) REPLACES the --dir directory."
+		print "See https://github.com/ouch-org/ouch/issues/813"
+		print ""
+		print "ouch 0.5.1 is supported. Please install ouch 0.5.1 and try again."
+		return
+	}
 
 	let url = {
 		scheme: https,
