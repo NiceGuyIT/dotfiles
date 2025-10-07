@@ -102,5 +102,11 @@
     "editor.tabSize": 2
   },
   "codeium.disableSupercomplete": true,
-  "codeium.enableExplainProblem": false
+  "codeium.enableExplainProblem": false,
+  "chat.agent.enabled": false,
+  "chat.agent.maxRequests": 0,
+  "chat.commandCenter.enabled": false,
+  "chat.notifyWindowOnConfirmation": false,
+  "telemetry.feedback.enabled": false,
+  "telemetry.editStats.enabled": false
 }
