@@ -1,0 +1,88 @@
+#!/usr/bin/env nu
+
+export def "main" [] {
+	use std log
+	# This script will create a desktop icon for every Firefox profile on Linux.
+	# {{ $profiles := joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini" }}
+	# {{ if stat $profiles }}{{ include $profiles | sha256sum }}{{ end }}
+	
+	# $env.CHEZMOI_WORKING_TREE
+	if not ($nu.plugin-path | path exists) {
+		log warning $"Chezmoi has not run yet to create Nu's plugin path: ($nu.plugin-path)"
+		print $"Chezmoi has not run yet to create Nu's plugin path: ($nu.plugin-path)"
+		exit 0
+	}
+
+	let firefox_bin = (which firefox | get path?.0)
+	if ($firefox_bin | is-empty) {
+		log warning $"Firefox binary was not found in path: ($firefox_bin)"
+		print $"Firefox binary was not found in path: ($firefox_bin)"
+		exit 0
+	}
+
+	let desktop_file = '/usr/share/applications/firefox.desktop'
+	if ($desktop_file | is-empty) {
+		log warning $"Sample Firefox desktop file not found: ($desktop_file)"
+		print $"Sample Firefox desktop file not found: ($desktop_file)"
+		exit 0
+	}
+
+	let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
+	if ($firefox_dir | is-empty) {
+		log warning $"Firefox config directory not found: ($firefox_dir)"
+		print $"Firefox config directory not found: ($firefox_dir)"
+		exit 0
+	}
+
+	let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
+	if ($firefox_dir | is-empty) {
+		log warning $"Firefox config directory not found: ($firefox_dir)"
+		print $"Firefox config directory not found: ($firefox_dir)"
+		exit 0
+	}
+
+	# 'from ini' requires formats plugin
+	let formats = (which nu_plugin_formats | get path?.0)
+	if ($formats | is-empty) or not ($formats | path exists) {
+		log warning "Plugin nu_plugin_formats is not installed"
+		print "Plugin nu_plugin_formats is not installed"
+		exit 0
+	}
+
+	plugin add $formats
+	plugin use formats
+	let profiles = ($firefox_dir | path join 'profiles.ini')
+	if ($profiles | is-empty) {
+		log warning $"Firefox profiles was not found in config: ($profiles)"
+		print $"Firefox profiles was not found in config: ($profiles)"
+		exit
+	}
+
+	let profile_paths = (open $profiles
+		| transpose section value
+		| where section =~ "Profile"
+		| where value.Path !~ "default"
+		| select section value.Path
+		| rename section path
+		| insert name {|it|
+			if ($it.path =~ '\.') {
+				$it.path
+				| split column '.'
+				| get column2?.0
+			} else {
+				$it.path
+			}
+		}
+	)
+
+	$profile_paths | each {|it|
+		let filename = $"firefox-($it.name).desktop"
+		open $desktop_file
+			| lines
+			| str replace --regex '^Exec=(.*) %u' $"Exec=$1 -P \"($it.name)\" %u"
+			| str replace --regex '^Name(.*)=(.*)' $"Name$1=$2 \(($it.name)\)"
+			| to text
+			| save --force $filename
+		print $"Saving ($filename)"
+	}
+}

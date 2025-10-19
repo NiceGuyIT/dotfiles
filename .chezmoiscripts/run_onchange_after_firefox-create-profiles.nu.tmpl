@@ -6,6 +6,7 @@ export def "main" [] {
 	# {{ $profiles := joinPath .chezmoi.homeDir ".mozilla/firefox/profiles.ini" }}
 	# {{ if stat $profiles }}{{ include $profiles | sha256sum }}{{ end }}
 	
+	# $env.CHEZMOI_WORKING_TREE
 	if not ($nu.plugin-path | path exists) {
 		log warning $"Chezmoi has not run yet to create Nu's plugin path: ($nu.plugin-path)"
 		print $"Chezmoi has not run yet to create Nu's plugin path: ($nu.plugin-path)"
@@ -39,7 +40,6 @@ export def "main" [] {
 		print $"Firefox config directory not found: ($firefox_dir)"
 		exit 0
 	}
-
 
 	# 'from ini' requires formats plugin
 	let formats = (which nu_plugin_formats | get path?.0)
