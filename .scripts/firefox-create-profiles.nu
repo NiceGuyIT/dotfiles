@@ -9,7 +9,7 @@ def firefox-create-profiles []: nothing -> nothing {
 	let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
 	
 	# 'from ini' requires formats plugin
-	let formats = (which nu_plugin_formats | get path?.0)
+	let formats = (which nu_plugin_formats | get path?.0?)
 	plugin add $formats
 	plugin use formats
 	let profiles = ($firefox_dir | path join 'profiles.ini')
