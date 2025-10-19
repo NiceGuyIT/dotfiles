@@ -123,14 +123,16 @@ do --env {
 			}
 		}
 
-		let ssh_agent_env = ^ssh-agent -c
-			| lines
-			| first 2
-			| parse "setenv {name} {value};"
-			| transpose --header-row
-			| into record
-		load-env $ssh_agent_env
-		$ssh_agent_env | save --force $ssh_agent_file
+		if (which ssh-agent | is-not-empty) {
+			let ssh_agent_env = ^ssh-agent -c
+				| lines
+				| first 2
+				| parse "setenv {name} {value};"
+				| transpose --header-row
+				| into record
+			load-env $ssh_agent_env
+			$ssh_agent_env | save --force $ssh_agent_file
+		}
 	}
 }
 
