@@ -63,7 +63,7 @@ def check-environment []: nothing -> nothing {
 		exit 0
 	}
 
-	let firefox_bin = (which firefox | get path?.0)
+	let firefox_bin = (which firefox | get path?.0?)
 	if ($firefox_bin | is-empty) {
 		log warning $"Firefox binary was not found in path: ($firefox_bin)"
 		print $"Firefox binary was not found in path: ($firefox_bin)"
@@ -93,7 +93,7 @@ def check-environment []: nothing -> nothing {
 
 export def "main" [] {
 	# 'from ini' requires formats plugin
-	let formats = (which nu_plugin_formats | get path?.0)
+	let formats = (which nu_plugin_formats | get path?.0?)
 	if ($formats | is-empty) or not ($formats | path exists) {
 		log warning "Plugin nu_plugin_formats is not installed"
 		print "Plugin nu_plugin_formats is not installed"
