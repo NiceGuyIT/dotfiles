@@ -73,6 +73,9 @@ pathmunge "${HOME}/go/bin"
 # Rust
 pathmunge "${HOME}/.cargo/bin"
 
+# Bun
+pathmunge "${HOME}/.bun/bin"
+
 # Python
 pathmunge "${HOME}/.pyenv/bin"
 # "pip install --user" installs to ~/.local/bin/
