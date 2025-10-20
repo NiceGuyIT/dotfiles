@@ -1,0 +1,57 @@
+// For format details, see https://containers.dev/implementors/json_reference/.
+// For config options, see the README at: https://github.com/devcontainers/templates/tree/main/src/universal
+{
+  // A name for the dev container displayed in the UI.
+  "name": "Docker containers",
+  // Use a Dockerfile or Docker Compose file: https://containers.dev/guide/dockerfile
+  // Use an image: https://github.com/devcontainers/images/blob/main/src/base-debian/history/1.0.9.md
+  "image": "ghcr.io/niceguyit/opensuse-base:v0.1.1-leap-15.6",
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": {
+    // FIXME: It seems JetBrains does not run postCreateCommand as the user.
+    "config-devcontainer": [
+      "/usr/bin/sudo",
+      "/usr/bin/su",
+      "--login",
+      "--command",
+      "${containerWorkspaceFolder}/.scripts/config-devcontainer.sh",
+      "dev"
+    ]
+  },
+  // Configure tool-specific properties.
+  "customizations": {
+    "jetbrains": {
+      "settings": {
+        "com.intellij:app:EditorSettings.soft_wrap_file_masks": "*.md; *.txt; *.rst; *.adoc",
+        "org.jetbrains.plugins.terminal:app:TerminalOptionsProvider.myHighlightHyperlinks": false
+      },
+      "plugins": ["com.jetbrains.sh", "co.anbora.labs.nushell.community"],
+      "backend": "Rider"
+    },
+    "vscode": {
+      "extensions": [
+        // Common extensions
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "mikestead.dotenv",
+        "skellock.just",
+        "streetsidesoftware.code-spell-checker",
+        "TheNuProjectContributors.vscode-nushell-lang",
+        "timonwong.shellcheck",
+        "VisualStudioExptTeam.vscodeintellicode"
+      ]
+    }
+  },
+  // Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+  // "remoteUser": "root",
+  // https://github.com/microsoft/vscode-dev-containers/tree/main/containers/docker-from-docker
+  //"overrideCommand": false,
+  "runArgs": [
+    //"--init",
+    //"--privileged"
+  ],
+  "mounts": [
+    // "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    // "source=/var/lib/docker,target=/var/lib/docker,type=bind"
+  ]
+}
