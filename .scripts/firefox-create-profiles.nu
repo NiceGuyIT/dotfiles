@@ -32,6 +32,7 @@ def firefox-create-profiles []: nothing -> nothing {
 
 	let script_sir = ($env.CHEZMOI_WORKING_TREE | path join ".scripts")
 	let user_js = ([$env.CHEZMOI_WORKING_TREE ".scripts"] | path join 'mozilla-firefox-user.js')
+	let search_json = ([$env.CHEZMOI_WORKING_TREE ".scripts"] | path join 'mozilla-firefox-search.json.mozlz4')
 	let app_dir = ([$env.HOME .local share applications] | path join)
 	if not ($app_dir | path exists) {
 		mkdir $app_dir
@@ -46,9 +47,14 @@ def firefox-create-profiles []: nothing -> nothing {
 			| save --force $filename
 		print $"Saving ($filename)"
 
-		# Copy the user.js file to each profile
+		# Copy the user.js and search.json.mozlz4 file to each profile
 		# TODO: Technically this is out off scope for creating the Firefox profile icon.
 		cp $user_js ([$firefox_dir $it.path] | path join 'user.js')
+
+		# Note: The compressed mozlz4 is stored in git because mozlz4 utility is not available on all systems. 
+		# https://github.com/jusw85/mozlz4
+		# FIXME: This does not work in Chezmoi. Need to research why.
+		cp $search_json ([$firefox_dir $it.path] | path join 'search.json.mozlz4')
 	}
 }
 

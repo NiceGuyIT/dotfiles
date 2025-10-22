@@ -1,0 +1,503 @@
+{
+	"version": 12,
+	"engines": [
+		{
+			"id": "google",
+			"_name": "Google",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 101
+			}
+		},
+		{
+			"id": "amazondotcom-us",
+			"_name": "Amazon.com",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 102
+			}
+		},
+		{
+			"id": "bing",
+			"_name": "Bing",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 103
+			}
+		},
+		{
+			"id": "ddg",
+			"_name": "DuckDuckGo",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 104
+			}
+		},
+		{
+			"id": "wikipedia",
+			"_name": "Wikipedia (en)",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 106
+			}
+		},
+		{
+			"id": "ebay",
+			"_name": "eBay",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 105
+			}
+		},
+		{
+			"id": "mojeek",
+			"_name": "Mojeek",
+			"_loadPath": "[user]",
+			"_iconMapObj": null,
+			"_metaData": {
+				"order": 10,
+				"loadPathHash": "UftgdamNXY402mzYJsclj00UAvBiOF0VLaFtO2muVbw="
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://www.mojeek.com/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_filePath": null,
+			"_definedAliases": [
+				"@m"
+			]
+		},
+		{
+			"id": "stract",
+			"_name": "Stract",
+			"_loadPath": "[user]",
+			"_iconMapObj": null,
+			"_metaData": {
+				"order": 11
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://stract.com/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_filePath": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "perplexity",
+			"_name": "Perplexity",
+			"_isAppProvided": true,
+			"_metaData": {
+				"order": 1
+			}
+		},
+		{
+			"id": "priv-au",
+			"_name": "priv.au",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 12
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://priv.au/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-stream",
+			"_name": "searx.stream",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 13
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.stream/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-rhscz-eu",
+			"_name": "search.rhscz.eu",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 14
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.rhscz.eu/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-rhscz-eu",
+			"_name": "searx.rhscz.eu",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 15
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.rhscz.eu/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-oloke-xyz",
+			"_name": "searx.oloke.xyz",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 16
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.oloke.xyz/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-inetol-net",
+			"_name": "search.inetol.net",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 17
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.inetol.net/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-tuxcloud-net",
+			"_name": "searx.tuxcloud.net",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 18
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.tuxcloud.net/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-im-in-space",
+			"_name": "search.im-in.space",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 19
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.im-in.space/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-hbubli-cc",
+			"_name": "search.hbubli.cc",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"261": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjI2MXB4IiBoZWlnaHQ9IjI2MXB4IiBzdHlsZT0ic2hhcGUtcmVuZGVyaW5nOmdlb21ldHJpY1ByZWNpc2lvbjsgdGV4dC1yZW5kZXJpbmc6Z2VvbWV0cmljUHJlY2lzaW9uOyBpbWFnZS1yZW5kZXJpbmc6b3B0aW1pemVRdWFsaXR5OyBmaWxsLXJ1bGU6ZXZlbm9kZDsgY2xpcC1ydWxlOmV2ZW5vZGQiIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIj4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MSIgZmlsbD0iIzJmNGZmZiIgZD0iTSAxMTQuNSwxMi41IEMgMTY0Ljk2OCw5LjMxNTIxIDIwMy40NjgsMjguOTgxOSAyMzAsNzEuNUMgMjM2LjY3NSw4My4zNTg5IDI0MC44NDIsOTYuMDI1NSAyNDIuNSwxMDkuNUMgMjM2LjQ5MSwxMDkuNjY2IDIzMC40OTEsMTA5LjQ5OSAyMjQuNSwxMDlDIDIxNi4zMzEsNzUuODM2OSAxOTYuODMxLDUyLjAwMzYgMTY2LDM3LjVDIDE2Ni4yMzksNDguNDY2NCAxNjIuMDcyLDU3LjI5OTcgMTUzLjUsNjRDIDE1MS4wNDMsNjUuNTYyMSAxNDguMzc2LDY2LjU2MjEgMTQ1LjUsNjdDIDEzNS41MDYsNjcuNDk5OCAxMjUuNTA2LDY3LjY2NjUgMTE1LjUsNjcuNUMgMTE1LjkyNiw3Ny45MTIyIDExNS40MjYsODguMjQ1NiAxMTQsOTguNUMgMTExLjksMTAxLjQ2NyAxMDkuMDY2LDEwMy4zIDEwNS41LDEwNEMgOTYuNTA2MiwxMDQuNSA4Ny41MDYyLDEwNC42NjYgNzguNSwxMDQuNUMgNzguNSwxMTIuODMzIDc4LjUsMTIxLjE2NyA3OC41LDEyOS41QyA4OS4xNjY3LDEyOS41IDk5LjgzMzMsMTI5LjUgMTEwLjUsMTI5LjVDIDExMC41LDE0MS44MzMgMTEwLjUsMTU0LjE2NyAxMTAuNSwxNjYuNUMgMTAzLjQ5MiwxNjYuNjY2IDk2LjQ5MjEsMTY2LjUgODkuNSwxNjZDIDcwLjMxOTUsMTQ2LjY1MyA1MC45ODYyLDEyNy40ODYgMzEuNSwxMDguNUMgMjMuNDQ0NiwxNTMuMjE0IDM4LjExMTMsMTg4LjM4MSA3NS41LDIxNEMgODkuNjkwNSwyMjIuNDUzIDEwNS4wMjQsMjI2Ljk1MyAxMjEuNSwyMjcuNUMgMTIxLjUsMjMzLjgzMyAxMjEuNSwyNDAuMTY3IDEyMS41LDI0Ni41QyA3MS4yNzc0LDI0MS42NDYgMzYuNDQ0LDIxNS45NzkgMTcsMTY5LjVDIDEuNTkyMTgsMTE4LjQxNSAxMy40MjU1LDc0LjkxNDkgNTIuNSwzOUMgNzAuNzU5MywyNC4zNjYxIDkxLjQyNiwxNS41MzI3IDExNC41LDEyLjUgWiIvPjwvZz4KPGc+PHBhdGggc3R5bGU9Im9wYWNpdHk6MSIgZmlsbD0iIzJmNGZmZiIgZD0iTSAxNjEuNSwxMDguNSBDIDE4Ny45MzksMTA2Ljc5MyAyMDYuMTA1LDExOC4xMjYgMjE2LDE0Mi41QyAyMjAuNjExLDE1OC4zMzUgMjE4LjQ0NCwxNzMuMTY5IDIwOS41LDE4N0MgMjIyLjkyOSwxOTkuMzg1IDIzNS45MjksMjEyLjIxOCAyNDguNSwyMjUuNUMgMjQ0LjQ3LDIzMC43MTUgMjM5LjgwMywyMzQuODgxIDIzNC41LDIzOEMgMjIyLjE2NywyMjUuNjY3IDIwOS44MzMsMjEzLjMzMyAxOTcuNSwyMDFDIDE5MC45MjMsMjA0LjA4MSAxODMuOTIzLDIwNi40MTUgMTc2LjUsMjA4QyAxNTQuMzQ4LDIxMC44MzcgMTM3LjE4MiwyMDMuMDA0IDEyNSwxODQuNUMgMTE3LjU4LDE2OS42MSAxMTYuNTgsMTU0LjI3NiAxMjIsMTM4LjVDIDEzMC4xNjIsMTIxLjgyOSAxNDMuMzI5LDExMS44MjkgMTYxLjUsMTA4LjUgWiBNIDE2MC41LDEyNy41IEMgMTg5Ljc5NiwxMjYuNjI1IDIwMi4yOTYsMTQwLjYyNSAxOTgsMTY5LjVDIDE4Ny4yNywxOTAuMDc2IDE3MS40MzcsMTk1LjI0MyAxNTAuNSwxODVDIDEzNi40ODEsMTczLjIzNCAxMzMuMzE0LDE1OS4wNjggMTQxLDE0Mi41QyAxNDUuOTk1LDEzNS40MzMgMTUyLjQ5NSwxMzAuNDMzIDE2MC41LDEyNy41IFoiLz48L2c+Cjwvc3ZnPgo="
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 20
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.hbubli.cc/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "fairsuch-net",
+			"_name": "fairsuch.net",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 21
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://fairsuch.net/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-mdosch-de",
+			"_name": "search.mdosch.de",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 22
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.mdosch.de/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-tiekoetter-com",
+			"_name": "searx.tiekoetter.com",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 23
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.tiekoetter.com/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-party",
+			"_name": "searx.party",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 24
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.party/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searxng-canine-tools",
+			"_name": "searxng.canine.tools",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"500": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjUwMCIgaGVpZ2h0PSI1MDAiPgo8cGF0aCBkPSJNMCAwIEMxMS4yMiAwIDIyLjQ0IDAgMzQgMCBDMzQgNi4yNyAzNCAxMi41NCAzNCAxOSBDMzkuNjEgMTkgNDUuMjIgMTkgNTEgMTkgQzUxIDI0LjYxIDUxIDMwLjIyIDUxIDM2IEM2Mi44OCAzNiA3NC43NiAzNiA4NyAzNiBDODcgNDEuOTQgODcgNDcuODggODcgNTQgQzkyLjYxIDU0IDk4LjIyIDU0IDEwNCA1NCBDMTA0IDU5LjI4IDEwNCA2NC41NiAxMDQgNzAgQzExNS41NSA3MCAxMjcuMSA3MCAxMzkgNzAgQzEzOSA3NS45NCAxMzkgODEuODggMTM5IDg4IEMxMzMuMDYgODggMTI3LjEyIDg4IDEyMSA4OCBDMTIxIDkzLjYxIDEyMSA5OS4yMiAxMjEgMTA1IEMxMjYuOTQgMTA1IDEzMi44OCAxMDUgMTM5IDEwNSBDMTM5IDExMS4yNyAxMzkgMTE3LjU0IDEzOSAxMjQgQzE1MC44OCAxMjQgMTYyLjc2IDEyNCAxNzUgMTI0IEMxNzUgMTI5Ljk0IDE3NSAxMzUuODggMTc1IDE0MiBDMjE1LjI2IDE0MiAyNTUuNTIgMTQyIDI5NyAxNDIgQzI5NyAxNDcuMjggMjk3IDE1Mi41NiAyOTcgMTU4IEMzMDguNTUgMTU4IDMyMC4xIDE1OCAzMzIgMTU4IEMzMzIgMTYzLjk0IDMzMiAxNjkuODggMzMyIDE3NiBDMzM3Ljk0IDE3NiAzNDMuODggMTc2IDM1MCAxNzYgQzM1MCAxODEuNjEgMzUwIDE4Ny4yMiAzNTAgMTkzIEMzNTUuMjggMTkzIDM2MC41NiAxOTMgMzY2IDE5MyBDMzY2IDIwNC4yMiAzNjYgMjE1LjQ0IDM2NiAyMjcgQzM3MS45NCAyMjcgMzc3Ljg4IDIyNyAzODQgMjI3IEMzODQgMjM5LjIxIDM4NCAyNTEuNDIgMzg0IDI2NCBDMzkwLjI3IDI2NCAzOTYuNTQgMjY0IDQwMyAyNjQgQzQwMyAyODEuMTYgNDAzIDI5OC4zMiA0MDMgMzE2IEM0MDguNjEgMzE2IDQxNC4yMiAzMTYgNDIwIDMxNiBDNDIwIDMyMS42MSA0MjAgMzI3LjIyIDQyMCAzMzMgQzQwMi4xOCAzMzMgMzg0LjM2IDMzMyAzNjYgMzMzIEMzNjYgMzI3LjM5IDM2NiAzMjEuNzggMzY2IDMxNiBDMzYwLjcyIDMxNiAzNTUuNDQgMzE2IDM1MCAzMTYgQzM1MCAzMDQuNDUgMzUwIDI5Mi45IDM1MCAyODEgQzM0NC4wNiAyODEgMzM4LjEyIDI4MSAzMzIgMjgxIEMzMzIgMjU3LjkgMzMyIDIzNC44IDMzMiAyMTEgQzMyNi4zOSAyMTEgMzIwLjc4IDIxMSAzMTUgMjExIEMzMTUgMjQwLjA0IDMxNSAyNjkuMDggMzE1IDI5OSBDMzIwLjYxIDI5OSAzMjYuMjIgMjk5IDMzMiAyOTkgQzMzMiAzMTYuMTYgMzMyIDMzMy4zMiAzMzIgMzUxIEMzMjYuMzkgMzUxIDMyMC43OCAzNTEgMzE1IDM1MSBDMzE1IDM2OC40OSAzMTUgMzg1Ljk4IDMxNSA0MDQgQzMwMi43OSA0MDQgMjkwLjU4IDQwNCAyNzggNDA0IEMyNzggMzk4LjA2IDI3OCAzOTIuMTIgMjc4IDM4NiBDMjg0LjI3IDM4NiAyOTAuNTQgMzg2IDI5NyAzODYgQzI5NyAzNjguNTEgMjk3IDM1MS4wMiAyOTcgMzMzIEMyOTAuNzMgMzMzIDI4NC40NiAzMzMgMjc4IDMzMyBDMjc4IDM0NC44OCAyNzggMzU2Ljc2IDI3OCAzNjkgQzI3Mi43MiAzNjkgMjY3LjQ0IDM2OSAyNjIgMzY5IEMyNjIgMzgwLjU1IDI2MiAzOTIuMSAyNjIgNDA0IEMyNTAuNDUgNDA0IDIzOC45IDQwNCAyMjcgNDA0IEMyMjcgMzk4LjA2IDIyNyAzOTIuMTIgMjI3IDM4NiBDMjMyLjYxIDM4NiAyMzguMjIgMzg2IDI0NCAzODYgQzI0NCAzNzQuNDUgMjQ0IDM2Mi45IDI0NCAzNTEgQzI0OS45NCAzNTEgMjU1Ljg4IDM1MSAyNjIgMzUxIEMyNjIgMzM5LjQ1IDI2MiAzMjcuOSAyNjIgMzE2IEMyNTYuMDYgMzE2IDI1MC4xMiAzMTYgMjQ0IDMxNiBDMjQ0IDMxMC4zOSAyNDQgMzA0Ljc4IDI0NCAyOTkgQzIzOC4zOSAyOTkgMjMyLjc4IDI5OSAyMjcgMjk5IEMyMjcgMjg3LjQ1IDIyNyAyNzUuOSAyMjcgMjY0IEMyMDkuODQgMjY0IDE5Mi42OCAyNjQgMTc1IDI2NCBDMTc1IDI2OS42MSAxNzUgMjc1LjIyIDE3NSAyODEgQzE2OC43MyAyODEgMTYyLjQ2IDI4MSAxNTYgMjgxIEMxNTYgMzIxLjU5IDE1NiAzNjIuMTggMTU2IDQwNCBDMTQ0LjQ1IDQwNCAxMzIuOSA0MDQgMTIxIDQwNCBDMTIxIDM5OC4wNiAxMjEgMzkyLjEyIDEyMSAzODYgQzExNS4zOSAzODYgMTA5Ljc4IDM4NiAxMDQgMzg2IEMxMDQgMzkxLjk0IDEwNCAzOTcuODggMTA0IDQwNCBDOTIuNzggNDA0IDgxLjU2IDQwNCA3MCA0MDQgQzcwIDM5OC4wNiA3MCAzOTIuMTIgNzAgMzg2IEM3NS42MSAzODYgODEuMjIgMzg2IDg3IDM4NiBDODcgMzgwLjM5IDg3IDM3NC43OCA4NyAzNjkgQzkyLjYxIDM2OSA5OC4yMiAzNjkgMTA0IDM2OSBDMTA0IDM0NS45IDEwNCAzMjIuOCAxMDQgMjk5IEM5OC4zOSAyOTkgOTIuNzggMjk5IDg3IDI5OSBDODcgMjgxLjg0IDg3IDI2NC42OCA4NyAyNDcgQzgxLjM5IDI0NyA3NS43OCAyNDcgNzAgMjQ3IEM3MCAyNDAuNCA3MCAyMzMuOCA3MCAyMjcgQzYzLjczIDIyNyA1Ny40NiAyMjcgNTEgMjI3IEM1MSAyMTUuNzggNTEgMjA0LjU2IDUxIDE5MyBDNDUuMzkgMTkzIDM5Ljc4IDE5MyAzNCAxOTMgQzM0IDE3Ni4xNyAzNCAxNTkuMzQgMzQgMTQyIEMyOC4wNiAxNDIgMjIuMTIgMTQyIDE2IDE0MiBDMTYgMTE4LjI0IDE2IDk0LjQ4IDE2IDcwIEMxMC43MiA3MCA1LjQ0IDcwIDAgNzAgQzAgNjQuNzIgMCA1OS40NCAwIDU0IEM1LjI4IDU0IDEwLjU2IDU0IDE2IDU0IEMxNiA0OC4wNiAxNiA0Mi4xMiAxNiAzNiBDMTAuNzIgMzYgNS40NCAzNiAwIDM2IEMwIDI0LjEyIDAgMTIuMjQgMCAwIFogTTEyMSAzNTEgQzEyMSAzNjIuNTUgMTIxIDM3NC4xIDEyMSAzODYgQzEyNi45NCAzODYgMTMyLjg4IDM4NiAxMzkgMzg2IEMxMzkgMzc0LjQ1IDEzOSAzNjIuOSAxMzkgMzUxIEMxMzMuMDYgMzUxIDEyNy4xMiAzNTEgMTIxIDM1MSBaICIgZmlsbD0iI0ZGRkZGRiIgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDEsNDgpIi8+Cjwvc3ZnPgo="
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 25,
+				"loadPathHash": "UftgdamNXY402mzYJsclj00UAvBiOF0VLaFtO2muVbw="
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searxng.canine.tools/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "etsi.me",
+			"_name": "etsi.me",
+			"_loadPath": "[user]",
+			"_iconMapObj": {
+				"347.716552734375": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5Mm1tIiBoZWlnaHQ9IjkybW0iIHZpZXdCb3g9IjAgMCA5MiA5MiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTQwLjkyMSAtMTcuNDE3KSI+PGNpcmNsZSBjeD0iNzUuOTIxIiBjeT0iNTMuOTAzIiByPSIzMCIgc3R5bGU9ImZpbGw6bm9uZTtmaWxsLW9wYWNpdHk6MTtzdHJva2U6IzMwNTBmZjtzdHJva2Utd2lkdGg6MTA7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxwYXRoIGQ9Ik02Ny41MTUgMzcuOTE1YTE4IDE4IDAgMCAxIDIxLjA1MSAzLjMxMyAxOCAxOCAwIDAgMSAzLjEzOCAyMS4wNzgiIHN0eWxlPSJmaWxsOm5vbmU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOiMzMDUwZmY7c3Ryb2tlLXdpZHRoOjU7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIvPjxyZWN0IHdpZHRoPSIxOC44NDYiIGhlaWdodD0iMzkuOTYzIiB4PSIzLjcwNiIgeT0iMTIyLjA5IiByeT0iMCIgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiMzMDUwZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjg7c3Ryb2tlLW1pdGVybGltaXQ6NDtzdHJva2UtZGFzaGFycmF5Om5vbmU7c3Ryb2tlLW9wYWNpdHk6MSIgdHJhbnNmb3JtPSJyb3RhdGUoLTQ2LjIzNSkiLz48L2c+PC9zdmc+"
+			},
+			"_metaData": {
+				"alias": "",
+				"order": 26
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://etsi.me/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "search-privacyredirect-com",
+			"_name": "search.privacyredirect.com",
+			"_loadPath": "[user]",
+			"_metaData": {
+				"alias": "",
+				"order": 27
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://search.privacyredirect.com/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "searx-ox2-fr",
+			"_name": "searx.ox2.fr",
+			"_loadPath": "[user]",
+			"_metaData": {
+				"alias": "",
+				"order": 28
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://searx.ox2.fr/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		},
+		{
+			"id": "seek-fyi",
+			"_name": "seek.fyi",
+			"_loadPath": "[user]",
+			"_metaData": {
+				"alias": "",
+				"order": 29
+			},
+			"_urls": [
+				{
+					"params": [],
+					"rels": [],
+					"template": "https://seek.fyi/search?q={searchTerms}"
+				}
+			],
+			"_orderHint": null,
+			"_telemetryId": null,
+			"_definedAliases": []
+		}
+	],
+	"metaData": {
+		"useSavedOrder": true,
+		"locale": "en-US",
+		"region": "US",
+		"channel": "esr",
+		"experiment": "",
+		"distroID": "openSUSE",
+		"appDefaultEngineId": "google",
+		"defaultEngineId": "70c5c305-97af-4cc1-945b-7c7fe7e2ae7e",
+		"defaultEngineIdHash": "Kae54wv+kbg7MkikKI6AewKTXpiY5xhieOr8VqBkHDg="
+	}
+}
