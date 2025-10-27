@@ -13,7 +13,7 @@ export def "firefox install" [
 	# All versions: https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 	# let version = '128.9.0esr'
 	# 128.9.0esr uses bz2 for compression while 140.1.0esr uses xz
-	let version = '140.1.0esr'
+	let version = '140.4.0esr'
 
 	let os = $nu.os-info.name
 	let arch = $nu.os-info.arch
