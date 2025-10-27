@@ -37,6 +37,13 @@ user_pref("media.webspeech.synth.dont_notify_on_error", true);
 // It looks like you haven't started Firefox in a while. Do you want to clean it up for a fresh, like-new experience?
 user_pref("browser.disableResetPrompt", true);
 
+// Disable automatic updates
+// kb.mozillazine.org/App.update.mode
+https: user_pref("app.update.mode", 2);
+user_pref("app.update.auto", false);
+user_pref("app.update.enabled", false);
+user_pref("app.update.silent", false);
+
 // Disable tab groups
 user_pref("browser.tabs.groups.enabled", false);
 user_pref("browser.tabs.groups.smart.enabled", false);

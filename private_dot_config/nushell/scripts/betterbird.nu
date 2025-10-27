@@ -7,7 +7,12 @@ export def "betterbird install" [
 	let applications_directory = $applications_directory | path expand
 	let os = $nu.os-info.name
 	let lang = "en-US"
-	let version = "release"
+	# let version = "release"
+	let version = '128.9.2esr'
+
+	# Add the --ProfileManager switch to always start the profile manager.
+	let profile_manager = true
+	let profile_manager_str = (if ($profile_manager) {'--ProfileManager'} else {''})
 
 	# Application specific names
 	let app = {
@@ -78,7 +83,7 @@ export def "betterbird install" [
 	print "Installing desktop file..."
 	http get $desktop_url
 		| lines
-		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join $app.desktop_exec)"
+		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join $app.desktop_exec) ($profile_manager_str)"
 		| str replace --regex '^Icon=.*' $"Icon=($install_directory | path join $app.desktop_icon)"
 		| to text
 		| save --force ($applications_directory | path join $app.desktop_name)

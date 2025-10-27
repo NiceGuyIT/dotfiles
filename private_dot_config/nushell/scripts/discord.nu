@@ -9,8 +9,8 @@ export def "discord install" [
 	--install-directory: path = "~/.local/share/Discord/",
 	--applications-directory: path = "~/.local/share/applications/",
 ]: nothing -> nothing {
-	let install_directory = $install_directory | path expand
-	let applications_directory = $applications_directory | path expand
+	let install_directory = ($install_directory | path expand)
+	let applications_directory = ($applications_directory | path expand)
 
 	if (^ouch --version) != 'ouch 0.5.1' {
 		print "ouch 0.6.1 had a breaking change that changes how the --dir option handles directories."
@@ -46,8 +46,12 @@ export def "discord install" [
 	#		| where header == location
 	#		| get value.0
 	#)
-	#print $"Downloading ($location)"
-	#http get $location | save --force --progress $tmp_dl
+
+	# Remove the current install directory due to the Ouch bug above.
+	if ($install_directory | path exists) {
+		print $"Removing current install directory: '($install_directory)'"
+		rm -r $install_directory
+	}
 	print $"Downloading ($url)"
 	print $"tmp_dl: ($tmp_dl)"
 	# See https://github.com/ouch-org/ouch/issues/813

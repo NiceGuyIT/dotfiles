@@ -5,7 +5,8 @@
   "name": "Docker containers",
   // Use a Dockerfile or Docker Compose file: https://containers.dev/guide/dockerfile
   // Use an image: https://github.com/devcontainers/images/blob/main/src/base-debian/history/1.0.9.md
-  "image": "ghcr.io/niceguyit/opensuse-base:v0.1.1-leap-15.6",
+  // Custom image based on openSUSE Leap 15.6: https://github.com/niceguyit/oci-images/pkgs/container/opensuse-base
+  "image": "ghcr.io/niceguyit/opensuse-base:v0.1.2-leap-15.6",
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": {
     // FIXME: It seems JetBrains does not run postCreateCommand as the user.
