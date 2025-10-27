@@ -23,6 +23,19 @@ in the [justfile]() repository. Follow the installation instructions in the just
 
 [justfile]: https://github.com/NiceGuyIT/justfiles/
 
+## Alacritty
+
+```bash
+sudo zypper install ncurses5-devel
+http get https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info | tic -x -e alacritty,alacritty-direct -o ~/.terminfo -
+```
+
+```bash
+git clone https://github.com/alacritty/alacritty.git
+cd alaccritty/extra
+tic -s -x -e alacritty,alacritty-direct alacritty.info
+```
+
 ## TODO
 
 The vim plugins are not pulled automatically. They are submodules in `vim/pack/plugins/start/`. Need to add these
