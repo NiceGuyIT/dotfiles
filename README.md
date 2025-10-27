@@ -25,15 +25,14 @@ in the [justfile]() repository. Follow the installation instructions in the just
 
 ## Alacritty
 
+This PR adds "bracketed paste (BD, BE, PE, PS)". The `PS` capability breaks pasting pasting
+multi-line text into vim that is indented.
+
+https://github.com/alacritty/alacritty/commit/d40198da53f4c1c882901e364aca59e9b2ef2367
+
 ```bash
 sudo zypper install ncurses5-devel
 http get https://raw.githubusercontent.com/alacritty/alacritty/master/extra/alacritty.info | tic -x -e alacritty,alacritty-direct -o ~/.terminfo -
-```
-
-```bash
-git clone https://github.com/alacritty/alacritty.git
-cd alaccritty/extra
-tic -s -x -e alacritty,alacritty-direct alacritty.info
 ```
 
 ## TODO
