@@ -959,6 +959,8 @@ use discord.nu *
 # Betterbird functions
 use betterbird.nu *
 
+# Firefox functions
+use firefox.nu *
 
 # Custom Docker functions
 use docker.nu *

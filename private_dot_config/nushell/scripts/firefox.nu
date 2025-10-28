@@ -3,8 +3,8 @@ export def "firefox install" [
 	--install-directory: path = "~/.local/share/",
 	--applications-directory: path = "~/.local/share/applications/",
 ]: nothing -> nothing {
-	let install_directory = $install_directory | path expand
-	let applications_directory = $applications_directory | path expand
+	let install_directory = ($install_directory | path expand)
+	let applications_directory = ($applications_directory | path expand)
 	let lang = "en-US"
 
 	# The Zen Browser docs good information for mapping settings to files.

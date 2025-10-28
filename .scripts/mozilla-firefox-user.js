@@ -38,11 +38,14 @@ user_pref("media.webspeech.synth.dont_notify_on_error", true);
 user_pref("browser.disableResetPrompt", true);
 
 // Disable automatic updates
-// kb.mozillazine.org/App.update.mode
-https: user_pref("app.update.mode", 2);
+// https://kb.mozillazine.org/App.update.mode
+// https://superuser.com/questions/1325421/how-to-stop-firefox-update-notifications
+// https://github.com/mozilla/policy-templates/blob/master/docs/index.md#disableappupdate
+// about:policies#documentation
+user_pref("app.update.mode", 2);
 user_pref("app.update.auto", false);
 user_pref("app.update.enabled", false);
-user_pref("app.update.silent", false);
+user_pref("app.update.silent", true);
 
 // Disable tab groups
 user_pref("browser.tabs.groups.enabled", false);
