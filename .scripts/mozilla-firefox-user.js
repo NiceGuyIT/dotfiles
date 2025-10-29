@@ -46,6 +46,9 @@ user_pref("app.update.mode", 2);
 user_pref("app.update.auto", false);
 user_pref("app.update.enabled", false);
 user_pref("app.update.silent", true);
+user_pref("app.update.url", "");
+user_pref("app.update.url.details", "");
+user_pref("app.update.url.manual", "");
 
 // Disable tab groups
 user_pref("browser.tabs.groups.enabled", false);
