@@ -52,6 +52,10 @@ user_pref("browser.warnOnQuit", false);
 // Provide the ability to add new search engines.
 user_pref("browser.urlbar.update2.engineAliasRefresh", true);
 
+// Disable autofill
+user_pref("extensions.formautofill.addresses.enabled", false);
+user_pref("extensions.formautofill.creditCards.enabled", false);
+
 // Date/time formats follow the Date-Time Combination Examples
 // https://unicode.org/reports/tr35/tr35-dates.html#Date_Time_Combination_Examples
 // {1} = Date; {0} = Time
@@ -73,6 +77,13 @@ user_pref("network.dns.disablePrefetch", true);
 user_pref("network.http.speculative-parallel-limit", 0);
 user_pref("network.proxy.socks", "localhost");
 user_pref("network.proxy.socks_port", 56565);
+
+// Do not use DNS over HTTPS
+user_pref("network.trr.mode", 5);
+
+// Disable autofill
+user_pref("signon.management.page.breach-alerts.enabled", false);
+user_pref("signon.rememberSignons", false);
 
 // Enable userChrome.css customization
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
