@@ -31,7 +31,7 @@ export def "discord install" [
 			format: $format,
 		}
 	} | url join
-	let tmp_dl = $nu.temp-path | path join "discord.tar.gz"
+	let tmp_dl = (mktemp --tmpdir-path ($install_directory | path dirname) "Discord-XXXX.tar.gz")
 
 	# FIXME: The general download didn't work on one computer.
 	# This version uses xh to get the Location header to download.
@@ -58,15 +58,18 @@ export def "discord install" [
 	print $"install_directory: ($install_directory)"
 	http get $url | save --force --progress $tmp_dl
 
+	# Note: The --dir option creates a subdirectory rather then use the directory given.
+	# The safer option is to not use --dir and make sure $tmp_dl matches the Discord-XXX.tar.gz format (above).
+	cd ($install_directory | path dirname)
 	print $"Extracting the archive to `($install_directory)`"
-	ouch decompress --accessible --yes --dir $install_directory $tmp_dl
+	^ouch decompress --accessible --yes $tmp_dl
 	rm $tmp_dl
 
 	print "Installing desktop file..."
-	open ($install_directory | path join "Discord/discord.desktop")
+	open ($install_directory | path join "discord.desktop")
 		| lines
-		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join "Discord/Discord")"
-		| str replace --regex '^Icon=.*' $"Icon=($install_directory | path join "Discord/discord.png")"
+		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join "Discord")"
+		| str replace --regex '^Icon=.*' $"Icon=($install_directory | path join "discord.png")"
 		| to text
 		| save --force ($applications_directory | path join "discord.desktop")
 }
