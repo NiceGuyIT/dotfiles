@@ -33,11 +33,13 @@ profile
 .config/gtk-3.0/gtk.css
 .config/gtk-4.0/gtk.css
 
+# This has old scripts in it that should be updated to Nushell.
+bin-old/
+
 .idea/
 .vscode/
 atuin/
 bash-completion/
-bin/
 cargo/
 chezmoi-example.jsonc
 config/
@@ -53,16 +55,10 @@ vim-local.d/
 # Need to write a script to add this to the various profiles.
 .mozilla/firefox/user.js
 bash-preexec.sh
-gitconfig
-gitignore_global
-gvimrc
-inputrc
 install.nu
 install.sh
 LICENSE.md
 markdownlint.rc.yaml
 README.md
-ripgreprc
-vimrc
 zshrc
 scripts/
