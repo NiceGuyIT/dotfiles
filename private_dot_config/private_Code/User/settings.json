@@ -24,7 +24,8 @@
   "files.associations": {
     "*.nuon": "nushell",
     "*.toml": "toml",
-    ".gcloudignore": "ignore"
+    ".gcloudignore": "ignore",
+    "*.puml": "plantuml"
   },
   "files.autoSave": "onFocusChange",
   "files.watcherExclude": {
