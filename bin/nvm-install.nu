@@ -120,8 +120,10 @@ def main [] {
 	use std log
 	$env.NVM_VERSION = 'v0.40.3'
 	$env.NVM_REPO = 'nvm-sh/nvm'
+	# TODO: Make the version dynamic.
+	$env.NODE_VERSION = '20'
 	nvm_do_install (nvm_install_dir)
 
-	print 'To install a particular Node version:'
-	print '    source ~/.nvm/nvm.sh && nvm install 20'
+	# Install Node.js
+	^bash -c $"PROFILE=/dev/null source ~/.nvm/nvm.sh && nvm install ($env.NODE_VERSION)"
 }
