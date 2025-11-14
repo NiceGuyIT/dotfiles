@@ -1,4 +1,6 @@
 # Install Node packages in the user directory.
 # https://stackoverflow.com/a/13021677
-prefix = ${HOME}/.npm-packages
+# Note: prefix is incompatible with nvm.
+# prefix = ${HOME}/.npm-packages
+
 progress = false
