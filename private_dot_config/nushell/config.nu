@@ -962,6 +962,9 @@ use betterbird.nu *
 # Firefox functions
 use firefox.nu *
 
+# Claude functions
+use claude.nu *
+
 # Custom Docker functions
 use docker.nu *
 

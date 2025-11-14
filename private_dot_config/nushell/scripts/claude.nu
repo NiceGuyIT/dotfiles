@@ -13,7 +13,7 @@ def is-musl []: nothing -> bool {
 	return false
 }
 
-def 'claude download' [
+def 'claude _download' [
 	target: string				# Target version to install
 	download_dir: string		# Download directory
 	gcs_bucket: string			# GCS Bucket for Claude
@@ -105,7 +105,7 @@ def 'claude download' [
 }
 
 # Install Claude Code
-def 'claude install' [
+export def 'claude install' [
 	target: string				# Target version to install
 	binary_path: string			# Full path of the binary
 ] {
@@ -121,7 +121,7 @@ def 'claude install' [
 }
 
 # Claude Code Bootstrap Script (Nushell version)
-def main [
+export def 'claude download' [
 	target?: string = 'stable'			# Target version to install
 ] {
 	use std log
@@ -138,7 +138,7 @@ def main [
 		exit 1
 	}
 
-	let binary_path = claude download $target $download_dir $GCS_BUCKET
+	let binary_path = claude _download $target $download_dir $GCS_BUCKET
 	# claude install $target $binary_path
 
 	log info ""
