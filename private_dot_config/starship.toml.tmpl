@@ -83,7 +83,8 @@ $crystal\
 $custom\
 $sudo\
 $cmd_duration\
-{{- if not (stat "/.dockerenv") }}
+{{- $docker = (output "sh" "-c" "grep -c '/ / rw.*docker' /proc/self/mountinfo") | trim | atoi }}
+{{- if eq .docker 0 }}
 $fill\
 $status\
 $battery\

@@ -1,3 +1,9 @@
+{{/*
+The .gitignore file interferes with the 'checkout' GitHub action. This is an attempt to identify the specific
+configuration causing the problem.
+*/}}
+{{- $docker = (output "sh" "-c" "grep -c '/ / rw.*docker' /proc/self/mountinfo") | trim | atoi }}
+{{- if eq .docker 0 }}
 [user]
 name = {{ .git.name | quote }}
 email = {{ .git.email | quote }}
@@ -61,11 +67,6 @@ interactive = auto
 ui = true
 pager = true
 
-{{/*
-The .gitignore file interferes with the 'checkout' GitHub action. This is an attempt to identify the specific
-configuration causing the problem.
-*/}}
-{{- if not (stat "/.dockerenv") -}}
 # https://golang.org/doc/faq#git_https
 # The URL is case sensitive for SSH.
 [url "ssh://git@git.n.niceguyit.biz/"]
