@@ -83,10 +83,12 @@ $crystal\
 $custom\
 $sudo\
 $cmd_duration\
+{{ if not (stat "/.dockerenv") }}
 $fill\
 $status\
 $battery\
 $time\
+{{ end -}}
 $line_break\
 $jobs\
 $os\
