@@ -61,21 +61,17 @@ interactive = auto
 ui = true
 pager = true
 
+{{/*
+The .gitignore file interferes with the 'checkout' GitHub action. This is an attempt to identify the specific
+configuration causing the problem.
+*/}}
+{{- if not (stat "/.dockerenv") -}}
 # https://golang.org/doc/faq#git_https
-# This affects brew and git submodule checkout
-# 2025-02-23: Disable for now to prevent servers from failing due to lack of SSH keys.
-#[url "ssh://git@github.com/"]
-#insteadOf = https://github.com/
-
-# 2025-02-23: Disable for now to prevent servers from failing due to lack of SSH keys.
-#[url "ssh://git@gitlab.com/"]
-#insteadOf = https://gitlab.com/
-
 # The URL is case sensitive for SSH.
-# FIXME: Change the URL to something longer term.
 [url "ssh://git@git.n.niceguyit.biz/"]
 insteadOf = https://gitea.n.niceguyit.biz/
 
+{{ end -}}
 ################################################################################
 # vim: filetype=dosini
 ################################################################################
