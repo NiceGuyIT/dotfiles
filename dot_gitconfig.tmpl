@@ -2,8 +2,8 @@
 The .gitignore file interferes with the 'checkout' GitHub action. This is an attempt to identify the specific
 configuration causing the problem.
 */}}
-{{- $docker = (output "sh" "-c" "grep -c '/ / rw.*docker' /proc/self/mountinfo") | trim | atoi }}
-{{- if eq .docker 0 }}
+{{ $docker := (output "sh" "-c" "if grep --quiet '/ / rw.*docker' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
+{{- if eq $docker "false" -}}
 [user]
 name = {{ .git.name | quote }}
 email = {{ .git.email | quote }}
