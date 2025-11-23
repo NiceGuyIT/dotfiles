@@ -83,7 +83,7 @@ $crystal\
 $custom\
 $sudo\
 $cmd_duration\
-{{ $docker := (output "sh" "-c" "if grep --quiet '/ / rw.*docker' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
+{{ $docker := (output "sh" "-c" "if grep --quiet --extended-regexp '/ / rw.* overlay.*(docker|container)' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
 {{/* The right prompt causes problems in JetBrains with Nushell */}}
 {{- if eq $docker "false" -}}
 $fill\
