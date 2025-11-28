@@ -179,3 +179,7 @@ $env.LESS = "--quit-if-one-screen --RAW-CONTROL-CHARS --chop-long-lines --search
 
 # Use ripgrep config
 $env.RIPGREP_CONFIG_PATH = $"($env.HOME)/.ripgreprc"
+
+# Enable wayland in Gvim.
+# https://github.com/vim/vim/issues/15972
+$env.GVIM_ENABLE_WAYLAND = 1
