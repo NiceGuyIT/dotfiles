@@ -109,5 +109,6 @@
   "chat.commandCenter.enabled": false,
   "chat.notifyWindowOnConfirmation": false,
   "telemetry.feedback.enabled": false,
-  "telemetry.editStats.enabled": false
+  "telemetry.editStats.enabled": false,
+  "claudeCode.preferredLocation": "panel"
 }
