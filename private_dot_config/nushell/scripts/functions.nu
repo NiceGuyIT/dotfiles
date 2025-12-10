@@ -300,7 +300,9 @@ export def rdp [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which wlfreerdp | is-empty) {
+		if not (which sdl-freerdp | is-empty) {
+			^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
+		} else if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		} else if not (which xfreerdp | is-empty) {
 			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
@@ -315,7 +317,9 @@ export def rdp4k [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which wlfreerdp | is-empty) {
+		if not (which sdl-freerdp | is-empty) {
+			^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
+		} else if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		} else if not (which xfreerdp | is-empty) {
 			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
@@ -323,6 +327,31 @@ export def rdp4k [...args: string]: nothing -> nothing {
 	}
 }
 
+export def "zypper search" [
+	--installed (-i)			# Search only installed packges
+	--type (-t): string			# Search for the given type
+	...names: string			# Names to search
+]: nothing -> table {
+	let zypp_args = [
+		--xmlout
+		--quiet
+	]
+	mut args = [
+		--details
+	]
+	if ($installed | is-not-empty) and ($installed == true) {
+		$args = ($args | append "--installed-only")
+	}
+	if ($type | is-not-empty) {
+		$args = ($args | append ["--type" $type])
+	}
+
+	^zypper ...$zypp_args search ...$args ...$names
+	| collect
+	| from xml
+	| get content.0.content.0.content.attributes
+	#| reject status kind arch
+}
 
 # TODO: Check if this works for macOS.
 # Get the mountpoints as a table.
