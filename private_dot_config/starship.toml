@@ -309,9 +309,9 @@ format = '\[[$symbol$workspace]($style)\]'
 
 [time]
 #format = "[🕙](blue) [$time]($style)"
-format = '[$time]($style)[🕙](blue)'
+format = '[$time]($style)[🕙](69)'
 time_format = "%H:%M:%S"
-style = "red"
+style = "201"
 disabled = false
 
 [username]
