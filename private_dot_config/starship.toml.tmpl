@@ -2,6 +2,13 @@
 
 # https://starship.rs/config/#prompt
 
+# Note: This checks if the shell is in a container. The right prompt was removed completely because it was causing
+# problems. It is not needed and left behind for future reference.
+#{{ $container := (output "sh" "-c" "if grep --quiet --extended-regexp '/ / rw.* overlay.* overlay' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
+#{{/* The right prompt causes the screen to creep up in JetBrains with Nushell */}}
+#{{- if eq $container "false" -}}
+#{{ end -}}
+
 # The default format is used to define the format of the prompt, if empty or no format is provided.
 # Although Nushell and Starship support the right prompt, it seems to be only for the same line as the command prompt.
 # To get the right prompt moved up to the same line as the status prompt, use 'format' to specify all the modules.
@@ -9,6 +16,7 @@
 #right_format = """$fill$status$time"""
 format = """
 $username\
+$time\
 $hostname\
 $localip\
 $shlvl\
@@ -83,14 +91,8 @@ $crystal\
 $custom\
 $sudo\
 $cmd_duration\
-{{ $container := (output "sh" "-c" "if grep --quiet --extended-regexp '/ / rw.* overlay.* overlay' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
-{{/* The right prompt causes the screen to creep up in JetBrains with Nushell */}}
-{{- if eq $container "false" -}}
-$fill\
 $status\
 $battery\
-$time\
-{{ end -}}
 $line_break\
 $jobs\
 $os\
@@ -306,8 +308,9 @@ symbol = "ﯣ "
 format = '\[[$symbol$workspace]($style)\]'
 
 [time]
-format = "[🕙](blue) [$time]($style)"
-time_format = "%Y-%m-%d %H:%M:%S"
+#format = "[🕙](blue) [$time]($style)"
+format = '[$time]($style)[🕙](blue)'
+time_format = "%H:%M:%S"
 style = "red"
 disabled = false
 

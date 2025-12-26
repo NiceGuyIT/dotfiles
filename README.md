@@ -42,7 +42,6 @@ to chezmoi.
 
 ## Useful utilities
 
-- [Vim-Go](https://github.com/fatih/vim-go.git)
 - [Awesome Alternatives in Rust](https://github.com/TaKO8Ki/awesome-alternatives-in-rust) (Originally Awesome Rewrite It
   In Rust)
     - [dog](https://github.com/ogham/dog) - A command-line DNS client.
@@ -58,15 +57,10 @@ to chezmoi.
     - [alacritty](https://github.com/alacritty/alacritty) - A cross-platform, GPU enhanced terminal emulator
 - [Awesome Go](https://github.com/avelino/awesome-go)
     - [fzf](https://github.com/junegunn/fzf) - A command-line fuzzy finder
-    - [gojq](https://github.com/elgs/gojq) - JSON query in Golang
     - [gdu](https://github.com/dundee/gdu) - Fast disk usage analyzer with console interface written in Go
 - [cfssl](https://github.com/cloudflare/cfssl) - Cloudflare's PKI and TLS toolkit
 - [dnslookup](https://github.com/ameshkov/dnslookup) - Simple command line utility to make DNS lookups. Supports all
   known DNS protocols: plain DNS, DoH, DoT, DoQ, DNSCrypt.
-
-## Caveat
-
-Things may be broken as I move from a private repo with another name.
 
 ## Useful commands
 

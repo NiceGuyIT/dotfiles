@@ -18,10 +18,6 @@ if [ "${SOCKET_GID}" != '0' ]; then
   fi
 fi
 
-# Install Prettier and cspell
-[[ ! -e ".bun/bin/prettier" ]] && /usr/local/bin/bun install --global prettier
-[[ ! -e ".bun/bin/cspell" ]] && /usr/local/bin/bun install --global cspell
-
 # https://www.jetbrains.com/help/idea/dev-container-limitations.html#additional_limitations_remote_backend
 # The following environment variables are used by the remote backend IDE and cannot be reassigned in the
 # `devcontainer.json` configuration file:
@@ -47,4 +43,9 @@ then
     ln -s ~/.config/nushell /.jbdevcontainer/config/
   fi
 
+  # Bun uses $XDG_CONFIG_HOME the .bun directory.
+  if [[ ! -e /.jbdevcontainer/config/chezmoi ]]
+  then
+    ln -s ~/.bun /.jbdevcontainer/.bun/
+  fi
 fi
