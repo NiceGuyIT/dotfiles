@@ -15,8 +15,8 @@
 # Use $fill to push the prompt to the right and $line_break to move to the next line for the prompt.
 #right_format = """$fill$status$time"""
 format = """
-$username\
 $time\
+$username\
 $hostname\
 $localip\
 $shlvl\
