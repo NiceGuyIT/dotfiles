@@ -2,8 +2,12 @@
 The .gitignore file interferes with the 'checkout' GitHub action. This is an attempt to identify the specific
 configuration causing the problem.
 */}}
-{{ $container := (output "sh" "-c" "if grep --quiet '/ / rw.* overlay.* overlay' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") -}}
-{{- if eq $container "false" -}}
+{{- $isContainer := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+  {{- $isContainer = eq (output "sh" "-c" "if grep --quiet '/ / rw.* overlay.* overlay' /proc/self/mountinfo; then echo -n true; else echo -n false; fi") "true" -}}
+{{- end -}}
+{{- if or (ne .chezmoi.os "linux") (not $isContainer) -}}
+
 [user]
 name = {{ .git.name | quote }}
 email = {{ .git.email | quote }}
@@ -66,11 +70,6 @@ branch = auto
 interactive = auto
 ui = true
 pager = true
-
-# https://golang.org/doc/faq#git_https
-# The URL is case sensitive for SSH.
-[url "ssh://git@git.n.niceguyit.biz/"]
-insteadOf = https://gitea.n.niceguyit.biz/
 
 {{ end -}}
 ################################################################################

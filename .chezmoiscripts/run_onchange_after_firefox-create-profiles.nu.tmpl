@@ -1,6 +1,7 @@
-#!/usr/bin/env -S nu --plugins '[/usr/local/bin/nu_plugin_formats]'
+#!/usr/bin/env -S nu --plugins [/usr/local/bin/nu_plugin_formats]
 
 # FIXME: The shebang fails if the /usr/local/bin/nu_plugin_formats file does not exist.
+# FIXME: macOS: The single quotes around the array generate an error.
 
 export def "main" [] {
 	use std log
