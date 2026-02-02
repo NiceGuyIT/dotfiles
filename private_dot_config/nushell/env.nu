@@ -80,14 +80,22 @@ $env.ENV_CONVERSIONS = {
 # const STARSHIP_CACHE = ("~/.cache/starship" | path expand)
 # Directories to search for scripts when calling source or use
 $env.NU_LIB_DIRS = [
-	# FIXME: This default is not implemented in rust code as of 2023-09-06.
-	($nu.default-config-dir | path join 'scripts') # add <nushell-config-dir>/scripts
-    ($nu.data-dir | path join 'completions') # default home for nushell completions
+	($nu.default-config-dir | path join 'scripts')			# add <nushell-config-dir>/scripts
+    ($nu.data-dir | path join 'completions')				# default home for nushell completions
 
-	# Modules
-	($nu.default-config-dir | path join 'modules')
-	# Private modules
-	($env.HOME | path join 'projects/niceguyit/nu-modules-private')
+	# Work towards moving all Nu modules to the 'nu-modules' repo.
+	($nu.default-config-dir | path join 'modules')			# add <nushell-config-dir>/modules
+	($env.HOME | path join 'projects/nu-modules')			# Custom modules
+]
+
+const NU_LIB_DIRS = [
+	($nu.default-config-dir | path join 'scripts')			# add <nushell-config-dir>/scripts
+    ($nu.data-dir | path join 'completions')				# default home for nushell completions
+
+	# Work towards moving all Nu modules to the 'nu-modules' repo.
+	# Note: Nu allows ('~' | path expand) but not ($env.HOME) in a CONST.
+	($nu.default-config-dir | path join 'modules')			# add <nushell-config-dir>/modules
+	('~' | path expand | path join 'projects/nu-modules')	# Custom modules
 ]
 
 # https://www.nushell.sh/book/3rdpartyprompts.html#starship
@@ -183,3 +191,6 @@ $env.RIPGREP_CONFIG_PATH = $"($env.HOME)/.ripgreprc"
 # Enable wayland in Gvim.
 # https://github.com/vim/vim/issues/15972
 $env.GVIM_ENABLE_WAYLAND = 1
+
+# Add color to Claude
+$env.COLORTERM = 'truecolor'
