@@ -4,6 +4,13 @@
     "nushell": true,
     "just": true
   },
+  "codeium.disableSupercomplete": true,
+  "codeium.enableExplainProblem": false,
+  "chat.agent.enabled": false,
+  "chat.agent.maxRequests": 0,
+  "chat.commandCenter.enabled": false,
+  "chat.notifyWindowOnConfirmation": false,
+  "claudeCode.preferredLocation": "panel",
   "cSpell.enableFiletypes": ["nushell"],
   "cSpell.maxNumberOfProblems": 250,
   "cSpell.minWordLength": 3,
@@ -38,7 +45,15 @@
   "python.analysis.typeCheckingMode": "basic",
   "redhat.telemetry.enabled": false,
   "remote.autoForwardPortsSource": "hybrid",
+  "remote.SSH.useExecServer": false,
+  "remote.SSH.showLoginTerminal": true,
+  "remote.SSH.remotePlatform": {
+    "dev-01": "linux"
+  },
+  "telemetry.feedback.enabled": false,
+  "telemetry.editStats.enabled": false,
   "update.showReleaseNotes": false,
+  "window.restoreWindows": "none",
   "workbench.editor.closeOnFileDelete": true,
   "workbench.editor.enablePreview": false,
   "workbench.editor.revealIfOpen": true,
@@ -101,16 +116,5 @@
     "editor.formatOnType": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 2
-  },
-  "codeium.disableSupercomplete": true,
-  "codeium.enableExplainProblem": false,
-  "chat.agent.enabled": false,
-  "chat.agent.maxRequests": 0,
-  "chat.commandCenter.enabled": false,
-  "chat.notifyWindowOnConfirmation": false,
-  "telemetry.feedback.enabled": false,
-  "telemetry.editStats.enabled": false,
-  "claudeCode.preferredLocation": "panel",
-  "remote.SSH.useExecServer": false,
-  "window.restoreWindows": "none"
+  }
 }
