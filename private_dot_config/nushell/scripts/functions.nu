@@ -2,7 +2,7 @@
 # https://www.nushell.sh/book/aliases.html#persisting
 
 # General "ls -l" command
-export def l [...args: glob]: nothing -> nothing {
+export def l [...args: glob]: any -> any {
 	# When $args is empty, "ls ...$args" returns nothing
 	if ($args | is-empty) {
 		ls --long --short-names
@@ -21,7 +21,7 @@ export def l [...args: glob]: nothing -> nothing {
 
 
 # General "ls -la" command
-export def la [...args: glob]: nothing -> nothing {
+export def la [...args: glob]: any -> any {
 	if ($args | is-empty) {
 		ls --all --long --short-names
 			| select name user group mode size modified
@@ -39,7 +39,7 @@ export def la [...args: glob]: nothing -> nothing {
 
 
 # "ls -la" command that shows the links
-export def ll [...args: glob]: nothing -> nothing {
+export def ll [...args: glob]: any -> any {
 	if ($args | is-empty) {
 		ls --all --long --short-names
 			| select name user group mode size modified target
@@ -55,7 +55,7 @@ export def ll [...args: glob]: nothing -> nothing {
 
 
 # "ls -lat" command
-export def lt [...args: glob]: nothing -> nothing {
+export def lt [...args: glob]: any -> any {
 	if ($args | is-empty) {
 		ls --all --long --short-names
 			| sort-by modified
@@ -73,7 +73,7 @@ export def lt [...args: glob]: nothing -> nothing {
 
 
 # "ls -lart" command
-export def lrt [...args: glob]: nothing -> nothing {
+export def lrt [...args: glob]: any -> any {
 	if ($args | is-empty) {
 		ls --all --long --short-names
 			| sort-by --reverse modified
@@ -91,7 +91,7 @@ export def lrt [...args: glob]: nothing -> nothing {
 
 
 # "ls -larS" command
-export def lrs [...args: glob]: nothing -> nothing {
+export def lrs [...args: glob]: any -> any {
 	if ($args | is-empty) {
 		ls --all --long --short-names
 			| sort-by size
@@ -109,13 +109,13 @@ export def lrs [...args: glob]: nothing -> nothing {
 
 
 # ripgrep all files. Not the same as repgrep-all.
-export def rga []: nothing -> nothing {
+export def rga []: nothing -> any {
 	^rg --hidden --no-ignore
 }
 
 
 # fd (find) all files.
-export def fda []: nothing -> nothing {
+export def fda []: nothing -> any {
 	^fd --hidden --no-ignore
 }
 
@@ -300,12 +300,12 @@ export def rdp [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which sdl-freerdp | is-empty) {
-			^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
+		if not (which xfreerdp | is-empty) {
+			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		} else if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
-		} else if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+		} else if not (which sdl-freerdp | is-empty) {
+			^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		}
 	}
 }
@@ -317,12 +317,12 @@ export def rdp4k [...args: string]: nothing -> nothing {
 		print "Please add an argument for /v and /u"
 		return false
 	} else {
-		if not (which sdl-freerdp | is-empty) {
-			^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
+		if not (which xfreerdp | is-empty) {
+			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
 		} else if not (which wlfreerdp | is-empty) {
 			^wlfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
-		} else if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+		} else if not (which sdl-freerdp | is-empty) {
+			^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		}
 	}
 }
