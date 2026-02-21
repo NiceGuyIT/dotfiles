@@ -47,7 +47,22 @@ export def "docker ps-all" []: nothing -> any {
 	| reject Labels
 }
 
-# docker ps --all suitable for Nushell
+# docker ps suitable for Nushell
+export def "docker ps" [
+	--image     # Include the Image column
+	--networks  # Include the Networks column
+	--ports     # Include the Ports column
+]: nothing -> any {
+	let cols = (
+		[Command ID LocalVolumes Mounts Platform]
+		| append (if not $image { [Image] } else { [] })
+		| append (if not $networks { [Networks] } else { [] })
+		| append (if not $ports { [Ports] } else { [] })
+	)
+	docker ps-all | reject ...$cols
+}
+
+# docker container ls suitable for Nushell
 export def "docker container-ls" []: nothing -> any {
     let cli = $env.docker-cli
 	^$cli container ls --all --no-trunc --format json
@@ -68,4 +83,9 @@ export def "docker container-ls" []: nothing -> any {
 		if ($in | is-not-empty) {$in | split column ',' | transpose | get column1}
 	}
 	| reject Labels
+}
+
+# "docker image ls" suitable for Nushell
+export def "docker image-ls" []: nothing -> any {
+	docker image-list
 }
