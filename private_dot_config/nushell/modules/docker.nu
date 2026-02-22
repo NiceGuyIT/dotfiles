@@ -54,12 +54,12 @@ export def "docker ps" [
 	--ports     # Include the Ports column
 ]: nothing -> any {
 	let cols = (
-		[Command ID LocalVolumes Mounts Platform]
+		[Command ID LocalVolumes Mounts]
 		| append (if not $image { [Image] } else { [] })
 		| append (if not $networks { [Networks] } else { [] })
 		| append (if not $ports { [Ports] } else { [] })
 	)
-	docker ps-all | reject ...$cols
+	docker ps-all | reject Platform? ...$cols
 }
 
 # docker container ls suitable for Nushell
