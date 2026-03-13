@@ -968,6 +968,9 @@ use claude.nu *
 # Custom Docker functions
 use docker.nu *
 
+# Repo status
+use repos.nu *
+
 # Useful Docker functions
 # https://github.com/nushell/nu_scripts/blob/main/modules/docker/mod.nu
 # The Nu module is copied to alleviate the need to clone the git repo.

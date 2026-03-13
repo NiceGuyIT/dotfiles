@@ -1,6 +1,6 @@
 #!/usr/bin/env nu
 
-def repo-status [--list] {
+export def "repo status" [--list] {
 	glob **/.git --depth 10
 	| each {|it| $it | path dirname}
 	| each {|it|
@@ -48,7 +48,7 @@ def repo-status [--list] {
 
 def main [command: string, --list] {
 	match $command {
-		"status" => { repo-status --list=$list }
+		"status" => { repo status --list=$list }
 		_ => { print $"Unknown command: ($command)" }
 	}
 }
