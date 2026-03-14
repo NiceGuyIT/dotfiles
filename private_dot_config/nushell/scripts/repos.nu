@@ -1,6 +1,10 @@
 #!/usr/bin/env nu
 
-export def "repo status" [--list] {
+def highlight [value: int]: nothing -> string {
+	if $value == 0 { $"($value)" } else { $"(ansi yellow_bold)($value)(ansi reset)" }
+}
+
+export def "repos status" [--list] {
 	glob **/.git --depth 10
 	| each {|it| $it | path dirname}
 	| each {|it|
@@ -34,13 +38,13 @@ export def "repo status" [--list] {
 		} else {
 			{
 				repo: $relative
-				branch: $branch
+				branch: (if $branch == "main" { $branch } else { $"(ansi yellow_bold)($branch)(ansi reset)" })
 				remote: $remote_url
-				ahead: $ahead
-				behind: $behind
-				staged: ($staged | length)
-				unstaged: ($unstaged | length)
-				untracked: ($untracked | length)
+				ahead: (highlight $ahead)
+				behind: (highlight $behind)
+				staged: (highlight ($staged | length))
+				unstaged: (highlight ($unstaged | length))
+				untracked: (highlight ($untracked | length))
 			}
 		}
 	}
@@ -48,7 +52,7 @@ export def "repo status" [--list] {
 
 def main [command: string, --list] {
 	match $command {
-		"status" => { repo status --list=$list }
+		"status" => { repos status --list=$list }
 		_ => { print $"Unknown command: ($command)" }
 	}
 }
