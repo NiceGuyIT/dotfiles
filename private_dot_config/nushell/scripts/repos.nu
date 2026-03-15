@@ -4,7 +4,7 @@ def highlight [value: int]: nothing -> string {
 	if $value == 0 { $"($value)" } else { $"(ansi yellow_bold)($value)(ansi reset)" }
 }
 
-export def "repos status" [--list] {
+export def "repos status" [--list, --remote] {
 	glob **/.git --depth 10
 	| each {|it| $it | path dirname}
 	| each {|it|
@@ -36,15 +36,19 @@ export def "repos status" [--list] {
 				untracked: $untracked
 			}
 		} else {
-			{
+			let row = {
 				repo: $relative
 				branch: (if $branch == "main" { $branch } else { $"(ansi yellow_bold)($branch)(ansi reset)" })
-				remote: $remote_url
 				ahead: (highlight $ahead)
 				behind: (highlight $behind)
 				staged: (highlight ($staged | length))
 				unstaged: (highlight ($unstaged | length))
 				untracked: (highlight ($untracked | length))
+			}
+			if $remote {
+				$row | insert remote $remote_url
+			} else {
+				$row
 			}
 		}
 	}
@@ -71,9 +75,9 @@ export def "repos pull" [] {
 	}
 }
 
-def main [command: string, --list] {
+def main [command: string, --list, --remote] {
 	match $command {
-		"status" => { repos status --list=$list }
+		"status" => { repos status --list=$list --remote=$remote }
 		"pull" => { repos pull }
 		_ => { print $"Unknown command: ($command)" }
 	}
