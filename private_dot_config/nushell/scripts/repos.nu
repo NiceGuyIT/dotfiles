@@ -50,9 +50,31 @@ export def "repos status" [--list] {
 	}
 }
 
+export def "repos pull" [] {
+	glob **/.git --depth 10
+	| each {|it| $it | path dirname}
+	| each {|it|
+		let relative = ($it | path relative-to (pwd))
+		cd $it
+
+		let porcelain = (git status --porcelain)
+		if ($porcelain | is-empty) {
+			let result = (git pull | complete)
+			if $result.exit_code == 0 {
+				{ repo: $relative, status: ($result.stdout | str trim) }
+			} else {
+				{ repo: $relative, status: $"(ansi red_bold)error: ($result.stderr | str trim)(ansi reset)" }
+			}
+		} else {
+			{ repo: $relative, status: $"(ansi yellow_bold)skipped (has changes)(ansi reset)" }
+		}
+	}
+}
+
 def main [command: string, --list] {
 	match $command {
 		"status" => { repos status --list=$list }
+		"pull" => { repos pull }
 		_ => { print $"Unknown command: ($command)" }
 	}
 }

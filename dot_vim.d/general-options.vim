@@ -132,7 +132,7 @@ highlight nonText ctermbg=NONE
 
 " Save backup files to /tmp to prevent auto-reload for watched directories.
 " Default: .,~/tmp,/var/tmp,/tmp
-set directory=~/tmp,/var/tmp,/tmp
+set directory=~/tmp//,/var/tmp//,/tmp//
 
 " Ignore whitespace in vimdiff but not regular vim
 if &diff
