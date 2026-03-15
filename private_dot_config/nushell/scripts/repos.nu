@@ -12,8 +12,8 @@ export def "repos status" [--list, --remote] {
 		cd $it
 
 		let branch = (git branch --show-current)
-		let remote = (git remote get-url origin | complete)
-		let remote_url = if ($remote.exit_code == 0) { $remote.stdout | str trim | str replace --regex '^\w+://' '' | str replace --regex '^[^@]+@' '' } else { "" }
+		let origin = (git remote get-url origin | complete)
+		let remote_url = if ($origin.exit_code == 0) { $origin.stdout | str trim | str replace --regex '^\w+://' '' | str replace --regex '^[^@]+@' '' } else { "" }
 		let ahead_behind = (git rev-list --left-right --count $"origin/($branch)...HEAD" | complete)
 		let ahead = if ($ahead_behind.exit_code == 0) {
 			$ahead_behind.stdout | split row "\t" | get 1 | str trim | into int
