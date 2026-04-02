@@ -88,6 +88,11 @@ command = "reset-and-clear.sh"
 key = "K"
 mods = "Control"
 
+# This was on the Mac. Not sure where it came from.
+#key = "Return"
+#mods = "Shift"
+#chars = "\u001B\r"
+
 [terminal.shell]
 {{ if ne .chezmoi.os "windows" -}}
 program = "/usr/local/bin/nu"
