@@ -327,6 +327,12 @@ export def rdp4k [...args: string]: nothing -> nothing {
 	}
 }
 
+# Parse /etc/os-release into a table of name/value pairs.
+export def "os-release" []: nothing -> table {
+	open /etc/os-release | parse '{name}="{value}"'
+}
+
+
 # TODO: Check if this works for macOS.
 # Get the mountpoints as a table.
 export def "get-mountpoints" []: nothing -> table {
