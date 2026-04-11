@@ -68,6 +68,19 @@ export def "zypper packages" [
 		$args = ($args | append "--unneeded")
 	}
 
+	# Validate the given repo aliases against `zypper repos` before invoking
+	# zypper, so the user gets one friendly message instead of zypper's noisy
+	# "Repository '<name>' not found by its alias, number, or URI." for each arg.
+	if ($repos | is-not-empty) {
+		let defined = (zypper repos | get Alias)
+		let missing = ($repos | where {|r| $r not-in $defined})
+		if ($missing | is-not-empty) {
+			print $"(ansi red)Error:(ansi reset) unknown repository alias: ($missing | str join ', ')"
+			print $"(ansi cyan)Hint:(ansi reset) run `zypper repos` to see the defined repositories"
+			return
+		}
+	}
+
 	# Debugging
 	#print $"zypper (echo ...$zypp_args) packages (echo ...$args) (echo ...$repos)"
 
@@ -75,9 +88,22 @@ export def "zypper packages" [
 	# parse it by hand. Data rows start with a lowercase status char (i, v, ...)
 	# followed by whitespace and `|`, which skips the blank line, the header
 	# (`S  | ...`), and the `---+---` separator.
-	^zypper ...$zypp_args packages ...$args ...$repos
-	| collect
-	| from xml
+	let parsed = (
+		^zypper ...$zypp_args packages ...$args ...$repos
+		| collect
+		| from xml
+	)
+	# On errors (e.g. a disabled repo) zypper returns <message type="error">...</message>
+	# instead of the text table. Surface the message as a friendly error and exit.
+	if ($parsed.content.0.tag? | default null) == "message" {
+		let msg_type = ($parsed.content.0.attributes.type? | default "error")
+		let text = ($parsed.content.0.content.0.content? | default "")
+		let label = if $msg_type == "error" { "Error" } else { "Info" }
+		let color = if $msg_type == "error" { (ansi red) } else { (ansi yellow) }
+		print $"($color)($label):(ansi reset) ($text)"
+		return
+	}
+	$parsed
 	| get content.0.content
 	| lines
 	| where $it !~ '-{5,}'
@@ -96,4 +122,52 @@ export def "zypper packages" [
 			_ => 'not-installed'
 		}
 	}
+}
+
+# List defined repositories and return a table.
+export def "zypper repos" [
+	--details (-d)				# Show more information like URI, priority, type
+	--uri (-u)					# Show also base URI of repositories
+	--priority (-p)				# Show also repository priority
+	--show-enabled-only (-E)	# Show enabled repos only
+	--sort-by-name (-N)			# Sort the list by name
+	--sort-by-priority (-P)		# Sort the list by priority
+	...repos: string			# Repositories to limit the listing to
+]: nothing -> table {
+	let zypp_args = [
+		--quiet
+	]
+	mut args = []
+	if $details {
+		$args = ($args | append "--details")
+	}
+	if $uri {
+		$args = ($args | append "--uri")
+	}
+	if $priority {
+		$args = ($args | append "--priority")
+	}
+	if $show_enabled_only {
+		$args = ($args | append "--show-enabled-only")
+	}
+	if $sort_by_name {
+		$args = ($args | append "--sort-by-name")
+	}
+	if $sort_by_priority {
+		$args = ($args | append "--sort-by-priority")
+	}
+
+	# Debugging
+	#print $"zypper (echo ...$zypp_args) repos (echo ...$args) (echo ...$repos)"
+
+	# `zypper repos` emits a pipe-separated text table. Parse it the same way as
+	# `zypper packages`: drop the `---+---` separator and any non-data lines
+	# (preamble, blanks), then feed the result to `from csv`. The pipe-existence
+	# filter also strips the priority preamble that prints when --details is off.
+	^zypper ...$zypp_args repos ...$args ...$repos
+	| lines
+	| where $it !~ '-{5,}'
+	| where $it =~ '\|'
+	| to text
+	| from csv --separator '|' --trim all
 }
