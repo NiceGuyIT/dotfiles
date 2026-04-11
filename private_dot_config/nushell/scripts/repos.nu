@@ -70,7 +70,7 @@ export def "repos pull" [] {
 				{ repo: $relative, status: $"(ansi red_bold)error: ($result.stderr | str trim)(ansi reset)" }
 			}
 		} else {
-			{ repo: $relative, status: $"(ansi yellow_bold)skipped (has changes)(ansi reset)" }
+			{ repo: $relative, status: $"(ansi yellow_bold)skipped \(has changes\)(ansi reset)" }
 		}
 	}
 }

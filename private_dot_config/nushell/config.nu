@@ -968,6 +968,9 @@ use claude.nu *
 # Custom Docker functions
 use docker.nu *
 
+# Custom Zypper functions
+use zypper.nu *
+
 # Repo status
 use repos.nu *
 

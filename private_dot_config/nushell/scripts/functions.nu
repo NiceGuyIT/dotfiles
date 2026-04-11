@@ -327,32 +327,6 @@ export def rdp4k [...args: string]: nothing -> nothing {
 	}
 }
 
-export def "zypper search" [
-	--installed (-i)			# Search only installed packges
-	--type (-t): string			# Search for the given type
-	...names: string			# Names to search
-]: nothing -> table {
-	let zypp_args = [
-		--xmlout
-		--quiet
-	]
-	mut args = [
-		--details
-	]
-	if ($installed | is-not-empty) and ($installed == true) {
-		$args = ($args | append "--installed-only")
-	}
-	if ($type | is-not-empty) {
-		$args = ($args | append ["--type" $type])
-	}
-
-	^zypper ...$zypp_args search ...$args ...$names
-	| collect
-	| from xml
-	| get content.0.content.0.content.attributes
-	#| reject status kind arch
-}
-
 # TODO: Check if this works for macOS.
 # Get the mountpoints as a table.
 export def "get-mountpoints" []: nothing -> table {
