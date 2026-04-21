@@ -1,4 +1,5 @@
 {
+  "aws.cloudformation.telemetry.enabled": false,
   "codeium.enableConfig": {
     "*": true,
     "nushell": true,
@@ -9,12 +10,23 @@
   "chat.agent.enabled": false,
   "chat.agent.maxRequests": 0,
   "chat.commandCenter.enabled": false,
-  "chat.notifyWindowOnConfirmation": false,
+  "chat.notifyWindowOnConfirmation": "off",
   "claudeCode.preferredLocation": "panel",
-  "cSpell.enableFiletypes": ["nushell"],
+  "cSpell.enableFiletypes": [
+    "nushell"
+  ],
   "cSpell.maxNumberOfProblems": 250,
   "cSpell.minWordLength": 3,
-  "cSpell.userWords": ["codeium", "coloredlogs", "datetime", "Deno", "dockercompose", "dotenv", "env", "nushell"],
+  "cSpell.userWords": [
+    "codeium",
+    "coloredlogs",
+    "datetime",
+    "Deno",
+    "dockercompose",
+    "dotenv",
+    "env",
+    "nushell"
+  ],
   "diffEditor.ignoreTrimWhitespace": true,
   "diffEditor.maxComputationTime": 0,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -25,7 +37,9 @@
   "editor.formatOnType": true,
   "editor.indentSize": "tabSize",
   "editor.insertSpaces": false,
-  "editor.rulers": [120],
+  "editor.rulers": [
+    120
+  ],
   "editor.wordWrap": "wordWrapColumn",
   "editor.wordWrapColumn": 120,
   "files.associations": {
@@ -62,8 +76,14 @@
   "workbench.startupEditor": "none",
   "yaml.format.enable": true,
   "yaml.schemas": {
-    "https://json.schemastore.org/github-workflow.json": ["*.github/workflows/*.yaml", "*.github/workflows/*.yml"],
-    "https://json.schemastore.org/github-action.json": ["action.yaml", "action.yml"]
+    "https://json.schemastore.org/github-workflow.json": [
+      "*.github/workflows/*.yaml",
+      "*.github/workflows/*.yml"
+    ],
+    "https://json.schemastore.org/github-action.json": [
+      "action.yaml",
+      "action.yml"
+    ]
   },
   "[dockercompose]": {
     "editor.autoIndent": "full",
