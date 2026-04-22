@@ -340,9 +340,9 @@ alias x='chmod a+x'
 #   (so you end up with graphics of the latest GFX mode supported by the client and server)
 # See also:
 # https://techcommunity.microsoft.com/t5/security-compliance-and-identity/remote-desktop-protocol-rdp-10-avc-h-264-improvements-in-windows/ba-p/249588
-alias rdp="xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto"
+alias rdp="xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto"
 # This size is better for 4k
-alias rdp4k="xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto"
+alias rdp4k="xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto"
 
 # fd all files and rg all files
 # "rga" is taken: https://github.com/phiresky/ripgrep-all

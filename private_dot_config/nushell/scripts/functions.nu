@@ -301,9 +301,9 @@ export def rdp [...args: string]: nothing -> nothing {
 		return false
 	} else {
 		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+			^xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		} else if not (which wlfreerdp | is-empty) {
-			^wlfreerdp /w:1920 /h:1080 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+			^wlfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		} else if not (which sdl-freerdp | is-empty) {
 			^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		}
@@ -318,9 +318,9 @@ export def rdp4k [...args: string]: nothing -> nothing {
 		return false
 	} else {
 		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+			^xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		} else if not (which wlfreerdp | is-empty) {
-			^wlfreerdp /w:2548 /h:1436 +bitmap-cache +offscreen-cache /compression-level:2 /network:auto ...$args
+			^wlfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		} else if not (which sdl-freerdp | is-empty) {
 			^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
 		}
