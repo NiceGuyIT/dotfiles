@@ -11,6 +11,9 @@
 - Prefer the simplest, most minimal solution first. Avoid presenting multiple alternative approaches unless asked. Focus
   on the specific context provided rather than covering every possible scenario.
 - Safety: NEVER use force flags (rm -rf, --force, save --force, etc.) — failures without force reveal real bugs
+- NEVER use the em-dash character (—, U+2014) in any text shown to the user or written to any artifact: chat messages,
+  code comments, commit messages, PR titles and descriptions, READMEs, documentation, or any other output. Use a regular
+  hyphen (-), a colon, parentheses, or a period-and-new-sentence instead. Applies to all projects and all contexts.
 
 # Troubleshooting Rules
 
