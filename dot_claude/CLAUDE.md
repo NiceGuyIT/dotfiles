@@ -24,3 +24,24 @@
      back and look at the bigger picture."
 - Before proposing a fix, verify the hypothesis first. Prefer adding debug/diagnostic output to confirm the cause before
   changing code speculatively.
+
+# Git Workflow (all repos)
+
+Default workflow for every change, unless the user says they are working on many changes at once and to stay on the
+current branch:
+
+1. Make the changes.
+2. Create a new branch with a name that describes the change (e.g., `fix/...`, `feat/...`, `chore/...`).
+3. Commit and push the branch.
+4. Switch back to `main` (the user merges the PR).
+5. Before starting the next change, `git pull` on `main` to pick up the merged work.
+
+Do not stack a second unrelated change onto an existing feature/fix branch. Each logical change gets its own branch off
+the latest `main`.
+
+## Commit messages
+
+- Do NOT hard-wrap bullet points or paragraphs in the commit body. Each bullet or paragraph must be a single long line
+  so the Forgejo/GitHub GUI can wrap it naturally. Hard-wrapping inside a bullet causes the GUI to render each wrapped
+  line as its own broken-looking block and wastes vertical space in review.
+- The subject line should still be short (~70 chars) and in the imperative.
