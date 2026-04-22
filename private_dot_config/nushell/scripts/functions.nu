@@ -294,36 +294,39 @@ export def restore [archive: string]: nothing -> nothing {
 }
 
 
-# rdp4k will use xfreerdp or wlfreerdp to RDP to a client with an HD resolution.
+# rdp will RDP to a client at HD resolution. Prefers the Flathub FreeRDP
+# (com.freerdp.FreeRDP) because its SDL3-backed client is the only one with
+# working bidirectional clipboard on Wayland; falls back to native clients.
 export def rdp [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
 		print "Please add an argument for /v and /u"
 		return false
-	} else {
-		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		} else if not (which wlfreerdp | is-empty) {
-			^wlfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		} else if not (which sdl-freerdp | is-empty) {
-			^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		}
+	} else if ((do --ignore-errors { ^flatpak info com.freerdp.FreeRDP } | complete).exit_code == 0) {
+		^flatpak run com.freerdp.FreeRDP /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which xfreerdp | is-empty) {
+		^xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which wlfreerdp | is-empty) {
+		^wlfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which sdl-freerdp | is-empty) {
+		^sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
 	}
 }
 
 
-# rdp4k will use xfreerdp or wlfreerdp to RDP to a client with a resolution suitable for a 4k monitor.
+# rdp4k will RDP to a client at a resolution suitable for a 4k monitor. Client
+# preference order matches rdp (see rdp comment above).
 export def rdp4k [...args: string]: nothing -> nothing {
 	if ($args | is-empty) {
 		print "Please add an argument for /v and /u"
 		return false
-	} else {
-		if not (which xfreerdp | is-empty) {
-			^xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		} else if not (which wlfreerdp | is-empty) {
-			^wlfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		} else if not (which sdl-freerdp | is-empty) {
-			^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto ...$args
-		}
+	} else if ((do --ignore-errors { ^flatpak info com.freerdp.FreeRDP } | complete).exit_code == 0) {
+		^flatpak run com.freerdp.FreeRDP /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which xfreerdp | is-empty) {
+		^xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which wlfreerdp | is-empty) {
+		^wlfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
+	} else if not (which sdl-freerdp | is-empty) {
+		^sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard ...$args
 	}
 }
 

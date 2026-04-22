@@ -340,9 +340,38 @@ alias x='chmod a+x'
 #   (so you end up with graphics of the latest GFX mode supported by the client and server)
 # See also:
 # https://techcommunity.microsoft.com/t5/security-compliance-and-identity/remote-desktop-protocol-rdp-10-avc-h-264-improvements-in-windows/ba-p/249588
-alias rdp="xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto"
+# rdp/rdp4k prefer the Flathub FreeRDP (com.freerdp.FreeRDP) because its
+# SDL3-backed client is the only one with working bidirectional clipboard on
+# Wayland; fall back to native clients if the Flatpak is not installed.
+rdp() {
+	if flatpak info com.freerdp.FreeRDP >/dev/null 2>&1; then
+		flatpak run com.freerdp.FreeRDP /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v xfreerdp >/dev/null 2>&1; then
+		xfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v wlfreerdp >/dev/null 2>&1; then
+		wlfreerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v sdl-freerdp >/dev/null 2>&1; then
+		sdl-freerdp /w:1920 /h:1080 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	else
+		echo "rdp: no FreeRDP client found (flatpak com.freerdp.FreeRDP, xfreerdp, wlfreerdp, sdl-freerdp)" >&2
+		return 1
+	fi
+}
 # This size is better for 4k
-alias rdp4k="xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto"
+rdp4k() {
+	if flatpak info com.freerdp.FreeRDP >/dev/null 2>&1; then
+		flatpak run com.freerdp.FreeRDP /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v xfreerdp >/dev/null 2>&1; then
+		xfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v wlfreerdp >/dev/null 2>&1; then
+		wlfreerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	elif command -v sdl-freerdp >/dev/null 2>&1; then
+		sdl-freerdp /w:2548 /h:1436 /cache:bitmap:on,offscreen:on /compression-level:2 /network:auto +clipboard "$@"
+	else
+		echo "rdp4k: no FreeRDP client found (flatpak com.freerdp.FreeRDP, xfreerdp, wlfreerdp, sdl-freerdp)" >&2
+		return 1
+	fi
+}
 
 # fd all files and rg all files
 # "rga" is taken: https://github.com/phiresky/ripgrep-all
