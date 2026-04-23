@@ -412,11 +412,11 @@ export def table-diff [
 	let right_selected = ($right | select ...$keys)
 	let left_not_in_right = (
 		$left |
-		filter { |row| not (($row | select ...$keys) in $right_selected) }
+		where { |row| not (($row | select ...$keys) in $right_selected) }
 	)
 	let right_not_in_left = (
 		$right |
-		filter { |row| not (($row | select ...$keys) in $left_selected) }
+		where { |row| not (($row | select ...$keys) in $left_selected) }
 	)
 	(
 		$left_not_in_right | insert side '<='
