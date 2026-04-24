@@ -28,6 +28,12 @@
 - Before proposing a fix, verify the hypothesis first. Prefer adding debug/diagnostic output to confirm the cause before
   changing code speculatively.
 
+# Nushell
+
+- The installed Nushell version is `0.112.2`. When writing or reviewing Nushell code, use only syntax, commands, flags,
+  and standard library features available in `0.112.2`. Reference the `0.112.2` documentation (not latest) when citing
+  docs, and flag any usage that requires a newer version.
+
 # Git Workflow (all repos)
 
 Default workflow for every change, unless the user says they are working on many changes at once and to stay on the
