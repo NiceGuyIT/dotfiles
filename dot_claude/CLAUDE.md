@@ -19,12 +19,13 @@
 
 - **Three-strike red herring rule:** If the same symptom persists after 3 fix attempts targeting the same area, STOP.
   Flag it as a likely red herring and broaden the investigation:
-  1. Re-examine the full error context and surrounding system (not just the error message).
-  2. Check assumptions: are the inputs what we think they are? Add debug output to verify.
-  3. Look upstream: the root cause is likely in a different layer (caller, config, environment, permissions) than where
-     the symptom appears.
-  4. Explicitly tell the user: "We've tried fixing X three times. The real problem is probably elsewhere. Let me step
-     back and look at the bigger picture."
+    1. Re-examine the full error context and surrounding system (not just the error message).
+    2. Check assumptions: are the inputs what we think they are? Add debug output to verify.
+    3. Look upstream: the root cause is likely in a different layer (caller, config, environment, permissions) than
+       where
+       the symptom appears.
+    4. Explicitly tell the user: "We've tried fixing X three times. The real problem is probably elsewhere. Let me step
+       back and look at the bigger picture."
 - Before proposing a fix, verify the hypothesis first. Prefer adding debug/diagnostic output to confirm the cause before
   changing code speculatively.
 
@@ -54,3 +55,25 @@ the latest `main`.
   so the Forgejo/GitHub GUI can wrap it naturally. Hard-wrapping inside a bullet causes the GUI to render each wrapped
   line as its own broken-looking block and wastes vertical space in review.
 - The subject line should still be short (~70 chars) and in the imperative.
+
+# Docker Naming Convention
+
+Every Docker resource (service, volume, network) for a project must be prefixed by the application name so `docker ps`,
+`docker volume ls`, and `docker network ls` group all of an app's resources together. For development, add a `dev-`
+prefix on top of the application prefix.
+
+- Service: `{app}-{service}` (dev: `dev-{app}-{service}`)
+- Application data volume: `{app}-data` (dev: `dev-{app}-data`)
+- Application config volume: `{app}-config` (dev: `dev-{app}-config`)
+- Network: `{app}-private` (dev: `dev-{app}-private`)
+
+When a stack contains a sub-service with its own data store (e.g. Infisical bundled inside the `backup` stack and
+needing its own Postgres), order the name segments so the sub-service segment comes BEFORE the resource type segment.
+That way the data volume sorts adjacent to its parent service in alphabetical listings.
+
+- Right: `dev-backup-infisical` and `dev-backup-infisical-postgres` (sort together)
+- Wrong: `dev-backup-infisical` and `dev-backup-postgres-infisical` (the second sorts under `postgres-`, away from its
+  parent)
+
+In Compose files this means the volume `name:` field, the volume YAML key, the service name, the network name, and every
+internal reference (`depends_on`, env-var hostnames in connection URLs) must all use the prefixed form.
