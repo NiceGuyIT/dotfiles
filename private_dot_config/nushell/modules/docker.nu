@@ -20,7 +20,7 @@ export def "docker network-ls" []: nothing -> any {
 	^$cli network ls --no-trunc --format json
 	| lines
 	| each {|it| $it | from json}
-	| update CreatedAt {into datetime}
+	| update CreatedAt {into datetime --format "%Y-%m-%d %H:%M:%S%.f %z %Z"}
 	| reject Internal Labels Scope
 }
 
@@ -30,7 +30,7 @@ export def "docker ps-all" []: nothing -> any {
 	^$cli ps --all --no-trunc --format json
 	| lines
 	| each {|it| $it | from json}
-	| update CreatedAt {into datetime}
+	| update CreatedAt {into datetime --format "%Y-%m-%d %H:%M:%S%.f %z %Z"}
 	| update Ports {
 		if ($in | is-not-empty) {$in | split column ', ' | transpose | get column1}
 	}
@@ -68,7 +68,7 @@ export def "docker container-ls" []: nothing -> any {
 	^$cli container ls --all --no-trunc --format json
 	| lines
 	| each {|it| $it | from json}
-	| update CreatedAt {into datetime}
+	| update CreatedAt {into datetime --format "%Y-%m-%d %H:%M:%S%.f %z %Z"}
 	| update Ports {
 		if ($in | is-not-empty) {$in | split column ', ' | transpose | get column1}
 	}
