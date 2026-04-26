@@ -78,7 +78,7 @@ export def "firefox install" [
 
 	# Get the redirect location.
 	let filename = ($url | url parse | get path | path basename)
-	let tmp_dl = $nu.temp-path | path join $filename
+	let tmp_dl = $nu.temp-dir | path join $filename
 
 	print $"Downloading ($url)"
 	http get $url | save --force --progress $tmp_dl

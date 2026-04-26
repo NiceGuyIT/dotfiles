@@ -326,7 +326,7 @@ def dl-compressed [
 	}
 
 	# $input has exactly 1 record
-	let tmp_dir: string = ({ parent: $nu.temp-path, stem: $"package-(random uuid)" } | path join)
+	let tmp_dir: string = ({ parent: $nu.temp-dir, stem: $"package-(random uuid)" } | path join)
 	mkdir $tmp_dir
 	let files = ($input.browser_download_url.0
 		| github asset download --dest-dir $tmp_dir --decompress)
@@ -353,7 +353,7 @@ def dl-uncompressed [
 	}
 
 	# $input has exactly 1 record
-	let tmp_dir: string = ({ parent: $nu.temp-path, stem: $"package-(random uuid)" } | path join)
+	let tmp_dir: string = ({ parent: $nu.temp-dir, stem: $"package-(random uuid)" } | path join)
 	log debug $"name: ($name)"
 	let files = ($input.browser_download_url.0
 		| github asset download --dest-dir $tmp_dir --remote-name $name --decompress)

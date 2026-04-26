@@ -118,7 +118,7 @@ $env.NU_PLUGIN_DIRS = [
 do --env {
 	if not ('SSH_AUTH_SOCK' in $env) {
 		let ssh_agent_file = (
-			$nu.temp-path | path join $"ssh-agent-($env.USER? | default $env.USERNAME?).nuon"
+			$nu.temp-dir | path join $"ssh-agent-($env.USER? | default $env.USERNAME?).nuon"
 		)
 
 		if ($ssh_agent_file | path exists) {

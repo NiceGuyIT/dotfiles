@@ -82,7 +82,7 @@ export def "betterbird install" [
 		| get 0.value
 	})
 	let filename = ($url | url parse | get path | path basename)
-	let tmp_dl = $nu.temp-path | path join $filename
+	let tmp_dl = $nu.temp-dir | path join $filename
 
 	print $"Downloading ($url)"
 	http get $url | save --force --progress $tmp_dl
@@ -101,7 +101,7 @@ def "betterbird install-macos" [
 	dmg_path: path,
 	install_directory: path,
 ]: nothing -> nothing {
-	let mount_point = $nu.temp-path | path join "betterbird-dmg"
+	let mount_point = $nu.temp-dir | path join "betterbird-dmg"
 	mkdir $mount_point
 
 	print $"Mounting ($dmg_path)"
