@@ -207,14 +207,15 @@ export def dl [
 	# "http get" streams the response while "http get --full" buffers the request. Separating the response headers
 	# from the body is not possible.
 	# https://discordapp.com/channels/601130461678272522/601130461678272524/1209936591267569675
-	# Default to --raw so Nushell does not parse the response by content type (e.g. JSON URLs returning objects).
 	if $force {
+		# Default to --raw so Nushell does not parse the response by content type (e.g. JSON, Markdown).
 		if $parse {
 			http get $url | save --progress --force $full_path
 		} else {
 			http get --raw $url | save --progress --force --raw $full_path
 		}
 	} else {
+		# Default to --raw so Nushell does not parse the response by content type (e.g. JSON, Markdown).
 		if $parse {
 			http get $url | save --progress $full_path
 		} else {
