@@ -177,6 +177,7 @@ export def dl [
 	--path (-p): path				# Path to save the file
 	--filename (-n): string			# Filename of the file. Detected from the headers.
 	--save_path (-s): string		# Full path of the file to save. Overrides --path and --filename, and assumes --force
+	--parse							# Parse the response by content type instead of downloading raw bytes
 ]: nothing -> table<name: string, value: string> {
 	let save_path = $save_path
 	let force = (
@@ -207,9 +208,19 @@ export def dl [
 	# from the body is not possible.
 	# https://discordapp.com/channels/601130461678272522/601130461678272524/1209936591267569675
 	if $force {
-		http get $url | save --progress --force $full_path
+		# Default to --raw so Nushell does not parse the response by content type (e.g. JSON, Markdown).
+		if $parse {
+			http get $url | save --progress --force $full_path
+		} else {
+			http get --raw $url | save --progress --force --raw $full_path
+		}
 	} else {
-		http get $url | save --progress $full_path
+		# Default to --raw so Nushell does not parse the response by content type (e.g. JSON, Markdown).
+		if $parse {
+			http get $url | save --progress $full_path
+		} else {
+			http get --raw $url | save --progress --raw $full_path
+		}
 	}
 	print $"Saved file to '($full_path)'"
 	$response_headers
