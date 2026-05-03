@@ -3,6 +3,7 @@
 # docker volume ls suitable for Nushell
 export def "docker volume-ls" []: nothing -> any {
     let cli = $env.docker-cli
+
 	^$cli volume ls --format json
 	| lines
 	| each {|it| $it | from json} |
@@ -12,6 +13,35 @@ export def "docker volume-ls" []: nothing -> any {
 		| each {|i| { name: $i.Name, mount: $i.Options.device? }}
 	}
 	| flatten
+
+	# Fetch sizes once from the daemon. The 'type=volume' query restricts
+	# /system/df to volume usage, which is much faster than computing usage for
+	# images, containers, and build cache as well.
+	# https://docs.docker.com/reference/api/engine/version/v1.42/#tag/System/operation/SystemDataUsage
+	let sizes = (
+		# This takes several seconds.
+		http get --unix-socket /var/run/docker.sock 'http://localhost/system/df?type=volume'
+		| get Volumes
+		| reduce --fold {} {|v, acc| $acc | insert $v.Name $v.UsageData.Size }
+	)
+
+	^$cli volume ls --format json
+	| lines
+	| each {|it| $it | from json}
+	| each {|it|
+		^$cli volume inspect $it.Name
+		| from json
+		| each {|i|
+			{
+				name: $i.Name,
+				mount: $i.Options.device?,
+				size: ($sizes | get --optional $i.Name | default 0 | into filesize),
+			}
+		}
+	}
+	| flatten
+	| sort-by size
+
 }
 
 # docker network ls suitable for Nushell
