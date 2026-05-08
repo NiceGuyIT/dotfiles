@@ -68,7 +68,7 @@ export def "discord install" [
 	print "Installing desktop file..."
 	open ($install_directory | path join "discord.desktop")
 		| lines
-		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join "Discord")"
+		| str replace --regex '^Exec=.*' $"Exec=($install_directory | path join "discord")"
 		| str replace --regex '^Icon=.*' $"Icon=($install_directory | path join "discord.png")"
 		| to text
 		| save --force ($applications_directory | path join "discord.desktop")
