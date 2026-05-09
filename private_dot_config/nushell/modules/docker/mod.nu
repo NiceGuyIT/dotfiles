@@ -42,7 +42,11 @@ export def container-list [
             | lines
             | each {|x|
                 let r = $x | from json
-                let t = $r.created | into datetime
+                let t = if $cli == 'podman' {
+                    $r.created | into datetime
+                } else {
+                    $r.created | into datetime --format "%Y-%m-%d %H:%M:%S %z %Z"
+                }
                 $r | upsert created $t
             }
     } else {
