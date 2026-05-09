@@ -1,3 +1,4 @@
+# Docker module copied from https://github.com/nushell/nu_scripts/blob/main/modules/docker/buildah.nu
 export def "bud img" [] {
     buildah images
     | from ssv -a
