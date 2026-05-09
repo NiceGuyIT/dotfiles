@@ -124,7 +124,7 @@ export def image-list [
                 {
                     name: $"($x.repo):($x.tag)"
                     id: $x.id
-                    created: ($x.created | into datetime)
+                    created: ($x.created | into datetime --format "%Y-%m-%d %H:%M:%S %z %Z")
                     size: ($x.size | into filesize)
                     repo: $img.repo
                     image: $img.image
