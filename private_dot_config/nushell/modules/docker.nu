@@ -34,8 +34,8 @@ export def "docker volume-ls" []: nothing -> any {
 		| update CreatedAt {into datetime --format "%Y-%m-%dT%H:%M:%S%:z"}
 		| each {|i|
 			{
-				name: $i.Name,
 				created_at: $i.CreatedAt,
+				name: $i.Name,
 				mount: $i.Options.device?,
 				size: ($sizes | get --optional $i.Name | default 0 | into filesize),
 			}

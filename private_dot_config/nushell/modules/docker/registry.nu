@@ -1,3 +1,4 @@
+# Docker module copied from https://github.com/nushell/nu_scripts/blob/main/modules/docker/registry.nu
 def "nu-complete registry show" [cmd: string, offset: int] {
     let new = $cmd | str ends-with ' '
     let cmd = $cmd | split row ' '
