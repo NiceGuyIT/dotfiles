@@ -59,6 +59,19 @@ current branch:
 Do not stack a second unrelated change onto an existing feature/fix branch. Each logical change gets its own branch off
 the latest `main`.
 
+## Forgejo PRs
+
+- Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
+  `~/.local/share/forgejo-cli/keys.json`.
+- Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-from-file`, never
+  escaped inline.
+- `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
+  collapse to `fj pr create "<title>" --body-from-file <path>`.
+- `-aA` (= `--autofill --agit`) opens the PR from local commits without a separate `git push` - use when the commit
+  messages already explain the change.
+- Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos (eg.
+  `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
+
 ## Commit messages and PR text
 
 - Do NOT hard-wrap bullet points or paragraphs anywhere that flows through the Forgejo/GitHub PR UI: commit message
