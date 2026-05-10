@@ -68,7 +68,8 @@ the latest `main`.
 - `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
   collapse to `fj pr create "<title>" --body-from-file <path>`.
 - `-aA` (= `--autofill --agit`) opens the PR from local commits without a separate `git push` - use when the commit
-  messages already explain the change.
+  messages already explain the change. AGit details:
+  <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
 - Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos (eg.
   `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
 
