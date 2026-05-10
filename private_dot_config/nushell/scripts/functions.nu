@@ -410,6 +410,61 @@ export def find-dir-parent [name: string]: [nothing -> string, nothing -> nothin
 	}
 }
 
+# waypipe-ssh wraps `waypipe ssh` and forces Lavapipe (software Vulkan ICD) when the local
+# real Vulkan stack lacks VK_EXT_image_drm_format_modifier on at least one physical device.
+#
+# Why: waypipe-client matches the server's main_device dev_t against local Vulkan devices.
+# If the matched device is missing the extension (e.g. RADV on Polaris/GFX8), waypipe panics
+# at dmabuf.rs because the extension is gated to GFX9+ in Mesa. Forcing Lavapipe via
+# VK_DRIVER_FILES bypasses the dev_t lookup and uses the software ICD, which advertises the
+# extension with a LINEAR-only modifier list. Fall-through cost is CPU buffer transcode, fine
+# for terminal-class apps.
+#
+# Lavapipe is not auto-selected by the loader when a real ICD is present; the env var is
+# scoped to the waypipe child process so the rest of the system keeps GPU acceleration.
+export def waypipe-ssh [...args: string]: nothing -> nothing {
+	let lvp_icd = "/usr/share/vulkan/icd.d/lvp_icd.x86_64.json"
+	if (vulkan-needs-lavapipe-fallback) {
+		if not ($lvp_icd | path exists) {
+			use std log
+			log warning "Local Vulkan is missing VK_EXT_image_drm_format_modifier on at least one device, and Lavapipe ICD is not installed."
+			log info "Install with: sudo zypper install libvulkan_lvp"
+			return
+		}
+		with-env { VK_DRIVER_FILES: $lvp_icd } {
+			^waypipe ssh ...$args
+		}
+	} else {
+		^waypipe ssh ...$args
+	}
+}
+
+
+# vulkan-needs-lavapipe-fallback returns true when at least one local Vulkan physical device
+# is missing VK_EXT_image_drm_format_modifier. waypipe selects the local device by matching the
+# server's main_device dev_t, so a single broken device in the set is enough to trigger the
+# panic; falling back to Lavapipe is the safe default.
+def vulkan-needs-lavapipe-fallback []: nothing -> bool {
+	if (which vulkaninfo | is-empty) {
+		# No way to probe; let waypipe try its luck.
+		return false
+	}
+	let result = (^vulkaninfo | complete)
+	if $result.exit_code != 0 {
+		return false
+	}
+	let lines = ($result.stdout | lines)
+	# "Device Extensions: count = N" appears once per physical device in full vulkaninfo output.
+	let n_gpus = ($lines | where ($it | str starts-with 'Device Extensions:') | length)
+	let n_ext = (
+		$lines
+		| where ($it | str trim | str starts-with 'VK_EXT_image_drm_format_modifier')
+		| length
+	)
+	$n_gpus > 0 and $n_ext < $n_gpus
+}
+
+
 # https://discord.com/channels/601130461678272522/615253963645911060/1222952319105368225
 # table-diff will compare the difference between two tables.
 export def table-diff [
