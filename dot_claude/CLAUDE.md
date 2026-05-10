@@ -59,12 +59,18 @@ current branch:
 Do not stack a second unrelated change onto an existing feature/fix branch. Each logical change gets its own branch off
 the latest `main`.
 
-## Commit messages
+## Commit messages and PR text
 
-- Do NOT hard-wrap bullet points or paragraphs in the commit body. Each bullet or paragraph must be a single long line
-  so the Forgejo/GitHub GUI can wrap it naturally. Hard-wrapping inside a bullet causes the GUI to render each wrapped
-  line as its own broken-looking block and wastes vertical space in review.
-- The subject line should still be short (~70 chars) and in the imperative.
+- Do NOT hard-wrap bullet points or paragraphs anywhere that flows through the Forgejo/GitHub PR UI: commit message
+  bodies, PR titles, PR descriptions, and PR review comments. Each bullet or paragraph must be a single long line so
+  the GUI can wrap it naturally. Hard-wrapping inside a bullet causes the GUI to render each wrapped line as its own
+  broken-looking block and wastes vertical space in review.
+- This means: when authoring a commit message via `git commit -m "$(cat <<'EOF' ... EOF)"`, when filling in
+  `gh pr create --body`, when posting `gh pr comment`, when writing a PR description in the Forgejo web UI, the rule
+  is the same. Newlines stay only between paragraphs / between bullets, never inside them, no matter how long the
+  resulting line is.
+- The subject line / PR title should still be short (~70 chars) and in the imperative.
+- `gh` is not installed; do not try to use it.
 
 # Docker Naming Convention
 
