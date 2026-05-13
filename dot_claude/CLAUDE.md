@@ -54,10 +54,21 @@ current branch:
 2. Create a new branch with a name that describes the change (e.g., `fix/...`, `feat/...`, `chore/...`).
 3. Commit and push the branch.
 4. Switch back to `main` (the user merges the PR).
-5. Before starting the next change, `git pull` on `main` to pick up the merged work.
 
-Do not stack a second unrelated change onto an existing feature/fix branch. Each logical change gets its own branch off
-the latest `main`.
+## Pre-change check (MANDATORY, runs every user request that edits code)
+
+Before the FIRST file edit of any user-requested change, run this check. No exceptions, including when the request
+looks like a small follow-up.
+
+1. `git fetch origin` then `git status` and `git log --oneline @..origin/main`.
+2. Decide which of these states I'm in:
+   a. On `main`, no diff vs `origin/main` -> create a new branch named for the change, then edit.
+   b. On a feature branch whose PR is STILL OPEN AND UNMERGED, and this edit belongs to that PR -> stay on the branch.
+   c. Anything else (main is behind, previous PR was merged, remote branch was deleted, branch is
+   stale) -> `git checkout main && git pull --ff-only && git checkout -b <new-branch>` BEFORE editing.
+
+A user message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change, not a
+continuation. Branch fresh off updated main.
 
 ## Forgejo PRs
 
