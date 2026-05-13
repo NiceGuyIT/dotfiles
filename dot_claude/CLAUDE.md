@@ -63,15 +63,14 @@ the latest `main`.
 
 - Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
   `~/.local/share/forgejo-cli/keys.json`.
-- Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-from-file`, never
-  escaped inline.
+- Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-file`, never escaped
+  inline. (Older docs called this flag `--body-from-file`; current `fj` rejects that name.)
 - `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
-  collapse to `fj pr create "<title>" --body-from-file <path>`.
-- `-aA` (= `--autofill --agit`) opens the PR from local commits without a separate `git push` - use when the commit
-  messages already explain the change. AGit details:
-  <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
-- Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos (eg.
-  `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
+  collapse to `fj pr create "<title>" --body-file <path>`.
+- `-aA` (= `--agit --autofill`) opens the PR from local commits without a separate `git push` - use when the commit
+  messages already explain the change. AGit details: <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
+- Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos
+  (eg. `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
 
 ## Commit messages and PR text
 
