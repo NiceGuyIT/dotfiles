@@ -1,0 +1,59 @@
+#!/usr/bin/env nu
+
+# Wrapper around firefox-create-profiles.nu. Checks the environment, primes the
+# nu_plugin_formats plugin registry, then invokes the worker.
+#
+# The wrapper exists because `plugin use` is a Nushell parser keyword: parsing
+# the worker fails if $nu.plugin-path does not exist yet. Running `plugin add`
+# here creates the registry so the worker parses cleanly.
+
+use std log
+
+def main [] {
+	let firefox_bin = (which firefox | get path?.0?)
+	if ($firefox_bin | is-empty) {
+		log warning "Firefox binary not found in PATH"
+		exit 0
+	}
+
+	let desktop_file = '/usr/share/applications/firefox.desktop'
+	if not ($desktop_file | path exists) {
+		log warning $"Sample Firefox desktop file not found: ($desktop_file)"
+		exit 0
+	}
+
+	let firefox_dir = ($env.HOME | path join '.mozilla/firefox')
+	if not ($firefox_dir | path exists) {
+		log warning $"Firefox config directory not found: ($firefox_dir)"
+		exit 0
+	}
+
+	let profiles = ($firefox_dir | path join 'profiles.ini')
+	if not ($profiles | path exists) {
+		log warning $"Firefox profiles.ini not found: ($profiles)"
+		exit 0
+	}
+
+	let formats = (which nu_plugin_formats | get path?.0?)
+	if ($formats | is-empty) or not ($formats | path exists) {
+		log warning "Plugin nu_plugin_formats is not installed"
+		exit 0
+	}
+
+	if not ($nu.default-config-dir | path exists) {
+		mkdir $nu.default-config-dir
+	}
+
+	plugin add $formats
+
+	let worker = ($env.HOME | path join ".local" "bin" "firefox-create-profiles.nu")
+	if not ($worker | path exists) {
+		log error $"Worker script missing: ($worker)"
+		exit 1
+	}
+
+	# Worker reads data files from the chezmoi working tree. Bake the path at
+	# apply time so the worker can find mozilla-firefox-user.js and friends.
+	$env.CHEZMOI_WORKING_TREE = "{{ .chezmoi.workingTree }}"
+	nu $worker
+}

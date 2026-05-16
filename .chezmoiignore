@@ -10,13 +10,15 @@ Library/Application Support/nushell/
 # Linux can create the Firefox profiles. macOS and Windows cannot.
 {{ if ne .chezmoi.os "linux" }}
 .local/share/applications/firefox*.desktop
-.local/share/applications/firefox-create-profiles.nu
+.local/bin/firefox-create-profiles.nu
+.local/bin/firefox-create-profiles-wrapper.nu
 {{ end }}
 
 # Do not manage some certain files for root.
 {{ if eq .chezmoi.username "root" }}
 .local/share/applications/*.desktop
-.local/share/applications/firefox-create-profiles.nu
+.local/bin/firefox-create-profiles.nu
+.local/bin/firefox-create-profiles-wrapper.nu
 {{ end }}
 
 # justfile is used to install the chezmoi example config.

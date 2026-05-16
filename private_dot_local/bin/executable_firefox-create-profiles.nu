@@ -1,4 +1,12 @@
-#!/usr/bin/env -S nu --plugins '[/usr/local/bin/nu_plugin_formats]'
+#!/usr/bin/env nu
+
+# Worker that creates a desktop icon per Firefox profile and copies the
+# user.js / search.json.mozlz4 templates into each profile.
+#
+# Invoke via firefox-create-profiles-wrapper.nu, which validates the
+# environment and primes the nu_plugin_formats registry. Running this worker
+# directly fails to parse unless the registry already contains `formats`,
+# because `plugin use formats` is a Nushell parser keyword.
 
 # Create the Firefox profiles
 def firefox-create-profiles []: nothing -> nothing {
