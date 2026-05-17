@@ -142,13 +142,28 @@ to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/serv
 Syntax:
 
 - `#LC-123` flags the issue. `^LC-123` is equivalent.
-- Anything after the id on that line is a command. `#LC-123 Fixed` transitions the issue. Commands chain:
-  `#LC-123 State Fixed Assignee me add tag verified`.
-- Target multiple issues with the same commands: `(#LC-123, #LC-124) Fixed`.
+- Anything after the id on that line is a command. `#LC-123 State Done` transitions the issue. Commands chain:
+  `#LC-123 State Done Assignee me add tag verified`.
+- `Fixed` is NOT a YouTrack command. There is no top-level `Fixed`, `Closed`, or `Resolved` verb in the command
+  reference (<https://www.jetbrains.com/help/youtrack/server/command-reference.html#project-related-commands>). The
+  closing verb is always `State <Value>` where `<Value>` is one of the project's State-bundle values.
+- State values are PROJECT-SPECIFIC. Most projects on `niceguyit.myjetbrains.com` use `To do | In Progress | Done`
+  (resolved value: `Done`), but a project can define anything. Look it up before drafting the commit, do not assume.
+- Target multiple issues with the same commands: `(#LC-123, #LC-124) State Done`.
 - A new line starting with `#<ID>` opens commands for that issue.
 - `${revision}` substitutes the commit hash; useful in comments.
 - If the YouTrack project has "Parse commits for issue comments" enabled, text on the line after the commands becomes
   an issue comment.
+
+Discovering legal state values for a project:
+
+- `yt issue inspect <KEY>-N` shows the current `State:` value, which hints at the vocabulary in use.
+- Authoritative list (REST):
+  `curl --silent --header "Authorization: Bearer $TOKEN" 'https://<host>/api/admin/projects/<project-id>/customFields?fields=field(name),bundle(values(name,isResolved))'`.
+  The `State` field's bundle lists every legal value; `isResolved: true` marks the closing one. Get the project id from
+  `yt project list` (the `ID` column, e.g. `0-31`).
+- `yt issue apply --dry-run --command 'State <Value>' <KEY>-N` confirms the parse without mutating, useful before
+  committing.
 
 Where it goes in the commit message body:
 
@@ -161,7 +176,7 @@ fix(issue): surface description on issue inspect
 The CLI requested only idReadable / summary / customFields when inspecting
 an issue and never deserialized the description...
 
-#YT-1 Fixed
+#YT-1 State Done
 ```
 
 Multiple issues in one commit:
@@ -169,8 +184,8 @@ Multiple issues in one commit:
 ```
 chore(deps): bump pulldown_cmark and serde
 
-#LC-200 Fixed
-#LC-201 State Fixed Assignee me
+#LC-200 State Done
+#LC-201 State Done Assignee me
 ```
 
 Rules that interact:
@@ -185,7 +200,7 @@ Rules that interact:
 
 Discover available commands: `yt issue apply --help` mirrors the YouTrack command language; the same strings work in
 commit messages. State transitions, field assignments, work-item entry, tagging, and adding sprints are all reachable.
-When unsure, run `yt issue apply --dry-run <ID> "<command-string>"` first to confirm the parse.
+When unsure, run `yt issue apply --dry-run --command "<command-string>" <KEY>-N` first to confirm the parse.
 
 ## Common gotchas
 
