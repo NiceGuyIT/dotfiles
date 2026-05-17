@@ -74,10 +74,16 @@ continuation. Branch fresh off updated main.
 
 - Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
   `~/.local/share/forgejo-cli/keys.json`.
+- When more than one host is configured in `keys.json` (e.g. `dev.a8n.run` alongside `gitea.n.niceguyit.biz`), pass
+  `--host dev.a8n.run` to every `fj` call. Org-scoped commands like `fj org repo list <org>` will silently target the
+  wrong host or 403 without it. Repo-scoped commands run from inside a git working tree can usually infer the host from
+  the remote URL, but passing `--host` is the safe default.
+- Org-scoped calls (`fj org repo list`, etc.) also need `read:organization` token scope. If you get a 403, re-issue the
+  token via `fj auth add-key` with org scope enabled, not via the API directly.
 - Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-file`, never escaped
   inline. (Older docs called this flag `--body-from-file`; current `fj` rejects that name.)
 - `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
-  collapse to `fj pr create "<title>" --body-file <path>`.
+  collapse to `fj --host dev.a8n.run pr create "<title>" --body-file <path>`.
 - `-aA` (= `--agit --autofill`) opens the PR from local commits without a separate `git push` - use when the commit
   messages already explain the change. AGit details: <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
 - Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos
