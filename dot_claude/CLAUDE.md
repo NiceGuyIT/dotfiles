@@ -106,14 +106,18 @@ to refresh the binary from the Generic Package registry.
 
 1. **File the issue first.** `yt issue create --project <KEY> --summary "..." --description "..."`. Capture the
    returned `<KEY>-N` id.
-2. **Work the issue.** `yt issue inspect <KEY>-N` for state. If a field looks missing in the CLI output, hit the REST
+2. **Mark in progress.** `yt issue apply --command 'State In Progress' <KEY>-N` BEFORE the first file edit. This
+   closes the loop with the commit-trailer command (`#<KEY>-N State Done`): start transitions the issue out of
+   `To do`, merge transitions it to `Done`. Confirm the value first if unsure (`yt issue apply --dry-run --command
+   'State In Progress' <KEY>-N`); some projects use a different label than `In Progress`.
+3. **Work the issue.** `yt issue inspect <KEY>-N` for state. If a field looks missing in the CLI output, hit the REST
    API directly (`http get https://<host>/api/issues/<KEY>-N?fields=...`). `yt issue inspect` does not surface every
    field on every CLI version.
-3. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
+4. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
    the PR title and the PR body so YouTrack auto-links the PR. Conventional commit `fix(scope): summary (<KEY>-N)`
    in the title works well for the title.
-4. **Back to main** after pushing the PR (per Git Workflow).
-5. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
+5. **Back to main** after pushing the PR (per Git Workflow).
+6. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
 
 ## Project keys (discover with `yt project list` or `/api/admin/projects`)
 
