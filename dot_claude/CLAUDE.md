@@ -96,6 +96,104 @@ continuation. Branch fresh off updated main.
 - The subject line / PR title should still be short (~70 chars) and in the imperative.
 - `gh` is not installed; do not try to use it.
 
+# YouTrack Workflow (all repos)
+
+Every code change starts as a YouTrack issue. No inline fixes without a tracked issue, even small ones spotted
+mid-task. The `yt` CLI is at `/usr/local/bin/yt`; config lives under `$XDG_CONFIG_HOME/youtrack-cli/`. Run `yt update`
+to refresh the binary from the Generic Package registry.
+
+## Lifecycle
+
+1. **File the issue first.** `yt issue create --project <KEY> --summary "..." --description "..."`. Capture the
+   returned `<KEY>-N` id.
+2. **Work the issue.** `yt issue inspect <KEY>-N` for state. If a field looks missing in the CLI output, hit the REST
+   API directly (`http get https://<host>/api/issues/<KEY>-N?fields=...`). `yt issue inspect` does not surface every
+   field on every CLI version.
+3. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
+   the PR title and the PR body so YouTrack auto-links the PR. Conventional commit `fix(scope): summary (<KEY>-N)`
+   in the title works well for the title.
+4. **Back to main** after pushing the PR (per Git Workflow).
+5. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
+
+## Project keys (discover with `yt project list` or `/api/admin/projects`)
+
+- `LC`: a8n-Lets Chat
+- `YT`: Pandora-YouTrack CLI
+
+## Issue body conventions
+
+When drafting descriptions, mirror this shape (matches the LC-123 template):
+
+- `## Background` (what currently exists, grounded in file paths / function names / table names)
+- `## Goal`
+- `## Proposed approach`
+- `## Alternatives considered`
+- `## Acceptance criteria` (checkbox list)
+- `## Open questions`
+
+Ground every claim in the actual codebase. Speculative-but-plausible content gets rewritten later; invented file paths
+get caught at code-read time.
+
+## Apply YouTrack commands from commits
+
+YouTrack parses VCS commits for `#<ID>` (or `^<ID>`) and treats everything after the id, up to end of line, as commands
+to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/server/apply-commands-in-vcs-commits.html>.
+
+Syntax:
+
+- `#LC-123` flags the issue. `^LC-123` is equivalent.
+- Anything after the id on that line is a command. `#LC-123 Fixed` transitions the issue. Commands chain:
+  `#LC-123 State Fixed Assignee me add tag verified`.
+- Target multiple issues with the same commands: `(#LC-123, #LC-124) Fixed`.
+- A new line starting with `#<ID>` opens commands for that issue.
+- `${revision}` substitutes the commit hash; useful in comments.
+- If the YouTrack project has "Parse commits for issue comments" enabled, text on the line after the commands becomes
+  an issue comment.
+
+Where it goes in the commit message body:
+
+End of body, last block, one issue per line. The subject line stays clean of `#<ID>` (the PR title carries the id for
+human readers; the commit trailer carries it for YouTrack). Example:
+
+```
+fix(issue): surface description on issue inspect
+
+The CLI requested only idReadable / summary / customFields when inspecting
+an issue and never deserialized the description...
+
+#YT-1 Fixed
+```
+
+Multiple issues in one commit:
+
+```
+chore(deps): bump pulldown_cmark and serde
+
+#LC-200 Fixed
+#LC-201 State Fixed Assignee me
+```
+
+Rules that interact:
+
+- Do not hard-wrap the `#<ID> ...` line (per the commit-body rule above). Each issue command lives on one unwrapped
+  line so YouTrack's parser sees a complete command sequence.
+- Em-dash ban still applies to the comment text that follows commands.
+- Always create NEW commits, never amend. If a commit went out with wrong YouTrack commands, file a follow-up commit
+  with `#<ID> remove tag <wrong-tag>` or `#<ID> <comment text>` to correct it; do NOT amend.
+- A `Co-Authored-By:` trailer (where the repo uses one) goes BELOW the YouTrack commands, separated by a blank line,
+  so the YT parser sees the commands cleanly at the end of the body.
+
+Discover available commands: `yt issue apply --help` mirrors the YouTrack command language; the same strings work in
+commit messages. State transitions, field assignments, work-item entry, tagging, and adding sprints are all reachable.
+When unsure, run `yt issue apply --dry-run <ID> "<command-string>"` first to confirm the parse.
+
+## Common gotchas
+
+- `yt issue create --type <X>` errors if the target project has no `Type` custom field (e.g., the `YT` project itself).
+  Drop the flag or check the project's custom fields first via
+  `/api/admin/projects/<id>?fields=customFields(field(name))`.
+- Em-dash ban (top-of-file rule) applies to YouTrack issue summaries and descriptions too.
+
 # Docker Naming Convention
 
 Every Docker resource (service, volume, network) for a project must be prefixed by the application name so `docker ps`,
