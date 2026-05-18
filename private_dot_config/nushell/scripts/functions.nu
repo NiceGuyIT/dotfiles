@@ -149,8 +149,11 @@ export def chezmoi-private [...args: string]: nothing -> nothing {
 # Extract the filename from the URL headers.
 export def url-filename []: string -> string {
 	let url = $in
+	# Some servers (e.g. Forgejo/Gitea package endpoints) return 405 Method Not Allowed for HEAD.
+	# Fall back to URL-path parsing when HEAD is unavailable.
+	let headers = (try { http head $url } catch { [] })
 	let content_disposition = (
-		http head $url
+		$headers
 		| where name =~ 'content-disposition'
 		| get value
 		| parse --regex '.*filename="?(?<filename>[^";]+)[;"]?'
@@ -201,7 +204,7 @@ export def dl [
 			$filename | default ($url | url-filename)
 		}
 	)
-	let response_headers = (http head $url)
+	let response_headers = (try { http head $url } catch { [] })
 	let full_path = ($path | path join $filename)
 
 	# "http get" streams the response while "http get --full" buffers the request. Separating the response headers
