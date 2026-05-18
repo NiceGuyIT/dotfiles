@@ -160,8 +160,16 @@ export def url-filename []: string -> string {
 	)
 
 	if not ($content_disposition | is-empty) {
-		# Content-Disposition header might have the filename.
-		return ($content_disposition | get filename.0)
+		# Content-Disposition header might have the filename. Strip stray quotes and
+		# semicolons defensively: some endpoints (and older script versions still in
+		# circulation in container images) leave them in the captured value.
+		return (
+			$content_disposition
+			| get filename.0
+			| str trim --char '"'
+			| str trim --char ';'
+			| str trim
+		)
 	} else {
 		if ($url | str ends-with '/') {
 			use std log
