@@ -104,6 +104,11 @@ args = [
 {{- end }}
 {{- end }}
 
+{{ if eq .chezmoi.os "darwin" }}
+[window]
+option_as_alt = "Both"
+{{ end }}
+
 [window.dimensions]
 {{ if eq .chezmoi.os "darwin" }}
 # macOS Retina display with 2 terminals wide and 2 terminals high:
