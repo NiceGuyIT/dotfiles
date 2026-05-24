@@ -85,6 +85,13 @@
       "action.yml"
     ]
   },
+  "yaml-embedded-languages.include": {
+    "nushell": {
+      "name": "Nushell",
+      "scopeName": "source.nushell",
+      "stripIndent": true
+    }
+  },
   "[dockercompose]": {
     "editor.autoIndent": "full",
     "editor.defaultFormatter": "redhat.vscode-yaml",
