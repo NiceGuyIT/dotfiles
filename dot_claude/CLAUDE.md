@@ -157,17 +157,37 @@ to refresh the binary from the Generic Package registry.
 
 ## Issue body conventions
 
-When drafting descriptions, mirror this shape (matches the LC-123 template):
+YouTrack issues are pure implementation specs. They must read as a directive an AI agent (or human) can implement
+end-to-end without further clarification. No "Open questions" section, no "TBD", no "we should decide later". Every
+decision the implementation needs is resolved BEFORE the issue is filed.
+
+Workflow:
+
+1. Draft the issue body in conversation context.
+2. While drafting, identify every decision the implementation needs: class names, threshold directions, library choices,
+   file layouts, AC numbers, naming conventions, taxonomy splits, etc.
+3. For each open decision, STOP drafting and ask the user via `AskUserQuestion` (one tool call, 1-4 questions,
+   multi-select where appropriate). Recommend an option; let the user override.
+4. Fold the answers into the relevant Background / Goal / Proposed approach / AC sections. Cite the user's choice inline
+   when the decision is non-obvious ("class is named `form-scan` per the MK-18 taxonomy choice").
+5. Only then file the issue with `yt issue create`.
+
+Required body shape (matches the LC-123 template):
 
 - `## Background` (what currently exists, grounded in file paths / function names / table names)
 - `## Goal`
 - `## Proposed approach`
 - `## Alternatives considered`
 - `## Acceptance criteria` (checkbox list)
-- `## Open questions`
 
 Ground every claim in the actual codebase. Speculative-but-plausible content gets rewritten later; invented file paths
 get caught at code-read time.
+
+Genuinely-unknowable decisions (depend on observation that can only be made during implementation, e.g. "the exact
+threshold falls out of running against real fixtures") get stated as explicit assumptions inside `## Proposed approach`,
+never as a separate "Open questions" section. Example:
+`Assume panel_density_min = 0.05; revise if validation shows otherwise.` The implementing agent then knows the default
+and the trigger to revise.
 
 ## Apply YouTrack commands from commits
 
