@@ -138,17 +138,24 @@ to refresh the binary from the Generic Package registry.
 1. **File the issue first.** `yt issue create --project <KEY> --summary "..." --description "..."`. Capture the
    returned `<KEY>-N` id.
 2. **Mark in progress.** `yt issue apply --command 'State In Progress' <KEY>-N` BEFORE the first file edit. This
-   closes the loop with the commit-trailer command (`#<KEY>-N State Done`): start transitions the issue out of
-   `To do`, merge transitions it to `Done`. Confirm the value first if unsure (`yt issue apply --dry-run --command
-   'State In Progress' <KEY>-N`); some projects use a different label than `In Progress`.
+   transitions the issue out of `To do`. The issue then stays `In Progress` through PR review and moves to `Done`
+   only AFTER a human merges the PR (see step 6), NOT via the commit itself. Confirm the value first if unsure
+   (`yt issue apply --dry-run --command 'State In Progress' <KEY>-N`); some projects use a different label than
+   `In Progress`.
 3. **Work the issue.** `yt issue inspect <KEY>-N` for state. If a field looks missing in the CLI output, hit the REST
    API directly (`http get https://<host>/api/issues/<KEY>-N?fields=...`). `yt issue inspect` does not surface every
    field on every CLI version.
 4. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
    the PR title and the PR body so YouTrack auto-links the PR. Conventional commit `fix(scope): summary (<KEY>-N)`
-   in the title works well for the title.
+   works well for the title. In the commit BODY, reference the issue with a BARE `#<KEY>-N` (link only, NO `State`
+   command after it). The Forgejo VCS integration applies commit commands when it parses the pushed commit, not on
+   merge, so a `#<KEY>-N State Done` trailer resolves the issue the instant the branch is pushed while the PR is still
+   open. A bare `#<KEY>-N` links the PR to the issue without transitioning it.
 5. **Back to main** after pushing the PR (per Git Workflow).
-6. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
+6. **Close on merge.** `State Done` is an explicit action taken AFTER a human merges the PR, never via the commit
+   trailer. The human who merges sets it (or a merge automation does); if you are asked to follow up on an
+   already-merged PR, set it yourself with `yt issue apply --command 'State Done' <KEY>-N`.
+7. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
 
 ## Project keys (discover with `yt project list` or `/api/admin/projects`)
 
@@ -189,22 +196,29 @@ never as a separate "Open questions" section. Example:
 `Assume panel_density_min = 0.05; revise if validation shows otherwise.` The implementing agent then knows the default
 and the trigger to revise.
 
-## Apply YouTrack commands from commits
+## Reference YouTrack issues from commits
 
 YouTrack parses VCS commits for `#<ID>` (or `^<ID>`) and treats everything after the id, up to end of line, as commands
 to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/server/apply-commands-in-vcs-commits.html>.
 
-Syntax:
+**Policy: commit with a BARE `#<KEY>-N` reference, no `State` command.** The Forgejo VCS integration applies these
+commands when it PARSES the pushed commit, not when the PR merges. A `#<KEY>-N State Done` trailer therefore resolves
+the issue the instant the branch is pushed, while the PR is still open and unreviewed (premature Done). A bare
+`#<KEY>-N` links the PR to the issue without transitioning it. Do State changes explicitly with `yt issue apply`:
+`In Progress` before the first edit (Lifecycle step 2), `Done` after a human merges (Lifecycle step 6). Prefer
+`yt issue apply` for any other mutation too (Assignee, tags), so the change happens when you intend it, not on push.
 
-- `#LC-123` flags the issue. `^LC-123` is equivalent.
-- Anything after the id on that line is a command. `#LC-123 State Done` transitions the issue. Commands chain:
-  `#LC-123 State Done Assignee me add tag verified`.
+Syntax (for the rare case you DO want a parse-time command, e.g. a one-off correction):
+
+- `#LC-123` flags the issue with no transition: the default, link only. `^LC-123` is equivalent.
+- Anything after the id on that line is a command applied on parse. `#LC-123 State Done` transitions the issue, and
+  commands chain: `#LC-123 State Done Assignee me add tag verified`. Avoid `State` in trailers per the policy above.
 - `Fixed` is NOT a YouTrack command. There is no top-level `Fixed`, `Closed`, or `Resolved` verb in the command
   reference (<https://www.jetbrains.com/help/youtrack/server/command-reference.html#project-related-commands>). The
   closing verb is always `State <Value>` where `<Value>` is one of the project's State-bundle values.
 - State values are PROJECT-SPECIFIC. Most projects on `niceguyit.myjetbrains.com` use `To do | In Progress | Done`
   (resolved value: `Done`), but a project can define anything. Look it up before drafting the commit, do not assume.
-- Target multiple issues with the same commands: `(#LC-123, #LC-124) State Done`.
+- Target multiple issues with the same commands: `(#LC-123, #LC-124) add tag triaged`.
 - A new line starting with `#<ID>` opens commands for that issue.
 - `${revision}` substitutes the commit hash; useful in comments.
 - If the YouTrack project has "Parse commits for issue comments" enabled, text on the line after the commands becomes
@@ -220,10 +234,10 @@ Discovering legal state values for a project:
 - `yt issue apply --dry-run --command 'State <Value>' <KEY>-N` confirms the parse without mutating, useful before
   committing.
 
-Where it goes in the commit message body:
+Where the reference goes in the commit message body:
 
-End of body, last block, one issue per line. The subject line stays clean of `#<ID>` (the PR title carries the id for
-human readers; the commit trailer carries it for YouTrack). Example:
+End of body, last block, one issue per line, BARE id with nothing after it. The subject line stays clean of `#<ID>`
+(the PR title carries the id for human readers; the commit body carries the bare id so YouTrack links the PR). Example:
 
 ```
 fix(issue): surface description on issue inspect
@@ -231,7 +245,7 @@ fix(issue): surface description on issue inspect
 The CLI requested only idReadable / summary / customFields when inspecting
 an issue and never deserialized the description...
 
-#YT-1 State Done
+#YT-1
 ```
 
 Multiple issues in one commit:
@@ -239,23 +253,24 @@ Multiple issues in one commit:
 ```
 chore(deps): bump pulldown_cmark and serde
 
-#LC-200 State Done
-#LC-201 State Done Assignee me
+#LC-200
+#LC-201
 ```
 
 Rules that interact:
 
-- Do not hard-wrap the `#<ID> ...` line (per the commit-body rule above). Each issue command lives on one unwrapped
-  line so YouTrack's parser sees a complete command sequence.
-- Em-dash ban still applies to the comment text that follows commands.
-- Always create NEW commits, never amend. If a commit went out with wrong YouTrack commands, file a follow-up commit
-  with `#<ID> remove tag <wrong-tag>` or `#<ID> <comment text>` to correct it; do NOT amend.
-- A `Co-Authored-By:` trailer (where the repo uses one) goes BELOW the YouTrack commands, separated by a blank line,
-  so the YT parser sees the commands cleanly at the end of the body.
+- Do not hard-wrap the `#<ID>` line (per the commit-body rule above). Each issue reference lives on one line.
+- Em-dash ban still applies to any comment text.
+- Always create NEW commits, never amend. If a commit went out with a wrong command (e.g. an accidental `State Done`
+  trailer that resolved the issue early), correct it with `yt issue apply` (e.g.
+  `yt issue apply --command 'State In Progress' <KEY>-N`), not by amending; do NOT amend.
+- A `Co-Authored-By:` trailer (where the repo uses one) goes BELOW the `#<ID>` line, separated by a blank line, so the
+  YT parser sees the reference cleanly at the end of the body.
 
-Discover available commands: `yt issue apply --help` mirrors the YouTrack command language; the same strings work in
-commit messages. State transitions, field assignments, work-item entry, tagging, and adding sprints are all reachable.
-When unsure, run `yt issue apply --dry-run --command "<command-string>" <KEY>-N` first to confirm the parse.
+Discover available commands: `yt issue apply --help` mirrors the YouTrack command language. State transitions, field
+assignments, work-item entry, tagging, and adding sprints are all reachable via `yt issue apply` (preferred), or in a
+commit trailer if you deliberately want them applied at push time. When unsure, run
+`yt issue apply --dry-run --command "<command-string>" <KEY>-N` first to confirm the parse.
 
 ## Common gotchas
 
