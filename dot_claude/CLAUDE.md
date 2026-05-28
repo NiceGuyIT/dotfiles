@@ -62,8 +62,8 @@ Respond like smart caveman. Cut all filler, keep technical substance.
 
 # Tooling Gap Discipline
 
-When a task needs functionality that the project's existing CLI (`yt`, `fj`, `gh`, etc.) does not expose, STOP. Do not
-reach for the REST API, parse the CLI's human output, scrape HTML, or hand-roll an equivalent.
+When a task needs functionality that the project's existing tool (the YouTrack MCP, `yt`, `fj`, `gh`, etc.) does not
+expose, STOP. Do not reach for the REST API, parse the CLI's human output, scrape HTML, or hand-roll an equivalent.
 
 - Default to the configured CLI. If it does not cover the case, that is the signal to extend the CLI, not bypass it.
 - Surface the gap explicitly: state which tool, which capability is missing, and what the new command should look like.
@@ -79,7 +79,7 @@ capabilities should land in the canonical CLI, not scatter across action YAMLs, 
 
 **Examples that trigger this rule:**
 
-- `yt` has no command to read a single custom field. Stop, file the issue, do not parse `inspect --json` by hand.
+- The YouTrack MCP lacks a capability you need. Stop, file the issue against the MCP, do not hit the YouTrack REST API by hand.
 - `fj` has no JSON output for `pr search`. Stop, file the issue, do not regex the human output.
 - `gh` lacks a flag. Stop, file the issue, do not hit `/api/...` directly.
 
@@ -151,21 +151,30 @@ continuation. Branch fresh off updated main.
 # YouTrack Workflow (all repos)
 
 Every code change starts as a YouTrack issue. No inline fixes without a tracked issue, even small ones spotted
-mid-task. The `yt` CLI is at `/usr/local/bin/yt`; config lives under `$XDG_CONFIG_HOME/youtrack-cli/`. Run `yt update`
-to refresh the binary from the Generic Package registry.
+mid-task.
+
+Use the YouTrack MCP (`mcp__youtrack__*` tools) for ALL YouTrack operations: create, read, search, update (State /
+AI Agent / fields), comment, link, change assignee, manage tags, log work. The MCP is the default and is verified
+working for the full lifecycle. Its tools are deferred in most sessions, so load their schemas with ToolSearch (e.g.
+`select:mcp__youtrack__create_issue,mcp__youtrack__update_issue,mcp__youtrack__get_issue`) before the first call.
+
+The `yt` CLI (at `/usr/local/bin/yt`, config under `$XDG_CONFIG_HOME/youtrack-cli/`, refresh with `yt update`) stays
+installed for the few things the MCP does not expose (e.g. `yt project vcs`, used inside action YAML snippets) and as a
+fallback. Do NOT hit the YouTrack REST API directly: if the MCP lacks a capability, follow the Tooling Gap Discipline
+rule.
 
 ## Lifecycle
 
-1. **File the issue first.** `yt issue create --project <KEY> --summary "..." --description "..."`. Capture the
-   returned `<KEY>-N` id.
-2. **Mark in progress.** `yt issue apply --command 'State In Progress' <KEY>-N` BEFORE the first file edit. This
-   transitions the issue out of `To do`. The issue then stays `In Progress` through PR review and moves to `Done`
-   only AFTER a human merges the PR (see step 6), NOT via the commit itself. Confirm the value first if unsure
-   (`yt issue apply --dry-run --command 'State In Progress' <KEY>-N`); some projects use a different label than
-   `In Progress`.
-3. **Work the issue.** `yt issue inspect <KEY>-N` for state. If a field looks missing in the CLI output, hit the REST
-   API directly (`http get https://<host>/api/issues/<KEY>-N?fields=...`). `yt issue inspect` does not surface every
-   field on every CLI version.
+1. **File the issue first.** `mcp__youtrack__create_issue` (project key, summary, description, optional `customFields`).
+   Call `mcp__youtrack__get_issue_fields_schema` first to learn the project's required fields and permitted values.
+   Capture the returned `<KEY>-N` id.
+2. **Mark in progress.** `mcp__youtrack__update_issue` with `customFields: {"State": "In Progress"}` BEFORE the first
+   file edit. This transitions the issue out of `To do`. The issue then stays `In Progress` through PR review and moves
+   to `Done` only AFTER a human merges the PR (see step 6), NOT via the commit itself. Confirm the legal value first via
+   `mcp__youtrack__get_issue_fields_schema` (the `State` enum); some projects use a different label than `In Progress`.
+3. **Work the issue.** `mcp__youtrack__get_issue` returns the full description, state, and `customFields` (Type, State,
+   AI Agent, Priority, Assignee, ...). Use `mcp__youtrack__get_issue_fields_schema` for the complete field list and
+   legal values.
 4. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
    the PR title and the PR body so YouTrack auto-links the PR. Conventional commit `fix(scope): summary (<KEY>-N)`
    works well for the title. In the commit BODY, reference the issue with a BARE `#<KEY>-N` (link only, NO `State`
@@ -175,10 +184,10 @@ to refresh the binary from the Generic Package registry.
 5. **Back to main** after pushing the PR (per Git Workflow).
 6. **Close on merge.** `State Done` is an explicit action taken AFTER a human merges the PR, never via the commit
    trailer. The human who merges sets it (or a merge automation does); if you are asked to follow up on an
-   already-merged PR, set it yourself with `yt issue apply --command 'State Done' <KEY>-N`.
-7. **Repeat.** `yt list --query 'project: <KEY> State: -Done'` to find the next issue.
+   already-merged PR, set it yourself with `mcp__youtrack__update_issue` (`customFields: {"State": "Done"}`).
+7. **Repeat.** `mcp__youtrack__search_issues` (query `project: <KEY> State: -Done`) to find the next issue.
 
-## Project keys (discover with `yt project list` or `/api/admin/projects`)
+## Project keys (discover with `mcp__youtrack__find_projects`)
 
 - `LC`: a8n-Lets Chat
 - `YT`: Pandora-YouTrack CLI
@@ -198,7 +207,7 @@ Workflow:
    multi-select where appropriate). Recommend an option; let the user override.
 4. Fold the answers into the relevant Background / Goal / Proposed approach / AC sections. Cite the user's choice inline
    when the decision is non-obvious ("class is named `form-scan` per the MK-18 taxonomy choice").
-5. Only then file the issue with `yt issue create`.
+5. Only then file the issue with `mcp__youtrack__create_issue`.
 
 Required body shape (matches the LC-123 template):
 
@@ -225,9 +234,11 @@ to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/serv
 **Policy: commit with a BARE `#<KEY>-N` reference, no `State` command.** The Forgejo VCS integration applies these
 commands when it PARSES the pushed commit, not when the PR merges. A `#<KEY>-N State Done` trailer therefore resolves
 the issue the instant the branch is pushed, while the PR is still open and unreviewed (premature Done). A bare
-`#<KEY>-N` links the PR to the issue without transitioning it. Do State changes explicitly with `yt issue apply`:
-`In Progress` before the first edit (Lifecycle step 2), `Done` after a human merges (Lifecycle step 6). Prefer
-`yt issue apply` for any other mutation too (Assignee, tags), so the change happens when you intend it, not on push.
+`#<KEY>-N` links the PR to the issue without transitioning it. Do State changes explicitly via the MCP
+(`mcp__youtrack__update_issue` with `customFields: {"State": ...}`): `In Progress` before the first edit (Lifecycle
+step 2), `Done` after a human merges (Lifecycle step 6). Prefer the MCP for any other mutation too (assignee via
+`mcp__youtrack__change_issue_assignee`, tags via `mcp__youtrack__manage_issue_tags`, comments via
+`mcp__youtrack__add_issue_comment`), so the change happens when you intend it, not on push.
 
 Syntax (for the rare case you DO want a parse-time command, e.g. a one-off correction):
 
@@ -247,13 +258,11 @@ Syntax (for the rare case you DO want a parse-time command, e.g. a one-off corre
 
 Discovering legal state values for a project:
 
-- `yt issue inspect <KEY>-N` shows the current `State:` value, which hints at the vocabulary in use.
-- Authoritative list (REST):
-  `curl --silent --header "Authorization: Bearer $TOKEN" 'https://<host>/api/admin/projects/<project-id>/customFields?fields=field(name),bundle(values(name,isResolved))'`.
-  The `State` field's bundle lists every legal value; `isResolved: true` marks the closing one. Get the project id from
-  `yt project list` (the `ID` column, e.g. `0-31`).
-- `yt issue apply --dry-run --command 'State <Value>' <KEY>-N` confirms the parse without mutating, useful before
-  committing.
+- `mcp__youtrack__get_issue_fields_schema` (project key) is authoritative: it returns every custom field and its
+  permitted values as a JSON enum (e.g. `State: ["To do", "In Progress", "Done"]`, plus `AI Agent`, `Priority`, ...).
+  Read the legal values from there before drafting a commit command or calling `update_issue`. This replaces both the
+  old REST `customFields` query and the `yt issue apply --dry-run` parse check (the MCP has no dry-run).
+- `mcp__youtrack__get_issue` shows an issue's current `customFields` values, which hints at the vocabulary in use.
 
 Where the reference goes in the commit message body:
 
@@ -283,21 +292,21 @@ Rules that interact:
 - Do not hard-wrap the `#<ID>` line (per the commit-body rule above). Each issue reference lives on one line.
 - Em-dash ban still applies to any comment text.
 - Always create NEW commits, never amend. If a commit went out with a wrong command (e.g. an accidental `State Done`
-  trailer that resolved the issue early), correct it with `yt issue apply` (e.g.
-  `yt issue apply --command 'State In Progress' <KEY>-N`), not by amending; do NOT amend.
+  trailer that resolved the issue early), correct it via the MCP (`mcp__youtrack__update_issue` with
+  `customFields: {"State": "In Progress"}`), not by amending; do NOT amend.
 - A `Co-Authored-By:` trailer (where the repo uses one) goes BELOW the `#<ID>` line, separated by a blank line, so the
   YT parser sees the reference cleanly at the end of the body.
 
-Discover available commands: `yt issue apply --help` mirrors the YouTrack command language. State transitions, field
-assignments, work-item entry, tagging, and adding sprints are all reachable via `yt issue apply` (preferred), or in a
-commit trailer if you deliberately want them applied at push time. When unsure, run
-`yt issue apply --dry-run --command "<command-string>" <KEY>-N` first to confirm the parse.
+Mutations via the MCP: State transitions and field assignments via `mcp__youtrack__update_issue`, comments via
+`mcp__youtrack__add_issue_comment`, assignee via `mcp__youtrack__change_issue_assignee`, tags via
+`mcp__youtrack__manage_issue_tags`, work logging via `mcp__youtrack__log_work`, links via `mcp__youtrack__link_issues`.
+Prefer these over a commit trailer so the change happens when you intend it, not on push. The MCP has no dry-run: check
+legal values with `mcp__youtrack__get_issue_fields_schema` first.
 
 ## Common gotchas
 
-- `yt issue create --type <X>` errors if the target project has no `Type` custom field (e.g., the `YT` project itself).
-  Drop the flag or check the project's custom fields first via
-  `/api/admin/projects/<id>?fields=customFields(field(name))`.
+- Setting a field the project does not define fails. Call `mcp__youtrack__get_issue_fields_schema` first and only pass
+  `customFields` the schema lists. Some projects have no `Type` field (e.g. `YT`, `CLAUDE`); do not pass `Type` there.
 - Em-dash ban (top-of-file rule) applies to YouTrack issue summaries and descriptions too.
 
 # Docker Naming Convention
