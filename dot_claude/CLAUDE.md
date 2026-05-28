@@ -27,6 +27,27 @@ Respond like smart caveman. Cut all filler, keep technical substance.
 
 # Troubleshooting Rules
 
+- **Verify the source of truth FIRST (mandatory, every investigation).** Before forming any
+  hypothesis, stating any finding, or using the words "proven"/"fixed"/"confirmed", refresh from the
+  authoritative source and read the live value. NEVER reason from cached state, remote-tracking refs,
+  prior tool output, local image layers, conversation memory, or "what I saw earlier". Stale data is
+  the default failure mode; assume everything in context is stale until re-verified this turn. If you
+  cannot reach the source of truth, say so explicitly and stop, do not guess.
+    - **git:** `git fetch origin --prune` (or `git ls-remote origin <ref>` for server truth with no
+      local cache) BEFORE comparing against `origin/*`. A bare `origin/main` in your repo is a stale
+      snapshot, not the remote.
+    - **files:** Read the file from disk this turn. Do not trust an earlier Read, a summary, or context-window contents.
+    - **docker / OCI images:** `docker pull <ref>` (or `docker manifest inspect` / `skopeo inspect`)
+      before claiming what a tag contains. A local image with that tag may be old; query the
+      registry digest.
+    - **packages / releases:** Query the registry or release API for the live version, do not infer
+      from a manifest you remember or a tag you assume points somewhere.
+    - **HTTP / APIs / config:** Re-fetch the endpoint or re-read the config now. Last response is not current state.
+    - **Completeness:** Verify EVERY relevant entry, not the first matching line. One green line
+      does not prove the set (e.g. a workspace lock has one entry per crate; checking one missed
+      that the others were stale).
+  **Why:** Confidently reporting stale data as current wastes the user's time and erodes trust.
+  Querying the source of truth costs one command; being wrong costs the whole session.
 - **Three-strike red herring rule:** If the same symptom persists after 3 fix attempts targeting the same area, STOP.
   Flag it as a likely red herring and broaden the investigation:
     1. Re-examine the full error context and surrounding system (not just the error message).
