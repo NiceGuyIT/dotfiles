@@ -153,39 +153,15 @@ continuation. Branch fresh off updated main.
 Every code change starts as a YouTrack issue. No inline fixes without a tracked issue, even small ones spotted
 mid-task.
 
-Use the YouTrack MCP (`mcp__youtrack__*` tools) for ALL YouTrack operations: create, read, search, update (State /
-AI Agent / fields), comment, link, change assignee, manage tags, log work. The MCP is the default and is verified
-working for the full lifecycle. Its tools are deferred in most sessions, so load their schemas with ToolSearch (e.g.
+Use the YouTrack MCP (`mcp__youtrack__*` tools) for ALL YouTrack operations: create, read, search, update fields,
+comment, link, change assignee, manage tags, log work. The MCP is the default and is verified
+working end-to-end. Its tools are deferred in most sessions, so load their schemas with ToolSearch (e.g.
 `select:mcp__youtrack__create_issue,mcp__youtrack__update_issue,mcp__youtrack__get_issue`) before the first call.
 
 The `yt` CLI (at `/usr/local/bin/yt`, config under `$XDG_CONFIG_HOME/youtrack-cli/`, refresh with `yt update`) stays
 installed for the few things the MCP does not expose (e.g. `yt project vcs`, used inside action YAML snippets) and as a
 fallback. Do NOT hit the YouTrack REST API directly: if the MCP lacks a capability, follow the Tooling Gap Discipline
 rule.
-
-## Lifecycle
-
-1. **File the issue first.** `mcp__youtrack__create_issue` (project key, summary, description, optional `customFields`).
-   Call `mcp__youtrack__get_issue_fields_schema` first to learn the project's required fields and permitted values.
-   Capture the returned `<KEY>-N` id.
-2. **Mark in progress.** `mcp__youtrack__update_issue` with `customFields: {"State": "In Progress"}` BEFORE the first
-   file edit. This transitions the issue out of `To do`. The issue then stays `In Progress` through PR review and moves
-   to `Done` only AFTER a human merges the PR (see step 6), NOT via the commit itself. Confirm the legal value first via
-   `mcp__youtrack__get_issue_fields_schema` (the `State` enum); some projects use a different label than `In Progress`.
-3. **Work the issue.** `mcp__youtrack__get_issue` returns the full description, state, and `customFields` (Type, State,
-   AI Agent, Priority, Assignee, ...). Use `mcp__youtrack__get_issue_fields_schema` for the complete field list and
-   legal values.
-4. **Branch + PR.** Run the Pre-change check from the Git Workflow section first. Reference the `<KEY>-N` id in BOTH
-   the PR title and the PR body so YouTrack auto-links the PR. Conventional commit `fix(scope): summary (<KEY>-N)`
-   works well for the title. In the commit BODY, reference the issue with a BARE `#<KEY>-N` (link only, NO `State`
-   command after it). The Forgejo VCS integration applies commit commands when it parses the pushed commit, not on
-   merge, so a `#<KEY>-N State Done` trailer resolves the issue the instant the branch is pushed while the PR is still
-   open. A bare `#<KEY>-N` links the PR to the issue without transitioning it.
-5. **Back to main** after pushing the PR (per Git Workflow).
-6. **Close on merge.** `State Done` is an explicit action taken AFTER a human merges the PR, never via the commit
-   trailer. The human who merges sets it (or a merge automation does); if you are asked to follow up on an
-   already-merged PR, set it yourself with `mcp__youtrack__update_issue` (`customFields: {"State": "Done"}`).
-7. **Repeat.** `mcp__youtrack__search_issues` (query `project: <KEY> State: -Done`) to find the next issue.
 
 ## Project keys (discover with `mcp__youtrack__find_projects`)
 
@@ -231,38 +207,11 @@ and the trigger to revise.
 YouTrack parses VCS commits for `#<ID>` (or `^<ID>`) and treats everything after the id, up to end of line, as commands
 to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/server/apply-commands-in-vcs-commits.html>.
 
-**Policy: commit with a BARE `#<KEY>-N` reference, no `State` command.** The Forgejo VCS integration applies these
-commands when it PARSES the pushed commit, not when the PR merges. A `#<KEY>-N State Done` trailer therefore resolves
-the issue the instant the branch is pushed, while the PR is still open and unreviewed (premature Done). A bare
-`#<KEY>-N` links the PR to the issue without transitioning it. Do State changes explicitly via the MCP
-(`mcp__youtrack__update_issue` with `customFields: {"State": ...}`): `In Progress` before the first edit (Lifecycle
-step 2), `Done` after a human merges (Lifecycle step 6). Prefer the MCP for any other mutation too (assignee via
-`mcp__youtrack__change_issue_assignee`, tags via `mcp__youtrack__manage_issue_tags`, comments via
-`mcp__youtrack__add_issue_comment`), so the change happens when you intend it, not on push.
-
-Syntax (for the rare case you DO want a parse-time command, e.g. a one-off correction):
-
-- `#LC-123` flags the issue with no transition: the default, link only. `^LC-123` is equivalent.
-- Anything after the id on that line is a command applied on parse. `#LC-123 State Done` transitions the issue, and
-  commands chain: `#LC-123 State Done Assignee me add tag verified`. Avoid `State` in trailers per the policy above.
-- `Fixed` is NOT a YouTrack command. There is no top-level `Fixed`, `Closed`, or `Resolved` verb in the command
-  reference (<https://www.jetbrains.com/help/youtrack/server/command-reference.html#project-related-commands>). The
-  closing verb is always `State <Value>` where `<Value>` is one of the project's State-bundle values.
-- State values are PROJECT-SPECIFIC. Most projects on `niceguyit.myjetbrains.com` use `To do | In Progress | Done`
-  (resolved value: `Done`), but a project can define anything. Look it up before drafting the commit, do not assume.
-- Target multiple issues with the same commands: `(#LC-123, #LC-124) add tag triaged`.
-- A new line starting with `#<ID>` opens commands for that issue.
-- `${revision}` substitutes the commit hash; useful in comments.
-- If the YouTrack project has "Parse commits for issue comments" enabled, text on the line after the commands becomes
-  an issue comment.
-
-Discovering legal state values for a project:
-
-- `mcp__youtrack__get_issue_fields_schema` (project key) is authoritative: it returns every custom field and its
-  permitted values as a JSON enum (e.g. `State: ["To do", "In Progress", "Done"]`, plus `AI Agent`, `Priority`, ...).
-  Read the legal values from there before drafting a commit command or calling `update_issue`. This replaces both the
-  old REST `customFields` query and the `yt issue apply --dry-run` parse check (the MCP has no dry-run).
-- `mcp__youtrack__get_issue` shows an issue's current `customFields` values, which hints at the vocabulary in use.
+**Policy: commit with a BARE `#<KEY>-N` reference.** Because anything after the id is parsed as a command and applied
+when the commit is PUSHED (not when the PR merges), a bare reference links the PR to the issue without triggering any
+parse-time action. Make field changes explicitly via the MCP (assignee via `mcp__youtrack__change_issue_assignee`,
+tags via `mcp__youtrack__manage_issue_tags`, comments via `mcp__youtrack__add_issue_comment`, other fields via
+`mcp__youtrack__update_issue`), so the change happens when you intend it, not on push.
 
 Where the reference goes in the commit message body:
 
@@ -291,13 +240,12 @@ Rules that interact:
 
 - Do not hard-wrap the `#<ID>` line (per the commit-body rule above). Each issue reference lives on one line.
 - Em-dash ban still applies to any comment text.
-- Always create NEW commits, never amend. If a commit went out with a wrong command (e.g. an accidental `State Done`
-  trailer that resolved the issue early), correct it via the MCP (`mcp__youtrack__update_issue` with
-  `customFields: {"State": "In Progress"}`), not by amending; do NOT amend.
+- Always create NEW commits, never amend. If a commit went out with a wrong parse-time command, correct it via the
+  MCP (`mcp__youtrack__update_issue`), not by amending; do NOT amend.
 - A `Co-Authored-By:` trailer (where the repo uses one) goes BELOW the `#<ID>` line, separated by a blank line, so the
   YT parser sees the reference cleanly at the end of the body.
 
-Mutations via the MCP: State transitions and field assignments via `mcp__youtrack__update_issue`, comments via
+Mutations via the MCP: field assignments via `mcp__youtrack__update_issue`, comments via
 `mcp__youtrack__add_issue_comment`, assignee via `mcp__youtrack__change_issue_assignee`, tags via
 `mcp__youtrack__manage_issue_tags`, work logging via `mcp__youtrack__log_work`, links via `mcp__youtrack__link_issues`.
 Prefer these over a commit trailer so the change happens when you intend it, not on push. The MCP has no dry-run: check
