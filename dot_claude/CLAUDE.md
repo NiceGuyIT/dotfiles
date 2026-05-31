@@ -163,6 +163,15 @@ installed for the few things the MCP does not expose (e.g. `yt project vcs`, use
 fallback. Do NOT hit the YouTrack REST API directly: if the MCP lacks a capability, follow the Tooling Gap Discipline
 rule.
 
+## Filing vs working an issue
+
+"File / open / queue a YT issue for X" (or "open an issue, don't work it") means create the issue with a full spec and
+STOP: no branch, no code, no PR. Do NOT set the `AI Agent` field when filing; leave it unset (it renders as "No AI
+Agent"). The user sets `AI Agent = Queued` themselves when they want the claude-run runner to pick the issue up (the
+runner's query is `-Resolved AI Agent: Queued`); filing and handing off are two separate steps, and the handoff is the
+user's to take. "Implement / fix / work X (and open a PR)" means do the full branch -> change -> test -> PR flow
+yourself. When the request is ambiguous, ask which before acting.
+
 ## Project keys (discover with `mcp__youtrack__find_projects`)
 
 - `LC`: a8n-Lets Chat
