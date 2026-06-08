@@ -130,8 +130,17 @@ continuation. Branch fresh off updated main.
   inline. (Older docs called this flag `--body-from-file`; current `fj` rejects that name.)
 - `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
   collapse to `fj --host dev.a8n.run pr create "<title>" --body-file <path>`.
-- `-aA` (= `--agit --autofill`) opens the PR from local commits without a separate `git push` - use when the commit
-  messages already explain the change. AGit details: <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
+- DEFAULT to a branch-backed PR: `git push --set-upstream origin <branch>` first, then `fj pr create`. This is what
+  `fj` does without `-a` (`--head` defaults to the current branch's upstream). A real server branch is what makes
+  Forgejo's "Update Branch" control appear, so a PR that falls behind a protected base can be brought current and stays
+  mergeable. `-A` (`--autofill`) is orthogonal and fine to keep: it fills title/body from the commits.
+- AVOID `-a` (`--agit`). AGit opens the PR from local commits with no server branch (commits live only under
+  `refs/pull/<N>/head`). That branch never appears in `git branch --all`, the web Branches page, or a plain
+  `git fetch`, and because there is no branch to update, Forgejo cannot offer "Update Branch"; once the PR falls behind
+  a base that requires up-to-date, the merge button disappears. Reserve `-a` for deliberate throwaway PRs where no
+  server branch is wanted, and recover a stuck AGit PR by re-pushing its rebased/merged head to `refs/for/<base>` with
+  `--push-option topic=<original-head-branch-name>`. AGit details:
+  <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
 - Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos
   (eg. `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
 
