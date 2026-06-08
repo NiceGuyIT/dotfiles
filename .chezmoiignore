@@ -55,7 +55,7 @@ vim-local.d/
 .gitignore
 .gitmodules
 # Need to write a script to add this to the various profiles.
-.mozilla/firefox/user.js
+#.mozilla/firefox/user.js
 bash-preexec.sh
 install.nu
 install.sh
