@@ -4,16 +4,6 @@
 export def "docker volume-ls" []: nothing -> any {
     let cli = $env.docker-cli
 
-	^$cli volume ls --format json
-	| lines
-	| each {|it| $it | from json} |
-	each {|it|
-		^$cli volume inspect $it.Name
-		| from json
-		| each {|i| { name: $i.Name, mount: $i.Options.device? }}
-	}
-	| flatten
-
 	# Fetch sizes once from the daemon. The 'type=volume' query restricts
 	# /system/df to volume usage, which is much faster than computing usage for
 	# images, containers, and build cache as well.
@@ -31,7 +21,7 @@ export def "docker volume-ls" []: nothing -> any {
 	| each {|it|
 		^$cli volume inspect $it.Name
 		| from json
-		| update CreatedAt {into datetime --format "%Y-%m-%dT%H:%M:%S%:z"}
+		| update CreatedAt {into datetime}
 		| each {|i|
 			{
 				created_at: $i.CreatedAt,
