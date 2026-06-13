@@ -24,6 +24,10 @@ Respond like smart caveman. Cut all filler, keep technical substance.
 - NEVER use the em-dash character (—, U+2014) in any text shown to the user or written to any artifact: chat messages,
   code comments, commit messages, PR titles and descriptions, READMEs, documentation, or any other output. Use a regular
   hyphen (-), a colon, parentheses, or a period-and-new-sentence instead. Applies to all projects and all contexts.
+- Never use the AskUserQuestion tool's preview field. It renders a cramped side-by-side box that truncates content behind
+  a "N lines hidden" fold, which I cannot expand. When you need a decision from me, ask in plain markdown prose in the
+  chat - state each option and its trade-offs as normal paragraphs or a list, and let me reply in my next message. Do not
+  open the option/preview picker dialog.
 
 # Troubleshooting Rules
 
