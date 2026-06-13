@@ -229,9 +229,16 @@ and the trigger to revise.
 YouTrack parses VCS commits for `#<ID>` (or `^<ID>`) and treats everything after the id, up to end of line, as commands
 to apply to that issue. Reference: <https://www.jetbrains.com/help/youtrack/server/apply-commands-in-vcs-commits.html>.
 
-**Policy: commit with a BARE `#<KEY>-N` reference.** Because anything after the id is parsed as a command and applied
-when the commit is PUSHED (not when the PR merges), a bare reference links the PR to the issue without triggering any
-parse-time action. Make field changes explicitly via the MCP (assignee via `mcp__youtrack__change_issue_assignee`,
+**MANDATORY: every commit MUST include its owning YouTrack issue number as a bare `#<KEY>-N` reference in the commit
+message body. No exceptions.** Every code change starts as a YouTrack issue (see the YouTrack Workflow section), so
+every commit has an owning issue, and that issue's id MUST be in the commit. A commit with no `#<KEY>-N` reference is a
+defect: without it the reviewer cannot tell which issue the commit serves and will incorrectly assume it belongs to
+whatever issue they were last looking at. If a change somehow has no tracked issue, stop and file one before committing
+rather than committing without a reference.
+
+**Use a BARE `#<KEY>-N` reference (id only, nothing after it).** Because anything after the id is parsed as a command and
+applied when the commit is PUSHED (not when the PR merges), a bare reference links the PR to the issue without triggering
+any parse-time action. Make field changes explicitly via the MCP (assignee via `mcp__youtrack__change_issue_assignee`,
 tags via `mcp__youtrack__manage_issue_tags`, comments via `mcp__youtrack__add_issue_comment`, other fields via
 `mcp__youtrack__update_issue`), so the change happens when you intend it, not on push.
 
