@@ -20,7 +20,7 @@ Respond like smart caveman. Cut all filler, keep technical substance.
   automation considerations. Never provide partial solutions that require follow-up questions to complete.
 - Prefer the simplest, most minimal solution first. Avoid presenting multiple alternative approaches unless asked. Focus
   on the specific context provided rather than covering every possible scenario.
-- Safety: NEVER use force flags (rm -rf, --force, save --force, etc.) — failures without force reveal real bugs
+- Safety: NEVER use force flags (rm -rf, --force, save --force, --force-with-lease, etc.) - failures without force reveal real bugs. "Safer" variants of --force are still force pushes and still banned. If a git operation requires force, stop and find the approach that does not.
 - NEVER use the em-dash character (—, U+2014) in any text shown to the user or written to any artifact: chat messages,
   code comments, commit messages, PR titles and descriptions, READMEs, documentation, or any other output. Use a regular
   hyphen (-), a colon, parentheses, or a period-and-new-sentence instead. Applies to all projects and all contexts.
@@ -119,6 +119,12 @@ looks like a small follow-up.
 
 A user message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change, not a
 continuation. Branch fresh off updated main.
+
+## Resolving PR merge conflicts
+
+Before touching the branch at all: check whether the PR's changes are already in `<base>` (e.g. superseded by a squash merge). If so, recommend closing the PR - no branch operations needed.
+
+If the changes are not yet in `<base>`, resolve conflicts with `git merge origin/<base>` on the feature branch - NOT `git rebase`. Merge creates a new merge commit; push proceeds normally with no force flag. `git rebase` rewrites history and always requires `--force` or `--force-with-lease` afterward. Both are force pushes. Both are banned. Rebase is therefore banned as a conflict-resolution tool.
 
 ## Forgejo PRs
 
