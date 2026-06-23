@@ -20,14 +20,16 @@ Respond like smart caveman. Cut all filler, keep technical substance.
   automation considerations. Never provide partial solutions that require follow-up questions to complete.
 - Prefer the simplest, most minimal solution first. Avoid presenting multiple alternative approaches unless asked. Focus
   on the specific context provided rather than covering every possible scenario.
-- Safety: NEVER use force flags (rm -rf, --force, save --force, --force-with-lease, etc.) - failures without force reveal real bugs. "Safer" variants of --force are still force pushes and still banned. If a git operation requires force, stop and find the approach that does not.
+- Safety: NEVER use force flags (rm -rf, --force, save --force, --force-with-lease, etc.) - failures without force
+  reveal real bugs. "Safer" variants of --force are still force pushes and still banned. If a git operation requires
+  force, stop and find the approach that does not.
 - NEVER use the em-dash character (—, U+2014) in any text shown to the user or written to any artifact: chat messages,
   code comments, commit messages, PR titles and descriptions, READMEs, documentation, or any other output. Use a regular
   hyphen (-), a colon, parentheses, or a period-and-new-sentence instead. Applies to all projects and all contexts.
-- Never use the AskUserQuestion tool's preview field. It renders a cramped side-by-side box that truncates content behind
-  a "N lines hidden" fold, which I cannot expand. When you need a decision from me, ask in plain markdown prose in the
-  chat - state each option and its trade-offs as normal paragraphs or a list, and let me reply in my next message. Do not
-  open the option/preview picker dialog.
+- Never use the AskUserQuestion tool's preview field. It renders a cramped side-by-side box that truncates content
+  behind a "N lines hidden" fold, which I cannot expand. When you need a decision from me, ask in plain markdown prose
+  in the chat - state each option and its trade-offs as normal paragraphs or a list, and let me reply in my next
+  message. Do not open the option/preview picker dialog.
 
 # Troubleshooting Rules
 
@@ -50,8 +52,8 @@ Respond like smart caveman. Cut all filler, keep technical substance.
     - **Completeness:** Verify EVERY relevant entry, not the first matching line. One green line
       does not prove the set (e.g. a workspace lock has one entry per crate; checking one missed
       that the others were stale).
-  **Why:** Confidently reporting stale data as current wastes the user's time and erodes trust.
-  Querying the source of truth costs one command; being wrong costs the whole session.
+    - **Why:** Confidently reporting stale data as current wastes the user's time and erodes trust.
+      Querying the source of truth costs one command; being wrong costs the whole session.
 - **Three-strike red herring rule:** If the same symptom persists after 3 fix attempts targeting the same area, STOP.
   Flag it as a likely red herring and broaden the investigation:
     1. Re-examine the full error context and surrounding system (not just the error message).
@@ -83,7 +85,8 @@ capabilities should land in the canonical CLI, not scatter across action YAMLs, 
 
 **Examples that trigger this rule:**
 
-- The YouTrack MCP lacks a capability you need. Stop, file the issue against the MCP, do not hit the YouTrack REST API by hand.
+- The YouTrack MCP lacks a capability you need. Stop, file the issue against the MCP, do not hit the YouTrack REST API
+  by hand.
 - `fj` has no JSON output for `pr search`. Stop, file the issue, do not regex the human output.
 - `gh` lacks a flag. Stop, file the issue, do not hit `/api/...` directly.
 
@@ -120,11 +123,24 @@ looks like a small follow-up.
 A user message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change, not a
 continuation. Branch fresh off updated main.
 
-## Resolving PR merge conflicts
+## Pre-commit check (MANDATORY, runs before EVERY commit)
 
-Before touching the branch at all: check whether the PR's changes are already in `<base>` (e.g. superseded by a squash merge). If so, recommend closing the PR - no branch operations needed.
+Before the FIRST `git commit` of any change, run the project's full check suite and block the commit on any failure.
+Never bypass with `git commit --no-verify`.
 
-If the changes are not yet in `<base>`, resolve conflicts with `git merge origin/<base>` on the feature branch - NOT `git rebase`. Merge creates a new merge commit; push proceeds normally with no force flag. `git rebase` rewrites history and always requires `--force` or `--force-with-lease` afterward. Both are force pushes. Both are banned. Rebase is therefore banned as a conflict-resolution tool.
+1. Detect the project's check entrypoint, in order:
+   a. `justfile` with a `pre-commit` recipe -> run `just pre-commit` (matches the CI toolchain exactly).
+   b. else `justfile` with a `check` recipe -> run `just check`.
+   c. else fall back to the repo's documented checks (e.g. `cargo fmt --check`, `cargo clippy ... -D warnings`,
+   `cargo check`; the project's lint/format/build commands).
+2. If any check fails, FIX it (e.g. `just fmt` / `cargo fmt`) and re-run until green BEFORE committing. A red check is
+   never "commit now, fix in a follow-up".
+3. At session start in a fresh clone, if the repo has an `install-hooks` recipe and `.git/hooks/pre-commit` is absent,
+   run `just install-hooks` so the local hook backs you up.
+
+**Why:** CI's fmt/clippy/build gate rejects unformatted or lint-dirty commits. Running the same checks locally first
+turns a failed CI run plus a follow-up fix PR into zero round-trips. This is the gap that produced the unformatted-code
+CI failure tracked in A8N-69.
 
 ## Forgejo PRs
 
@@ -242,11 +258,12 @@ defect: without it the reviewer cannot tell which issue the commit serves and wi
 whatever issue they were last looking at. If a change somehow has no tracked issue, stop and file one before committing
 rather than committing without a reference.
 
-**Use a BARE `#<KEY>-N` reference (id only, nothing after it).** Because anything after the id is parsed as a command and
-applied when the commit is PUSHED (not when the PR merges), a bare reference links the PR to the issue without triggering
-any parse-time action. Make field changes explicitly via the MCP (assignee via `mcp__youtrack__change_issue_assignee`,
-tags via `mcp__youtrack__manage_issue_tags`, comments via `mcp__youtrack__add_issue_comment`, other fields via
-`mcp__youtrack__update_issue`), so the change happens when you intend it, not on push.
+**Use a BARE `#<KEY>-N` reference (id only, nothing after it).** Because anything after the id is parsed as a command
+and applied when the commit is PUSHED (not when the PR merges), a bare reference links the PR to the issue without
+triggering any parse-time action. Make field changes explicitly via the MCP (assignee via
+`mcp__youtrack__change_issue_assignee`, tags via `mcp__youtrack__manage_issue_tags`, comments via
+`mcp__youtrack__add_issue_comment`, other fields via `mcp__youtrack__update_issue`), so the change happens when you
+intend it, not on push.
 
 Where the reference goes in the commit message body:
 
