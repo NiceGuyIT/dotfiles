@@ -75,10 +75,29 @@ export def "repos pull" [] {
 	}
 }
 
+export def "repos branch-delete" [] {
+	glob **/.git --depth 10
+	| each {|it| $it | path dirname}
+	| each {|it|
+		let relative = ($it | path relative-to (pwd))
+		cd $it
+
+		let deleted = (
+			git branch --verbose
+			| lines
+			| parse --regex '^[* ] +(?<branch>\S+) +(?<commit>[0-9a-f]+) +(?<tag>\[gone\])? ?(?<message>.*)$'
+			| where tag == '[gone]'
+			| each {|it| ^git branch --delete $it.branch; $it.branch}
+		)
+		{ repo: $relative, deleted: $deleted }
+	}
+}
+
 def main [command: string, --list, --remote] {
 	match $command {
 		"status" => { repos status --list=$list --remote=$remote }
 		"pull" => { repos pull }
+		"branch-delete" => { repos branch-delete }
 		_ => { print $"Unknown command: ($command)" }
 	}
 }
