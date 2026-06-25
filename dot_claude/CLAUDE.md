@@ -198,6 +198,33 @@ installed for the few things the MCP does not expose (e.g. `yt project vcs`, use
 fallback. Do NOT hit the YouTrack REST API directly: if the MCP lacks a capability, follow the Tooling Gap Discipline
 rule.
 
+## No orphan notes: every deferred item gets its own tracked, linked issue
+
+NEVER leave a note, deferred item, descoped piece, "next round", "later", "out of scope", "follow-up", "TODO", or
+known-gap inside a YouTrack issue, PR description, commit message, code comment, or chat hand-off WITHOUT creating a
+separate YouTrack issue that tracks it. A note with no owning issue is invisible work with no owner, no priority, and no
+dependency visibility. It gets lost.
+
+Whenever you defer, descope, or discover anything outside the issue you are currently working:
+
+1. Create a new YT issue for the deferred item with a full spec (per the `## Issue body conventions` rules).
+2. Link it to the current issue with `mcp__youtrack__link_issues`, using the dependency direction: the new issue "is
+   required for" the current issue (equivalently, the current issue "depends on" the new one). Use the project's Depend
+   link type for a true blocker; use "relates to" only when there is genuinely no dependency.
+3. In the current issue (and in chat), replace the bare note with a reference to the new issue id, so it reads "X is
+   tracked in #KEY-N and is required for this" rather than "X is left for later".
+
+Concretely: "RLS enablement is the next round after the table audit" is FORBIDDEN as a naked sentence. It must become
+"The `app.*` table audit is tracked in #KEY-N, which is required for the RLS enablement in this issue." The same rule
+applies to every gap found mid-task (a missing test, a stale doc, a rename, a known limitation): file it, link it,
+reference it by id. No exceptions, including for small items.
+
+This generalizes the `## Known Gaps` anti-pattern: a gap documented only in prose (in CLAUDE.md, an issue, or a code
+comment) with no tracking issue is a defect. Every gap statement carries its `#KEY-N`.
+
+**Why:** Linked issues make the dependency graph explicit (you can see what blocks what), and nothing falls through the
+cracks because someone forgot a sentence buried in a description.
+
 ## Filing vs working an issue
 
 "File / open / queue a YT issue for X" (or "open an issue, don't work it") means create the issue with a full spec and
