@@ -97,6 +97,45 @@ The comment that rationalizes a gap ("let the WebSocket layer time out stale con
 limit") is the tell that step 1 was skipped. When a fix touches an `if`/present/success branch, step 2 must check the
 corresponding `else`/absent/failure branch as part of the same shape.
 
+# Documentation Currency (MANDATORY, every change)
+
+Documentation is part of the change, not a follow-up. A doc statement that a change makes false is a defect shipped in
+the same commit as the change. The Definition of Done for ANY change includes a doc sweep, and completion BLOCKS on it:
+
+1. Grep every doc for references to what the change touched: file paths, table/column names, flags, commands, module
+   names, phase numbers, config keys, env vars. Sweep by the SHAPE of what changed, not just the one doc you happen to
+   remember.
+2. Docs in scope: the repo `CLAUDE.md`, `README`, governance docs, `SCHEMA/*.md` and other in-repo docs, code-comment
+   claims, and the repo plan file (see the next section). Update every stale hit in the SAME PR as the change.
+3. NEVER restate mutable status (done / TBD / in-progress / merged / planned) in prose. Status lives in the tracker
+   (YouTrack); prose links to the issue and never re-asserts its state. A hand-maintained status table in Markdown is
+   the anti-pattern that produced the stale claude-run `## Phases` table (issues CLAUDE-171/172/174/175): the table said
+   "TBD" for work that had shipped months earlier because status was duplicated in prose instead of read from the
+   tracker.
+4. Stale doc discovered mid-change but outside its scope: file a linked issue per the no-orphan-notes rule; do not
+   silently leave it, and do not silently fix unrelated docs as a drive-by.
+
+This is the doc analogue of the Completeness / Invariant Sweep: the failure mode is fixing the code and forgetting the
+prose that describes it, so encode the sweep to run every time. No hook can judge semantic staleness, so this blocking
+sweep at change time is the enforcement, not a commit hook.
+
+# Plans live in one file, linking the tracker
+
+Every multi-step / phased / roadmap / "we will do X then Y then Z" plan lives in ONE designated file per repo:
+`docs/ROADMAP.md` (create it if absent). Rules:
+
+- The file holds durable narrative ONLY: goals, phases, sequencing, architecture direction, the reasoning behind the
+  order. It is the answer to "where is the plan?".
+- Each phase / item links to its owning YouTrack epic or issue. Status is READ from the tracker, never duplicated as
+  checkboxes or a status column in the file (same rule as Documentation Currency step 3).
+- "Agreed in PR review" or "agreed in chat" is NOT a plan. A plan agreed anywhere is written to the plan file BEFORE the
+  work starts, so it is discoverable, reviewable, and cannot evaporate into an un-searchable review thread. The
+  claude-run phases existed only as an uncaptured PR-review discussion, which is exactly the gap this rule closes.
+- A phase or plan item with no owning issue is invisible work: file it and link it (no-orphan-notes rule).
+- If a repo already uses another name for this file (e.g. `TODO.md`), keep the name but bind it to these same rules
+  (narrative plus tracker links, never duplicated status). Prefer `docs/ROADMAP.md` for new repos; "TODO" invites the
+  checkbox-status anti-pattern.
+
 # Tooling Gap Discipline
 
 When a task needs functionality that the project's existing tool (the YouTrack MCP, `yt`, `fj`, `gh`, etc.) does not
