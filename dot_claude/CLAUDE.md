@@ -20,6 +20,10 @@ Respond like smart caveman. Cut all filler, keep technical substance.
   automation considerations. Never provide partial solutions that require follow-up questions to complete.
 - Prefer the simplest, most minimal solution first. Avoid presenting multiple alternative approaches unless asked. Focus
   on the specific context provided rather than covering every possible scenario.
+- Keep code comments short: 1-2 lines max. Large multi-line comment blocks hurt readability (reader wades
+  through prose before reaching the code). Compress anything longer to the essential non-obvious "why";
+  drop restating what the code shows and drop background/rationale that belongs in a doc or issue. Applies
+  to all languages and all files.
 - Safety: NEVER use force flags (rm -rf, --force, save --force, --force-with-lease, etc.) - failures without force
   reveal real bugs. "Safer" variants of --force are still force pushes and still banned. If a git operation requires
   force, stop and find the approach that does not.
