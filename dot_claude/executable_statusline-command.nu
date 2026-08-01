@@ -11,7 +11,7 @@
 # pipes Claude Code's JSON payload into that block's `$in`.
 
 # To test:
-#   {cwd: $env.PWD} | to json | ./statusline-command.nu
+#   {cwd: $env.PWD} | to json | ~/.claude/statusline-command.nu
 
 # To install, edit ~/.claude/settings.json:
 #   {
@@ -49,6 +49,8 @@
 # Claude Code statusLine command to render the Starship prompt.
 def main [] {
   let cwd = ($in | from json | get cwd)
-  $env.STARSHIP_CONFIG = ($env.XDG_CONFIG_HOME | path join "starship-claude.toml")
+  # macOS does not have $env.XDG_CONFIG_HOME
+  let config_home = ($env.XDG_CONFIG_HOME? | default ($env.HOME | path join ".config" ))
+  $env.STARSHIP_CONFIG = ($config_home | path join "starship-claude.toml")
   starship prompt --path $cwd --logical-path $cwd
 }

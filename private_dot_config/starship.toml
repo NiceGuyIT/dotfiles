@@ -100,7 +100,7 @@ $character"""
 scan_timeout = 10
 
 # Disable the blank line at the start of the prompt
-add_newline = true
+add_newline = false
 
 # https://starship.rs/advanced-config/#style-strings
 # TODO: Find a palette (theme?) for Starship
