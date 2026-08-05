@@ -259,8 +259,9 @@ CI failure tracked in A8N-69.
 
 # YouTrack Workflow (all repos)
 
-Every code change starts as a YouTrack issue. No inline fixes without a tracked issue, even small ones spotted
-mid-task.
+Every code change starts as a YouTrack issue, and every issue is PR-sized (see `## Issue granularity: one issue per
+PR`). This rule exists to stop code landing with nothing tracking it; it is NOT a licence to split one change into
+several smaller issues. A small fix spotted mid-task attaches to the issue whose PR carries it.
 
 Use the YouTrack MCP (`mcp__youtrack__*` tools) for ALL YouTrack operations: create, read, search, update fields,
 comment, link, change assignee, manage tags, log work. The MCP is the default and is verified
@@ -272,6 +273,31 @@ installed for the few things the MCP does not expose (e.g. `yt project vcs`, use
 fallback. Do NOT hit the YouTrack REST API directly: if the MCP lacks a capability, follow the Tooling Gap Discipline
 rule.
 
+## Issue granularity: one issue per PR
+
+The unit of an issue is the unit of REVIEW, not the unit of work. If two pieces of work will land in the same pull
+request, they are ONE issue with multiple acceptance criteria, never two issues.
+
+Sizing test, applied before EVERY `mcp__youtrack__create_issue` call: "would this get its own PR, reviewable and
+mergeable on its own?" No -> it is an acceptance-criteria line on an existing issue. Yes -> its own issue.
+
+- A checklist of steps inside one deliverable (add the handler, add the test, wire the CI job, update the README) is ONE
+  issue whose steps are its acceptance criteria. IDBR-22 was filed as 7 issues and shipped as one PR
+  (isimcha/idb-reports#3); IDBWEB-153/154/155/156 also shipped as one PR. Each should have been a single issue.
+- Never split by file, layer, commit, or phase of the same change. "Backend part" plus "frontend part" plus "tests" of
+  one feature is one issue unless each half genuinely merges and ships independently.
+- Prefer growing an open issue's AC list over filing a sibling. `mcp__youtrack__update_issue` on the issue in flight is
+  the default move; a new issue is the exception that needs justifying.
+- Split ONLY on a real boundary: separate PRs, separate assignees, separate release timing, a hard blocker that must
+  merge first, or work that can be dropped without touching the rest.
+- Parent plus subtasks is for epics only, meaning 3+ genuinely separate PRs. Never build that structure for work one PR
+  closes.
+- When unsure, file the LARGER issue. An oversized issue is visible on the board and can be split later; four undersized
+  ones are already lost.
+
+**Why:** a small team assigns and tracks work per issue. N issues closed by one PR means N assignments, N status
+updates, and N-1 duplicate reviews of the same diff.
+
 ## No orphan notes: every deferred item gets its own tracked, linked issue
 
 NEVER leave a note, deferred item, descoped piece, "next round", "later", "out of scope", "follow-up", "TODO", or
@@ -279,7 +305,14 @@ known-gap inside a YouTrack issue, PR description, commit message, code comment,
 separate YouTrack issue that tracks it. A note with no owning issue is invisible work with no owner, no priority, and no
 dependency visibility. It gets lost.
 
-Whenever you defer, descope, or discover anything outside the issue you are currently working:
+The target is the thing nobody is tracking: a gap noticed in passing, a limitation, a "you should be aware of this"
+that produces no code change in the current PR and so would otherwise vanish. It is NOT a reason to shard the change
+in front of you.
+
+Whenever you defer, descope, or discover anything outside the issue you are currently working, FIRST apply the sizing
+test from `## Issue granularity: one issue per PR`. If the item ships in the SAME PR as the current issue, file nothing:
+add it as an acceptance criterion on the current issue and say so in chat. Only items landing in a DIFFERENT PR, or
+needing no PR at all, get their own issue. Then:
 
 1. Create a new YT issue for the deferred item with a full spec (per the `## Issue body conventions` rules).
 2. Link it to the current issue with `mcp__youtrack__link_issues`, using the dependency direction: the new issue "is
@@ -290,8 +323,9 @@ Whenever you defer, descope, or discover anything outside the issue you are curr
 
 Concretely: "RLS enablement is the next round after the table audit" is FORBIDDEN as a naked sentence. It must become
 "The `app.*` table audit is tracked in #KEY-N, which is required for the RLS enablement in this issue." The same rule
-applies to every gap found mid-task (a missing test, a stale doc, a rename, a known limitation): file it, link it,
-reference it by id. No exceptions, including for small items.
+applies to every gap found mid-task (a missing test, a stale doc, a rename, a known limitation) that will land in a
+different PR or in no PR: file it, link it, reference it by id. Items riding along in the current PR become AC lines on
+the current issue, not new issues.
 
 This generalizes the `## Known Gaps` anti-pattern: a gap documented only in prose (in CLAUDE.md, an issue, or a code
 comment) with no tracking issue is a defect. Every gap statement carries its `#KEY-N`.
