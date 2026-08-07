@@ -4,9 +4,19 @@ def highlight [value: int]: nothing -> string {
 	if $value == 0 { $"($value)" } else { $"(ansi yellow_bold)($value)(ansi reset)" }
 }
 
-export def "repos status" [--list, --remote] {
+# Repository paths under the cwd, excluding submodules; the parent repo manages those.
+# --show-superproject-working-tree prints the parent worktree in a submodule, nothing elsewhere.
+def repo-paths []: nothing -> list<string> {
 	glob **/.git --depth 10
 	| each {|it| $it | path dirname}
+	| where {|it|
+		let superproject = (^git -C $it rev-parse --show-superproject-working-tree | complete)
+		$superproject.exit_code != 0 or ($superproject.stdout | str trim | is-empty)
+	}
+}
+
+export def "repos status" [--list, --remote] {
+	repo-paths
 	| each {|it|
 		let relative = ($it | path relative-to (pwd))
 		cd $it
@@ -55,8 +65,7 @@ export def "repos status" [--list, --remote] {
 }
 
 export def "repos pull" [] {
-	glob **/.git --depth 10
-	| each {|it| $it | path dirname}
+	repo-paths
 	| each {|it|
 		let relative = ($it | path relative-to (pwd))
 		cd $it
@@ -76,8 +85,7 @@ export def "repos pull" [] {
 }
 
 export def "repos branch-delete" [] {
-	glob **/.git --depth 10
-	| each {|it| $it | path dirname}
+	repo-paths
 	| each {|it|
 		let relative = ($it | path relative-to (pwd))
 		cd $it
