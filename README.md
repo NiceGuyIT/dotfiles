@@ -37,6 +37,32 @@ rm alacritty.info
 The vim plugins are not pulled automatically. They are submodules in `vim/pack/plugins/start/`. Need to add these to
 chezmoi.
 
+## Nushell file parsers
+
+Commands that turn common system files into structured Nushell data live in `private_dot_config/nushell/modules/` and
+follow three naming rules, split by what the command knows about.
+
+1. **`from <format>`** (`modules/from.nu`) parses raw text and knows nothing about paths. Named after the *format*, never
+   the path, so the same parser works on `/etc/fstab`, a copy under `/mnt/etc/fstab`, or a file pulled from a backup.
+   This extends Nushell's own `from json` / `from ssv` namespace, so `open <file> | from <format>` reads the way the
+   built-ins do.
+2. **`etc <file>`** (`modules/etc.nu`) is the zero-argument reader for the canonical path: `etc fstab` is sugar for
+   `open --raw /etc/fstab | from fstab`. Named after the file's basename with `.` and `_` folded to `-`, so
+   `/etc/resolv.conf` becomes `etc resolv-conf` and `/etc/ssh/sshd_config` becomes `etc sshd-config`.
+3. **`<tool> <subcommand>`** (`modules/hostnamectl.nu`, `modules/zypper.nu`, `modules/docker.nu`) wraps an external
+   command rather than a file, and keeps the tool's own name and verb: `hostnamectl status` wraps
+   `hostnamectl --json short`.
+
+Rules 1 and 2 are deliberately separate. The parser is the reusable piece and the reader is one line of sugar over it,
+so a new file format costs one `from` command plus one `etc` command.
+
+```nu
+etc fstab | where fs_type == ext4
+etc os-release | get PRETTY_NAME
+open --raw /mnt/etc/os-release | from os-release | get VERSION_ID
+hostnamectl status | select Hostname KernelRelease OperatingSystemPrettyName
+```
+
 ## Useful utilities
 
 - [Awesome Alternatives in Rust](https://github.com/TaKO8Ki/awesome-alternatives-in-rust) (Originally Awesome Rewrite It
