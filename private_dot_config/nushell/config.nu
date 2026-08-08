@@ -974,6 +974,15 @@ use zypper.nu *
 # Repo status
 use repos.nu *
 
+# Parsers for common file formats: 'from fstab', 'from os-release'
+use from.nu *
+
+# Readers for well-known /etc files: 'etc fstab', 'etc os-release'
+use etc.nu *
+
+# Custom hostnamectl functions
+use hostnamectl.nu *
+
 # Useful Docker functions
 # https://github.com/nushell/nu_scripts/blob/main/modules/docker/mod.nu
 # The Nu module is copied to alleviate the need to clone the git repo.
