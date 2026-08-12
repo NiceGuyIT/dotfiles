@@ -196,6 +196,35 @@ This is the doc analogue of the Completeness / Invariant Sweep: the failure mode
 prose that describes it, so encode the sweep to run every time. No hook can judge semantic staleness, so this blocking
 sweep at change time is the enforcement, not a commit hook.
 
+## Documentation is never unit tested (MANDATORY)
+
+A change to a static documentation file ships NO test, guard script, `just` recipe, or CI step that asserts its
+wording. Not one. Documentation is prose for humans; there is no documentation server, nothing imports a `.md` file,
+and no behaviour can regress. A regex suite over prose fails on every legitimate rewording and stays green while the
+prose rots in any way the regex does not model, so it certifies nothing and bills maintenance forever.
+
+**In scope (never tested):** `*.md`, `*.mmd`, `*.txt`, READMEs, ADRs, governance docs, issue and PR templates, prompt
+and instruction files, changelogs. Anything whose audience is a person reading it.
+
+**NOT in scope (keep their tests):** documentation IN code. Docstrings, doctests, `--help` output, executed examples,
+type stubs, and generated docs whose generator is code are all code and are tested like code.
+
+Rules:
+
+- Verification for a doc change is reading the diff. A `grep` named in an issue or an acceptance criterion is an
+  instruction to run it ONCE at review time; it is never a licence to commit that grep as a script, a test, a recipe,
+  or a CI job.
+- If a banned term genuinely must never return, express it in the linter the repo ALREADY runs (a cspell forbidden
+  word, an existing lint rule). Never a new bespoke script, never a new CI job.
+- The permitted file set for a doc issue is the doc files themselves. A diff that adds a `scripts/`, `tests/`, or
+  `.github/workflows/` entry to a documentation change has failed the issue, whatever else it got right.
+
+**Why:** IDBWEB-188 stated twice, in the approach and in an acceptance criterion, that it adds no guard script, `just`
+recipe, or CI step. The run shipped `scripts/no-idb-clean-test.ts`, a `check-idb-clean` recipe wired into `just check`,
+and a Lint job step, then listed the guard in its summary as a satisfied criterion. IDB-389 turned a human-run prompt
+file into an 85-line pytest asserting sentences. A written prohibition alone did not hold, so this rule is stated once,
+globally, and the file-set check in the issue is what enforces it.
+
 # Plans live in one file, linking the tracker
 
 Every multi-step / phased / roadmap / "we will do X then Y then Z" plan lives in ONE designated file per repo:
@@ -414,6 +443,78 @@ Agent"). The user sets `AI Agent = Queued` themselves when they want the claude-
 runner's query is `-Resolved AI Agent: Queued`); filing and handing off are two separate steps, and the handoff is the
 user's to take. "Implement / fix / work X (and open a PR)" means do the full branch -> change -> test -> PR flow
 yourself. When the request is ambiguous, ask which before acting.
+
+## Human steps gate the MERGE, never the code (MANDATORY)
+
+A human action NEVER sits in front of the code. Granting an IAM role, adding a repo or environment secret, creating a
+queue, opening a firewall, rotating a credential, approving spend, flipping a console setting: every one of these is
+sequenced AFTER the implementation and its PR, as a precondition of MERGING, not a precondition of STARTING. The code
+that needs the permission can be written, reviewed, and staged without it, because the permission is applied before the
+PR lands anyway. An issue that stops at "the service account lacks X" has converted a mergeable PR into manual cleanup
+for the user, and has done so for a condition that was going to be satisfied before merge regardless.
+
+When filing, structure the issue this way:
+
+- The acceptance criteria cover the code and the PR, written against the environment AS IT IS TODAY. Never write an AC
+  of the form "X is granted" as a step the implementer must complete first.
+- Human prerequisites go in their own `## Before this PR is merged` section, each naming the exact action, the exact
+  identifier (role name, secret name, project, queue, bucket), and who applies it. That section is the merge gate.
+- Name which checks will be red until the human step is applied, and why. A red deploy job with a stated cause and a
+  named fix is a normal review state, not a blocker.
+- Where verification genuinely needs the granted access (a staging smoke test, an authenticated E2E), the AC reads
+  "verified after the prerequisite in `## Before this PR is merged` is applied", and it is checked at merge time.
+
+When WORKING an issue and a missing permission appears mid-run:
+
+- Finish everything that does not depend on it, commit, and open the PR. Do not park the branch.
+- Record the exact missing grant in the PR body and in an issue comment: the principal, the permission, the resource,
+  and the command or console path that applies it.
+- Say plainly in the PR that it must not merge until that grant lands. Then stop, having delivered the code.
+- Never re-file the coding work as blocked. Blocked-on-permission is a merge note, not a stop condition.
+
+**Why:** this has cost the runner whole cycles repeatedly. IDBR-29's staging verification parked because the CI service
+account lacked `cloudtasks.queues.create` and `iam.serviceAccounts.getIamPolicy`, so the report function was never
+redeployed to test against, while the code change itself needed neither permission. IDB-375 carries the same shape with
+`DB_STAGING_URL` and `roles/iap.tunnelResourceAccessor`. In every case the grant was applied before the PR was accepted,
+so putting it before the code bought nothing and cost a full run.
+
+## The working agent must be able to finish the issue alone (MANDATORY, before every `create_issue`)
+
+An issue handed to the claude-run runner is worked by an agent whose only powers are: read the repo, change the repo,
+run the project's checks, open a PR. It CANNOT write to YouTrack (no field change, no comment, no article edit, no
+state transition), cannot touch a cloud console, a secret store, or a merge button, cannot resolve a decision the issue
+left open, and cannot ask a question. Every acceptance criterion it cannot execute turns into a parked ticket and comes
+back as manual cleanup for the user, which is the exact opposite of why the issue was queued.
+
+Before EVERY `mcp__youtrack__create_issue`, walk the acceptance criteria one line at a time and classify each as
+agent-executable or not. Then:
+
+1. **External mutation is NEVER an acceptance criterion.** Editing a knowledge base article, setting a field, posting a
+   comment, flipping a console setting, rotating a secret, merging a PR: DO IT NOW, in the filing session, with the
+   tools that session has, and record it in the body under `## Already done, not part of this issue`. If it truly
+   cannot be done now, it becomes its own issue with a human owner, linked per the no-orphan-notes rule, and it is not
+   queued to the agent.
+2. **Unwritten content is a decision, not a criterion.** An AC of the shape "replace X with the description / the right
+   wording / the convention" hands the agent an authoring decision it is not allowed to make. Either do the edit during
+   filing, or paste the exact final text into the issue body verbatim in a fenced block. "Author something sensible for
+   X" is the shape that always parks.
+3. **Every AC is checkable from the repo, by inspection where that is the honest check.** Evidence comes from the
+   working tree or the project's EXISTING check suite. An AC whose only evidence lives in a web UI the agent cannot
+   open does not belong in the list. Verification is not a deliverable: a `grep` in an AC is run once, never committed
+   (see `## Documentation is never unit tested`). Every issue names the file set its diff may touch, and carries an AC
+   that the diff touches nothing else, verified with `git diff --stat`. A negative stated in prose does not hold; the
+   file-set check does.
+4. **Never hardcode tool names as the criterion.** The interactive session MCP and the runner's MCP expose different
+   tool and parameter names for the same YouTrack operation. State the OUTCOME (the article exists under IDB-A-2 with
+   this title and this content) and instruct the implementer to confirm the live tool schema at run time.
+5. **Preflight before the handoff.** Before setting `AI Agent = Queued`, or before telling the user the issue is ready,
+   re-read the AC list and answer per line: "can the agent complete this with repo access alone and only what is
+   written in this issue?" Any `no` gets fixed before the handoff, not discovered by the runner.
+
+**Why:** IDB-389 was filed with two ACs requiring YouTrack writes (replace article IDB-A-2's body; publish a proof
+report). The runner did nine of eleven, parked at `Needs Review`, and asked for a human decision; the user then did the
+article work by hand. Both steps were one MCP call each from the filing session. The filing session does the parts only
+it can do, and hands over an issue that is completable end to end.
 
 ## Project keys (discover with `mcp__youtrack__find_projects`)
 
