@@ -221,7 +221,9 @@ the same commit as the change. The Definition of Done for ANY change includes a 
 
 1. Grep every doc for references to what the change touched: file paths, table/column names, flags, commands, module
    names, phase numbers, config keys, env vars. Sweep by the SHAPE of what changed, not just the one doc you happen to
-   remember.
+   remember. Read every candidate from disk THIS TURN per Verify the Source of Truth FIRST: a doc you read earlier in
+   the session, or remember the gist of, is not evidence of what it says now, and judging it current from memory is how
+   a stale claim survives the sweep.
 2. Docs in scope: the repo `CLAUDE.md`, `README`, governance docs, `SCHEMA/*.md` and other in-repo docs, code-comment
    claims, and the repo plan file (see the next section). Update every stale hit in the SAME PR as the change.
 3. NEVER restate mutable status (done / TBD / in-progress / merged / planned) in prose. Status lives in the tracker
@@ -231,10 +233,15 @@ the same commit as the change. The Definition of Done for ANY change includes a 
    tracker.
 4. Stale doc discovered mid-change but outside its scope: file a linked issue per the no-orphan-notes rule; do not
    silently leave it, and do not silently fix unrelated docs as a drive-by.
+5. Edit live content, never a remembered or drafted copy. For a doc hosted outside the repo (YouTrack article or issue,
+   wiki, anything the user can edit concurrently), re-fetch it immediately before writing and merge the change into
+   what comes back. Those writes are full-content replacements, so publishing a locally assembled version silently
+   deletes every edit made since you last read it. Same rule, same reason, as Verify the Source of Truth FIRST.
 
-This is the doc analogue of the Completeness / Invariant Sweep: the failure mode is fixing the code and forgetting the
-prose that describes it, so encode the sweep to run every time. No hook can judge semantic staleness, so this blocking
-sweep at change time is the enforcement, not a commit hook.
+This is the doc analogue of the Completeness / Invariant Sweep, and it stands on Verify the Source of Truth FIRST: the
+sweep is only as good as the freshness of what it reads and writes. The failure mode is fixing the code and forgetting
+the prose that describes it, so encode the sweep to run every time. No hook can judge semantic staleness, so this
+blocking sweep at change time is the enforcement, not a commit hook.
 
 ## Documentation is never unit tested (MANDATORY)
 
