@@ -33,6 +33,23 @@ Write proper English, short and to the point. Cut filler, keep technical substan
 - NEVER use the em-dash character (—, U+2014) in any text shown to the user or written to any artifact: chat messages,
   code comments, commit messages, PR titles and descriptions, READMEs, documentation, or any other output. Use a regular
   hyphen (-), a colon, parentheses, or a period-and-new-sentence instead. Applies to all projects and all contexts.
+- Generalize that rule: whenever a Unicode character has a reasonable ASCII equivalent, write the ASCII. This holds
+  everywhere the em-dash ban holds (chat, code, comments, commit messages, PR text, docs, config, terminal output,
+  file names). If a character has NO ASCII equivalent (é, ñ, 日本語, °, €, µ, emoji, real math or scientific notation),
+  Unicode is correct and expected. Never mangle such a character into an approximation; never strip an accent.
+  Common substitutions, not an exhaustive list:
+    - Smart quotes " " ' ' -> straight quotes " and '. Backtick-as-quote ` for an apostrophe is also wrong.
+    - Dashes — – ‒ ― and the minus sign − -> hyphen-minus -
+    - Box drawing ═ ─ │ ┌ └ ├ ┼ and block elements -> = - | + and other ASCII
+    - Ellipsis … -> three periods ...
+    - Bullets • ‣ ◦ and the middle dot · -> - (or the list syntax of the format)
+    - Arrows → ← ⇒ ↔ -> -> <- => <->
+    - Math and comparison ≤ ≥ ≠ ≈ × ÷ ± -> <= >= != ~= x / +/-
+    - Non-breaking space, narrow no-break space, zero-width space -> a normal space, or nothing
+    - Ligatures ﬁ ﬂ -> fi fl; fractions ½ ¼ -> 1/2 1/4; ™ © ® -> (TM) (C) (R)
+  One exception: when the character IS the payload rather than formatting, reproduce it byte-exact. That covers
+  quoting the user or a file verbatim, test fixtures and i18n strings, sample data that exercises Unicode handling,
+  and any string that must match an external system. Silently ASCII-folding those changes the data.
 - Never use the AskUserQuestion tool's preview field. It renders a cramped side-by-side box that truncates content
   behind a "N lines hidden" fold, which I cannot expand. When you need a decision from me, ask in plain markdown prose
   in the chat - state each option and its trade-offs as normal paragraphs or a list, and let me reply in my next
