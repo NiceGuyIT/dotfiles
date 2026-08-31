@@ -86,6 +86,10 @@ guess.
   as current. A decommissioned service sitting in your context reads as live and sends the user to the wrong place.
 - **Your own earlier claims in this session:** before repeating that something is broken, missing, unfixed, or still to
   do, re-check it. It may have been fixed several turns ago, by the user or by you.
+- **Documentation, including this repo's own:** a README, architecture doc, plan file, ADR, or code comment records
+  what someone believed when they wrote it, and an AI assistant may have written it. Treat it exactly like a saved
+  memory: a lead to verify, never the evidence. Confirm the resource, tag, subnet, path, or service it names against
+  the live system before repeating it, relying on it, or building on it.
 - **Saved memories:** a memory records what was true when written. Verify the file, flag, or service it names still
   exists before recommending anything based on it.
 - **Completeness:** Verify EVERY relevant entry, not the first matching line. One green line does not prove the set
@@ -147,10 +151,11 @@ An error that is not visible did not get handled; it got hidden. A failure MUST 
 every layer it crosses, and MUST reach both a log and the human who triggered it. Silence is a defect, and it is a worse
 defect than the failure it conceals, because the failure is now unreportable and undiagnosable.
 
-This rule exists because "handle your errors" does not catch the failure that motivates it. In ROCI-81 the error WAS
-handled: the server detected the bad input, rendered the correct message, and returned it. The response body was then
-discarded by `hx-swap="none"` one layer up, and the status was `200`. The operator saw a page that did nothing, assumed
-success, and was locked out of production with the database as the only witness. Every individual layer looked correct.
+This rule exists because "handle your errors" does not catch the failure that motivates it. In one production incident
+the error WAS handled: the server detected the bad input, rendered the correct message, and returned it. The response
+body was then discarded by `hx-swap="none"` one layer up, and the status was `200`. The operator saw a page that did
+nothing, assumed success, and was locked out of production with the database as the only witness. Every individual
+layer looked correct.
 
 ## 1. Never discard an error value
 
@@ -228,9 +233,8 @@ the same commit as the change. The Definition of Done for ANY change includes a 
    claims, and the repo plan file (see the next section). Update every stale hit in the SAME PR as the change.
 3. NEVER restate mutable status (done / TBD / in-progress / merged / planned) in prose. Status lives in the tracker
    (YouTrack); prose links to the issue and never re-asserts its state. A hand-maintained status table in Markdown is
-   the anti-pattern that produced the stale claude-run `## Phases` table (issues CLAUDE-171/172/174/175): the table said
-   "TBD" for work that had shipped months earlier because status was duplicated in prose instead of read from the
-   tracker.
+   the anti-pattern that produced a stale `## Phases` table in a repo's own docs: the table said "TBD" for work that
+   had shipped months earlier because status was duplicated in prose instead of read from the tracker.
 4. Stale doc discovered mid-change but outside its scope: file a linked issue per the no-orphan-notes rule; do not
    silently leave it, and do not silently fix unrelated docs as a drive-by.
 5. Edit live content, never a remembered or drafted copy. For a doc hosted outside the repo (YouTrack article or issue,
@@ -266,11 +270,79 @@ Rules:
 - The permitted file set for a doc issue is the doc files themselves. A diff that adds a `scripts/`, `tests/`, or
   `.github/workflows/` entry to a documentation change has failed the issue, whatever else it got right.
 
-**Why:** IDBWEB-188 stated twice, in the approach and in an acceptance criterion, that it adds no guard script, `just`
-recipe, or CI step. The run shipped `scripts/no-idb-clean-test.ts`, a `check-idb-clean` recipe wired into `just check`,
-and a Lint job step, then listed the guard in its summary as a satisfied criterion. IDB-389 turned a human-run prompt
-file into an 85-line pytest asserting sentences. A written prohibition alone did not hold, so this rule is stated once,
-globally, and the file-set check in the issue is what enforces it.
+**Why:** one issue stated twice, in the approach and in an acceptance criterion, that it adds no guard script, `just`
+recipe, or CI step. The run shipped a bespoke guard script, a `just` recipe wired into `just check`, and a Lint job
+step, then listed the guard in its summary as a satisfied criterion. Another issue turned a human-run prompt file into
+an 85-line pytest asserting sentences. A written prohibition alone did not hold, so this rule is stated once, globally,
+and the file-set check in the issue is what enforces it.
+
+# Documentation Provenance (MANDATORY, every proposal and every doc write)
+
+Documentation is a CLAIM about the system. It is never evidence for one. The system is the evidence: the running
+infrastructure, the live config, the deployed resource, the tool's own source. Before proposing a change, asserting an
+architectural fact, or writing a sentence into any doc, establish the fact from the system. A doc that agrees with you
+is not corroboration; it may be a sentence you or a predecessor wrote from the same guess.
+
+This rule exists because AI-authored documentation compounds. The loop:
+
+1. The assistant proposes something plausible that it did not verify.
+2. The developer does not hold the whole architecture either, it sounds right, and it stands.
+3. The assistant writes it into a doc as settled.
+4. The next session reads that doc, treats it as established, and builds on it with MORE confidence, not less.
+
+No step in that loop is dishonest and none of them warns anybody. The output is a repo whose documentation is
+internally consistent, confidently worded, and wrong.
+
+**Scope.** This governs claims about how the system IS: deployment topology, network paths, what is running where,
+what a third-party tool does. It does not govern proposals about how the system SHOULD be, opinions offered as
+opinions, or reading code, where the code in the working tree IS the system.
+
+## Before you propose
+
+- **Verify the claim the proposal rests on, against the system, this turn.** Not the doc that describes the system.
+  If the proposal depends on how something is deployed, query the deployment. If it depends on what a third-party
+  tool does, fetch that tool's docs or source.
+- **Check whether the thing you are about to call necessary, impossible, or new is already running.** Before arguing
+  a design is required, look for an existing component solving the same problem another way. One list command
+  usually settles it, and it is the check most often skipped because it feels tangential.
+- **Mark how you know.** Every claim about the system is either verified, with the command, or assumed, said out
+  loud. The reader cannot tell them apart unless you mark them.
+
+## When you write it down
+
+- Write ONLY what you verified. An unverified claim does not enter a doc, in any tense or hedge.
+- An infrastructure fact in a doc carries the command that establishes it, so the next reader re-runs it instead of
+  trusting it. This is a citation for a human, NOT a test: it adds no script, recipe, or CI step (see
+  `## Documentation is never unit tested`).
+- Prefer the narrow verified statement over the broad plausible one.
+
+## Silence is not confirmation
+
+A developer not objecting is NOT verification. They may not know either, which is the entire reason the loop exists.
+Never record "nobody pushed back" as agreement, and never cite an earlier unchallenged statement of your own as
+support for a later one.
+
+## When the developer questions it
+
+A challenge invalidates the document as evidence for that claim. Do not defend the claim from the doc that produced
+it, and do not simply concede either, because caving to pressure is as unhelpful as digging in.
+
+1. Re-derive the fact from the system, this turn, with a command.
+2. Report the result plainly, including when it contradicts you AND when it contradicts them.
+3. Re-check the claims ADJACENT to the challenged one that rest on the same document. A challenge that lands means
+   the source is unreliable, not that one sentence was unlucky. Scoping the recheck to the exact sentence questioned
+   is how the same failure survives its own correction.
+4. If the doc and the system disagree, that is a discrepancy, and it gets an issue (see `## No orphan notes`).
+
+**Why:** a production data-pipeline deploy once failed because a firewall rule targeted a network tag no VM carried.
+The repo's own migration doc had predicted that exact defect in writing, and the cutover shipped anyway. While
+diagnosing it, the assistant then made three architectural claims straight from that same doc and from memory: that
+`pg_hba.conf` on the prod VM was hand-edited (it runs in Docker from the stock image, which generates
+`host all all all`), that a dedicated egress subnet was necessary (both services had been on Direct VPC egress from
+the existing subnet in both environments all along), and that sharing the existing subnet would widen access (it was
+already shared). Each took one command to check, against infrastructure the assistant already had authenticated access
+to. None was checked until the developer pushed back twice. Every wrong claim came AFTER a correct diagnosis: being
+right about the first thing produced unearned confidence about everything next to it.
 
 # Plans live in one file, linking the tracker
 
@@ -282,8 +354,8 @@ Every multi-step / phased / roadmap / "we will do X then Y then Z" plan lives in
 - Each phase / item links to its owning YouTrack epic or issue. Status is READ from the tracker, never duplicated as
   checkboxes or a status column in the file (same rule as Documentation Currency step 3).
 - "Agreed in PR review" or "agreed in chat" is NOT a plan. A plan agreed anywhere is written to the plan file BEFORE the
-  work starts, so it is discoverable, reviewable, and cannot evaporate into an un-searchable review thread. The
-  claude-run phases existed only as an uncaptured PR-review discussion, which is exactly the gap this rule closes.
+  work starts, so it is discoverable, reviewable, and cannot evaporate into an un-searchable review thread. The phased
+  plan that motivated this rule existed only as an uncaptured PR-review discussion, which is exactly the gap it closes.
 - A phase or plan item with no owning issue is invisible work: file it and link it (no-orphan-notes rule).
 - If a repo already uses another name for this file (e.g. `TODO.md`), keep the name but bind it to these same rules
   (narrative plus tracker links, never duplicated status). Prefer `docs/ROADMAP.md` for new repos; "TODO" invites the
@@ -301,7 +373,7 @@ expose, STOP. Do not reach for the REST API, parse the CLI's human output, scrap
 - Never silently substitute a REST call, raw HTTP, jq pipeline, or human-output parser for a missing CLI command. That
   re-implements auth, error handling, and field selection in every consumer.
 - "Just temporarily" is the trap. Temporary REST calls become permanent forks. If a workaround is authorized, file the
-  tracking issue first and reference it inline, e.g. `# TODO(YT-7): switch to yt project vcs once it lands`.
+  tracking issue first and reference it inline, e.g. `# TODO(PROJ-7): switch to yt project vcs once it lands`.
 
 **Why:** Workarounds embed assumptions about the upstream tool that drift the moment the tool changes. Missing
 capabilities should land in the canonical CLI, not scatter across action YAMLs, scripts, and Makefiles.
@@ -362,23 +434,23 @@ Never bypass with `git commit --no-verify`.
    run `just install-hooks` so the local hook backs you up.
 
 **Why:** CI's fmt/clippy/build gate rejects unformatted or lint-dirty commits. Running the same checks locally first
-turns a failed CI run plus a follow-up fix PR into zero round-trips. This is the gap that produced the unformatted-code
-CI failure tracked in A8N-69.
+turns a failed CI run plus a follow-up fix PR into zero round-trips. This is the gap that produced an unformatted-code
+CI failure.
 
 ## Forgejo PRs
 
 - Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
   `~/.local/share/forgejo-cli/keys.json`.
-- When more than one host is configured in `keys.json` (e.g. `dev.a8n.run` alongside `gitea.n.niceguyit.biz`), pass
-  `--host dev.a8n.run` to every `fj` call. Org-scoped commands like `fj org repo list <org>` will silently target the
-  wrong host or 403 without it. Repo-scoped commands run from inside a git working tree can usually infer the host from
-  the remote URL, but passing `--host` is the safe default.
+- When more than one host is configured in `keys.json` (e.g. `forgejo.example.com` alongside `gitea.example.org`),
+  pass `--host forgejo.example.com` to every `fj` call. Org-scoped commands like `fj org repo list <org>` will
+  silently target the wrong host or 403 without it. Repo-scoped commands run from inside a git working tree can
+  usually infer the host from the remote URL, but passing `--host` is the safe default.
 - Org-scoped calls (`fj org repo list`, etc.) also need `read:organization` token scope. If you get a 403, re-issue the
   token via `fj auth add-key` with org scope enabled, not via the API directly.
 - Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-file`, never escaped
   inline. (Older docs called this flag `--body-from-file`; current `fj` rejects that name.)
 - `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
-  collapse to `fj --host dev.a8n.run pr create "<title>" --body-file <path>`.
+  collapse to `fj --host forgejo.example.com pr create "<title>" --body-file <path>`.
 - DEFAULT to a branch-backed PR: `git push --set-upstream origin <branch>` first, then `fj pr create`. This is what
   `fj` does without `-a` (`--head` defaults to the current branch's upstream). A real server branch is what makes
   Forgejo's "Update Branch" control appear, so a PR that falls behind a protected base can be brought current and stays
@@ -391,7 +463,7 @@ CI failure tracked in A8N-69.
   `--push-option topic=<original-head-branch-name>`. AGit details:
   <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
 - Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos
-  (eg. `niceguyit/oci-images`) keep the `git push` + compare-URL pattern.
+  (eg. `example-org/oci-images`) keep the `git push` + compare-URL pattern.
 
 ## Commit messages and PR text
 
@@ -431,8 +503,8 @@ Sizing test, applied before EVERY `mcp__youtrack__create_issue` call: "would thi
 mergeable on its own?" No -> it is an acceptance-criteria line on an existing issue. Yes -> its own issue.
 
 - A checklist of steps inside one deliverable (add the handler, add the test, wire the CI job, update the README) is ONE
-  issue whose steps are its acceptance criteria. IDBR-22 was filed as 7 issues and shipped as one PR
-  (isimcha/idb-reports#3); IDBWEB-153/154/155/156 also shipped as one PR. Each should have been a single issue.
+  issue whose steps are its acceptance criteria. One deliverable was filed as 7 issues and shipped as a single PR;
+  another was filed as 4 issues and also shipped as a single PR. Each should have been one issue.
 - Never split by file, layer, commit, or phase of the same change. "Backend part" plus "frontend part" plus "tests" of
   one feature is one issue unless each half genuinely merges and ships independently.
 - Prefer growing an open issue's AC list over filing a sibling. `mcp__youtrack__update_issue` on the issue in flight is
@@ -470,6 +542,13 @@ needing no PR at all, get their own issue. Then:
 3. In the current issue (and in chat), replace the bare note with a reference to the new issue id, so it reads "X is
    tracked in #KEY-N and is required for this" rather than "X is left for later".
 
+A doc that contradicts the live system is a discovery of exactly this kind, and it is ALWAYS tracked, even when you
+correct the doc in the current PR. File an issue that records both sides: what the doc says, with file and line; what
+the system shows, with the command and its output; and which of the two is wrong. A doc that was wrong once is
+evidence about how it was written, not a one-off typo, so the issue exists to prompt a sweep of its neighbours. When
+the SYSTEM is the thing that drifted and the doc describes the intended state, the issue is a defect against the
+system and says so explicitly, because those two cases have opposite fixes.
+
 Concretely: "RLS enablement is the next round after the table audit" is FORBIDDEN as a naked sentence. It must become
 "The `app.*` table audit is tracked in #KEY-N, which is required for the RLS enablement in this issue." The same rule
 applies to every gap found mid-task (a missing test, a stale doc, a rename, a known limitation) that will land in a
@@ -486,10 +565,26 @@ cracks because someone forgot a sentence buried in a description.
 
 "File / open / queue a YT issue for X" (or "open an issue, don't work it") means create the issue with a full spec and
 STOP: no branch, no code, no PR. Do NOT set the `AI Agent` field when filing; leave it unset (it renders as "No AI
-Agent"). The user sets `AI Agent = Queued` themselves when they want the claude-run runner to pick the issue up (the
+Agent"). The user sets `AI Agent = Queued` themselves when they want the AI runner to pick the issue up (the
 runner's query is `-Resolved AI Agent: Queued`); filing and handing off are two separate steps, and the handoff is the
 user's to take. "Implement / fix / work X (and open a PR)" means do the full branch -> change -> test -> PR flow
 yourself. When the request is ambiguous, ask which before acting.
+
+## Every issue has a parent (MANDATORY, every `create_issue`)
+
+Every issue is created as a subtask of exactly one parent, in the SAME call that creates it. Pass `parentIssue` to `mcp__youtrack__create_issue`. Never create the issue and link the parent afterwards: the link is a second call, and the second call is the one that gets skipped.
+
+The only issues that may have no parent are the roots the tree hangs from: milestones and top-level epics. Everything else without a parent is invisible work. It appears in no milestone report, on no sprint board, and in no rollup. Nothing in YouTrack rejects it, so the omission is silent and stays silent until someone audits.
+
+- Choose the parent from the tracker, not from memory. Query the candidate parents this turn and pick the most specific one: the owning epic or feature issue where one exists, the milestone only where one does not.
+- If the right parent is not obvious, ASK before creating. Never create the issue and fix the parent later.
+- Set `Start date`, `Estimation` and `Sprints` in the same call, for the same reason. All four fields fail identically: omitted silently, invisible until audited.
+
+**The failure mode this rule exists for is reactive filing.** When filing an issue IS the task, the parent gets set. When an issue is filed as a side effect of implementation work (a bug noticed mid-change, a follow-up spun out of a code review, a batch of tickets opened during a debugging session), every field gets skipped, the parent included. Filing during other work is when this rule applies hardest, not when it relaxes.
+
+**Verify before ending any session that created issues.** Run `project: <KEYS> has: -{subtask of}` and report the result. A non-empty result that is not a milestone root is a defect to fix in that session, never a note for later.
+
+**Why:** across three projects, parenting held cleanly for weeks and then stopped abruptly mid-session, while filing bugs during implementation work. 38 issues were created with no parent over the following 36 hours and were absent from every milestone report in that window. Nothing failed and nothing warned; the gap was found only by an audit, and three more orphans were created during the audit itself.
 
 ## Human steps gate the MERGE, never the code (MANDATORY)
 
@@ -519,15 +614,15 @@ When WORKING an issue and a missing permission appears mid-run:
 - Say plainly in the PR that it must not merge until that grant lands. Then stop, having delivered the code.
 - Never re-file the coding work as blocked. Blocked-on-permission is a merge note, not a stop condition.
 
-**Why:** this has cost the runner whole cycles repeatedly. IDBR-29's staging verification parked because the CI service
-account lacked `cloudtasks.queues.create` and `iam.serviceAccounts.getIamPolicy`, so the report function was never
-redeployed to test against, while the code change itself needed neither permission. IDB-375 carries the same shape with
-`DB_STAGING_URL` and `roles/iap.tunnelResourceAccessor`. In every case the grant was applied before the PR was accepted,
-so putting it before the code bought nothing and cost a full run.
+**Why:** this has cost the runner whole cycles repeatedly. One issue's staging verification parked because the CI
+service account lacked `cloudtasks.queues.create` and `iam.serviceAccounts.getIamPolicy`, so the function under test
+was never redeployed, while the code change itself needed neither permission. Another carried the same shape with a
+staging database URL secret and `roles/iap.tunnelResourceAccessor`. In every case the grant was applied before the PR
+was accepted, so putting it before the code bought nothing and cost a full run.
 
 ## The working agent must be able to finish the issue alone (MANDATORY, before every `create_issue`)
 
-An issue handed to the claude-run runner is worked by an agent whose only powers are: read the repo, change the repo,
+An issue handed to the AI runner is worked by an agent whose only powers are: read the repo, change the repo,
 run the project's checks, open a PR. It CANNOT write to YouTrack (no field change, no comment, no article edit, no
 state transition), cannot touch a cloud console, a secret store, or a merge button, cannot resolve a decision the issue
 left open, and cannot ask a question. Every acceptance criterion it cannot execute turns into a parked ticket and comes
@@ -552,21 +647,20 @@ agent-executable or not. Then:
    that the diff touches nothing else, verified with `git diff --stat`. A negative stated in prose does not hold; the
    file-set check does.
 4. **Never hardcode tool names as the criterion.** The interactive session MCP and the runner's MCP expose different
-   tool and parameter names for the same YouTrack operation. State the OUTCOME (the article exists under IDB-A-2 with
-   this title and this content) and instruct the implementer to confirm the live tool schema at run time.
+   tool and parameter names for the same YouTrack operation. State the OUTCOME (the article exists at the named
+   location with this title and this content) and instruct the implementer to confirm the live tool schema at run time.
 5. **Preflight before the handoff.** Before setting `AI Agent = Queued`, or before telling the user the issue is ready,
    re-read the AC list and answer per line: "can the agent complete this with repo access alone and only what is
    written in this issue?" Any `no` gets fixed before the handoff, not discovered by the runner.
 
-**Why:** IDB-389 was filed with two ACs requiring YouTrack writes (replace article IDB-A-2's body; publish a proof
-report). The runner did nine of eleven, parked at `Needs Review`, and asked for a human decision; the user then did the
-article work by hand. Both steps were one MCP call each from the filing session. The filing session does the parts only
-it can do, and hands over an issue that is completable end to end.
+**Why:** one issue was filed with two ACs requiring YouTrack writes (replace a knowledge-base article's body; publish a
+proof report). The runner did nine of eleven, parked at `Needs Review`, and asked for a human decision; the user then
+did the article work by hand. Both steps were one MCP call each from the filing session. The filing session does the
+parts only it can do, and hands over an issue that is completable end to end.
 
-## Project keys (discover with `mcp__youtrack__find_projects`)
+## Project keys
 
-- `LC`: a8n-Lets Chat
-- `YT`: Pandora-YouTrack CLI
+Discover the available project keys with `mcp__youtrack__find_projects` rather than assuming one. Never guess a key.
 
 ## Issue body conventions
 
@@ -582,10 +676,10 @@ Workflow:
 3. For each open decision, STOP drafting and ask the user via `AskUserQuestion` (one tool call, 1-4 questions,
    multi-select where appropriate). Recommend an option; let the user override.
 4. Fold the answers into the relevant Background / Goal / Proposed approach / AC sections. Cite the user's choice inline
-   when the decision is non-obvious ("class is named `form-scan` per the MK-18 taxonomy choice").
+   when the decision is non-obvious ("class is named `form-scan` per the taxonomy choice made when filing").
 5. Only then file the issue with `mcp__youtrack__create_issue`.
 
-Required body shape (matches the LC-123 template):
+Required body shape:
 
 - `## Background` (what currently exists, grounded in file paths / function names / table names)
 - `## Goal`
@@ -632,7 +726,7 @@ fix(issue): surface description on issue inspect
 The CLI requested only idReadable / summary / customFields when inspecting
 an issue and never deserialized the description...
 
-#YT-1
+#PROJ-1
 ```
 
 Multiple issues in one commit:
@@ -640,8 +734,8 @@ Multiple issues in one commit:
 ```
 chore(deps): bump pulldown_cmark and serde
 
-#LC-200
-#LC-201
+#PROJ-200
+#PROJ-201
 ```
 
 Rules that interact:
@@ -662,7 +756,7 @@ legal values with `mcp__youtrack__get_issue_fields_schema` first.
 ## Common gotchas
 
 - Setting a field the project does not define fails. Call `mcp__youtrack__get_issue_fields_schema` first and only pass
-  `customFields` the schema lists. Some projects have no `Type` field (e.g. `YT`, `CLAUDE`); do not pass `Type` there.
+  `customFields` the schema lists. Some projects have no `Type` field at all; do not pass `Type` there.
 - Em-dash ban (top-of-file rule) applies to YouTrack issue summaries and descriptions too.
 
 # Docker Naming Convention
@@ -676,13 +770,12 @@ prefix on top of the application prefix.
 - Application config volume: `{app}-config` (dev: `dev-{app}-config`)
 - Network: `{app}-private` (dev: `dev-{app}-private`)
 
-When a stack contains a sub-service with its own data store (e.g. Infisical bundled inside the `backup` stack and
-needing its own Postgres), order the name segments so the sub-service segment comes BEFORE the resource type segment.
-That way the data volume sorts adjacent to its parent service in alphabetical listings.
+When a stack contains a sub-service with its own data store (e.g. a secrets manager bundled inside a `backup` stack
+and needing its own Postgres), order the name segments so the sub-service segment comes BEFORE the resource type
+segment. That way the data volume sorts adjacent to its parent service in alphabetical listings.
 
-- Right: `dev-backup-infisical` and `dev-backup-infisical-postgres` (sort together)
-- Wrong: `dev-backup-infisical` and `dev-backup-postgres-infisical` (the second sorts under `postgres-`, away from its
-  parent)
+- Right: `dev-backup-vault` and `dev-backup-vault-postgres` (sort together)
+- Wrong: `dev-backup-vault` and `dev-backup-postgres-vault` (the second sorts under `postgres-`, away from its parent)
 
 In Compose files this means the volume `name:` field, the volume YAML key, the service name, the network name, and every
 internal reference (`depends_on`, env-var hostnames in connection URLs) must all use the prefixed form.
