@@ -42,6 +42,8 @@ autoSquash = true
 autoStash = true
 
 [alias]
+# https://git-scm.com/docs/pretty-formats
+git-log = log --graph --date=format:'%Y-%m-%d %H:%M:%S' --format='%C(auto)%h%d %C(cyan)%an %C(dim)%ad%C(reset): %s'
 # https://github.com/prometheus/prometheus/blob/main/RELEASE.md
 tag-release = "!f() { tag=v${1:-$(cat VERSION)} ; git tag -s ${tag} -m ${tag} && git push origin ${tag}; }; f"
 
