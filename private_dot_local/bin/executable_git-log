@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+
+# git log --graph with the abbreviated hash, refs, author and commit timestamp.
+# Named git-log so it runs standalone; git resolves "git log" to its builtin, so this never shadows it.
+# https://git-scm.com/docs/pretty-formats
+
+exec git log \
+	--graph \
+	--date=format:'%Y-%m-%d %H:%M:%S' \
+	--format='%C(auto)%h%d %C(cyan)%an %C(dim)%ad%C(reset): %s' \
+	"$@"
