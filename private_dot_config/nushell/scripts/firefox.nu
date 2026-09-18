@@ -2,7 +2,13 @@
 export def "firefox install" [
 	--install-directory: path = "~/.local/share/",
 	--applications-directory: path = "~/.local/share/applications/",
+	--channel: string = "lts", # "lts" (ESR) or "mainstream" (rapid release)
 ]: nothing -> nothing {
+	if $channel not-in ["lts" "mainstream"] {
+		print $"Invalid --channel '($channel)'. Expected 'lts' or 'mainstream'."
+		return
+	}
+
 	let install_directory = ($install_directory | path expand)
 	let applications_directory = ($applications_directory | path expand)
 	let lang = "en-US"
@@ -11,9 +17,9 @@ export def "firefox install" [
 	# https://docs.zen-browser.app/guides/manage-profiles#2-copy-essential-files
 
 	# All versions: https://download-installer.cdn.mozilla.net/pub/firefox/releases/
-	# let version = '128.9.0esr'
+	# Current versions per https://product-details.mozilla.org/1.0/firefox_versions.json
 	# 128.9.0esr uses bz2 for compression while 140.1.0esr uses xz
-	let version = '140.9.1esr'
+	let version = if $channel == "lts" { '140.9.1esr' } else { '156.0' }
 
 	let os = $nu.os-info.name
 	let arch = $nu.os-info.arch
@@ -37,11 +43,18 @@ export def "firefox install" [
 		return
 	}
 
-	if ($install_directory | path exists) {
-		print "IMPORTANT: This script is not complete."
-		print "The current version downloads Firefox to ~/.local/share/firefox"
-		print "This directory currently exists. Delete the Firefox install directory and try again."
+	# Check if the app is running
+	if (ps --long | where name =~ $app.bin | length) > 0 {
+		print $"Application ($app.name) is already running"
 		return
+	}
+
+	# The archive extracts into a top-level `firefox` directory under $install_directory.
+	let firefox_directory = ($install_directory | path join "firefox")
+	if ($firefox_directory | path exists) {
+		let backup_directory = $"($firefox_directory)-(date now | format date '%Y%m%dT%H%M%S')"
+		print $"Renaming existing install ($firefox_directory) to ($backup_directory)"
+		mv $firefox_directory $backup_directory
 	}
 
 	# URL format:
@@ -70,13 +83,6 @@ export def "firefox install" [
 	# 	path: /Betterbird/thunderbird-patches/main/metadata/eu.betterbird.Betterbird.desktop,
 	# } | url join
 
-	# Check if the app is running
-	if (ps --long | where name =~ $app.bin | length) > 0 {
-		print $"Application ($app.name) is already running"
-		return
-	}
-
-	# Get the redirect location.
 	let filename = ($url | url parse | get path | path basename)
 	let tmp_dl = $nu.temp-dir | path join $filename
 
