@@ -195,3 +195,8 @@ $env.GVIM_ENABLE_WAYLAND = 1
 
 # Add color to Claude
 $env.COLORTERM = 'truecolor'
+
+# Diable claude taking over the whole terminal. This allows pg-up/down to be used.
+# The down side is the mouse is now up/down arrow and scrolls through history.
+$env.CLAUDE_CODE_NO_FLICKER = 1
+$env.CLAUDE_CODE_DISABLE_MOUSE = 1
