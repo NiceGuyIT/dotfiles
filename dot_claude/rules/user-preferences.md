@@ -41,3 +41,16 @@
   behind a "N lines hidden" fold, which I cannot expand. When you need a decision from me, ask in plain markdown prose
   in the chat - state each option and its trade-offs as normal paragraphs or a list, and let me reply in my next
   message. Do not open the option/preview picker dialog.
+- Never name a file or directory on disk after a tracker issue. Name it for what it CONTAINS, plus a date stamp
+  when there will be more than one: `pg-17-dump-20260905`, not `dev-424-backup-20260905`. This covers every artifact
+  a person meets on a filesystem later: dumps, backups, exports, archives, scratch and working directories,
+  moved-aside directories, log bundles, and any path a runbook or script tells someone to create.
+  **Why:** the artifact outlives the issue and is read by someone who does not have the issue open. `dev-424-backup`
+  says only that some ticket caused it; the reader has to leave the terminal, find a tracker they may not have
+  access to, and read a whole issue to learn it is a Postgres 17 dump. `pg-17-dump` says it on sight, sorts next to
+  its siblings, and still means something in two years when the issue is closed and the project renamed. An issue id
+  is a pointer to a story; a filename should be a description of a thing.
+  Issue ids stay correct where the issue IS the subject and the reader is already in that context: branch names,
+  commit trailers, PR titles, and the filename of a document written about the issue itself (a runbook such as
+  `docs/runbooks/dev-424-postgres-17-to-18.md`). The ban is on naming DATA after a ticket, not on referencing tickets.
+  If the issue id genuinely helps, put it in a `README` or a log line inside the directory, not in its name.
