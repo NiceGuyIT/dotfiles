@@ -19,7 +19,7 @@ export def "firefox install" [
 	# All versions: https://download-installer.cdn.mozilla.net/pub/firefox/releases/
 	# Current versions per https://product-details.mozilla.org/1.0/firefox_versions.json
 	# 128.9.0esr uses bz2 for compression while 140.1.0esr uses xz
-	let version = if $channel == "lts" { '140.9.1esr' } else { '156.0' }
+	let version = if $channel == "lts" { '153.0esr' } else { '156.0.1' }
 
 	let os = $nu.os-info.name
 	let arch = $nu.os-info.arch
