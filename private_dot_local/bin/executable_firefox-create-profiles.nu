@@ -78,9 +78,10 @@ def check-environment []: nothing -> nothing {
 	}
 
 	let firefox_bin = (which firefox | get path?.0?)
-	if ($firefox_bin | is-empty) {
-		log warning $"Firefox binary was not found in path: ($firefox_bin)"
-		print $"Firefox binary was not found in path: ($firefox_bin)"
+	let firefox_fallback = ($env.HOME | path join '.local/share/firefox/firefox')
+	if ($firefox_bin | is-empty) and not ($firefox_fallback | path exists) {
+		log warning $"Firefox binary was not found in PATH or ($firefox_fallback)"
+		print $"Firefox binary was not found in PATH or ($firefox_fallback)"
 		exit 0
 	}
 
