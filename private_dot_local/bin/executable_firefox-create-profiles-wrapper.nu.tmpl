@@ -11,8 +11,9 @@ use std log
 
 def main [] {
 	let firefox_bin = (which firefox | get path?.0?)
-	if ($firefox_bin | is-empty) {
-		log warning "Firefox binary not found in PATH"
+	let firefox_fallback = ($env.HOME | path join '.local/share/firefox/firefox')
+	if ($firefox_bin | is-empty) and not ($firefox_fallback | path exists) {
+		log warning $"Firefox binary not found in PATH or ($firefox_fallback)"
 		exit 0
 	}
 
