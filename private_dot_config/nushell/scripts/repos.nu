@@ -90,14 +90,29 @@ export def "repos branch-delete" [] {
 		let relative = ($it | path relative-to (pwd))
 		cd $it
 
-		let deleted = (
+		# Safe delete only: git refuses unmerged branches, so record those as skipped instead of aborting.
+		let results = (
 			git branch --verbose
 			| lines
 			| parse --regex '^[* ] +(?<branch>\S+) +(?<commit>[0-9a-f]+) +(?<tag>\[gone\])? ?(?<message>.*)$'
 			| where tag == '[gone]'
-			| each {|it| ^git branch --delete $it.branch; $it.branch}
+			| each {|it|
+				let result = (^git branch --delete $it.branch | complete)
+				if $result.exit_code == 0 {
+					{ branch: $it.branch, deleted: true, error: "" }
+				} else {
+					{ branch: $it.branch, deleted: false, error: ($result.stderr | lines | first | str trim) }
+				}
+			}
 		)
-		{ repo: $relative, deleted: $deleted }
+		for failure in ($results | where deleted == false) {
+			print --stderr $"(ansi red_bold)($relative): kept ($failure.branch): ($failure.error)(ansi reset)"
+		}
+		{
+			repo: $relative
+			deleted: ($results | where deleted | get branch)
+			skipped: ($results | where deleted == false | select branch error)
+		}
 	}
 }
 
