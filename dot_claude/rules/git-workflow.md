@@ -44,6 +44,11 @@ CI failure.
 
 ## Forgejo PRs
 
+Use the `fj` CLI (via Bash) for ALL Forgejo operations: PRs, issues, repos, releases, actions, wiki, packages, orgs.
+The Forgejo MCP (`mcp__forgejo__*` tools) is the FALLBACK, used only when an `fj` command fails or lacks the capability;
+load its schemas with ToolSearch first and say which one was used and why. Never hit the Forgejo REST API directly: see
+`tooling-gap-discipline.md`. Discover syntax with `fj <command> --help`.
+
 - Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
   `~/.local/share/forgejo-cli/keys.json`.
 - When more than one host is configured in `keys.json` (e.g. `forgejo.example.com` alongside `gitea.example.org`),
@@ -81,4 +86,7 @@ CI failure.
   is the same. Newlines stay only between paragraphs / between bullets, never inside them, no matter how long the
   resulting line is.
 - The subject line / PR title should still be short (~70 chars) and in the imperative.
+- EVERY PR description ends with the bare `#<KEY>-N` block, one line per issue worked, per section 7 of
+  `youtrack-workflow.md`. Never `Closes`, `Fixes`, `Tracked in`, or any other wording. Check the final block before
+  running `fj pr create`.
 - `gh` is not installed; do not try to use it.

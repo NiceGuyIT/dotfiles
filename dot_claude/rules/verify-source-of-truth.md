@@ -36,7 +36,9 @@ guess.
 - **Saved memories:** a memory records what was true when written. Verify the file, flag, or service it names still
   exists before recommending anything based on it.
 - **Completeness:** Verify EVERY relevant entry, not the first matching line. One green line does not prove the set
-  (e.g. a workspace lock has one entry per crate; checking one missed that the others were stale).
+  (e.g. a workspace lock has one entry per crate; checking one missed that the others were stale). The same holds for
+  infrastructure: one runner config, host, or environment is a sample, so read every instance before describing the
+  fleet.
 
 **Why:** confidently reporting stale data as current wastes the user's time and erodes trust, and a stale WRITE
 destroys work outright. Querying the source of truth costs one command; being wrong costs the whole session.
