@@ -64,17 +64,38 @@ export def "repos status" [--list, --remote] {
 	}
 }
 
+# Reset the `common` submodule to the commit the parent records; no-op when the repo has none.
+def reset-common-submodule []: nothing -> record<ok: bool, error: string> {
+	let declared = (^git config --file .gitmodules --get submodule.common.path | complete)
+	if $declared.exit_code != 0 { return { ok: true, error: "" } }
+
+	let result = (^git submodule update --init common | complete)
+	{ ok: ($result.exit_code == 0), error: ($result.stderr | str trim) }
+}
+
 export def "repos pull" [] {
 	repo-paths
 	| each {|it|
 		let relative = ($it | path relative-to (pwd))
 		cd $it
 
+		# Reset first: a drifted submodule makes the parent look dirty and would skip the pull.
+		let before = (reset-common-submodule)
+		if not $before.ok {
+			return { repo: $relative, status: $"(ansi red_bold)error: submodule reset failed: ($before.error)(ansi reset)" }
+		}
+
 		let porcelain = (git status --porcelain)
 		if ($porcelain | is-empty) {
 			let result = (git pull | complete)
 			if $result.exit_code == 0 {
-				{ repo: $relative, status: ($result.stdout | str trim) }
+				# The pull may move the recorded submodule commit.
+				let after = (reset-common-submodule)
+				if $after.ok {
+					{ repo: $relative, status: ($result.stdout | str trim) }
+				} else {
+					{ repo: $relative, status: $"(ansi red_bold)error: submodule reset failed: ($after.error)(ansi reset)" }
+				}
 			} else {
 				{ repo: $relative, status: $"(ansi red_bold)error: ($result.stderr | str trim)(ansi reset)" }
 			}
