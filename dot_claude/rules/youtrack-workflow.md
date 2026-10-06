@@ -55,6 +55,11 @@ identifier, and owner. When a missing permission appears mid-run: finish everyth
 the exact missing grant in the PR body and an issue comment, say plainly it must not merge yet, then stop. Never park
 the branch or re-file the coding work as blocked.
 
+`## Before this PR is merged` holds ONLY human actions the agent cannot perform. A step that runs, restores, or
+exercises what the PR itself produces (a restore of a database for a restore-script PR, a trial run of a new script) is
+never in it: the agent runs it itself in its own environment and records the result in the PR body. The AC says the
+agent tested it; it never asks a human to. See `test-deliverable-yourself.md`.
+
 ## 5. The working agent must be able to finish the issue alone
 
 The AI runner can only read/change the repo, run checks, and open a PR - it cannot write to YouTrack, touch a cloud
