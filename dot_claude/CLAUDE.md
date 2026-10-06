@@ -7,6 +7,8 @@ a short index for humans; edit the files below, not this list.
 - `rules/user-preferences.md` - Nushell-first shell commands, doc links, YAML/Compose conventions, production-ready
   answers, comment length, force-flag ban, em-dash/ASCII-only output, AskUserQuestion preview ban, on-disk artifacts
   named for their contents rather than a tracker issue
+- `rules/test-deliverable-yourself.md` - MANDATORY: the agent always runs and tests the script or program itself in its
+  own environment, never hands testing to a human or a "Before this PR is merged" step, no redundant repeat checks
 - `rules/verify-source-of-truth.md` - MANDATORY: re-verify against the live source before stating any fact or claim
 - `rules/troubleshooting.md` - three-strike red herring rule, verify-before-fix
 - `rules/completeness-invariant-sweep.md` - MANDATORY: every change (bug fix, config, feature, issue) covers the
