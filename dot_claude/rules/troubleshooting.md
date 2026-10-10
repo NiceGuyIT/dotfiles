@@ -11,5 +11,7 @@
        the symptom appears.
     4. Explicitly tell the user: "We've tried fixing X three times. The real problem is probably elsewhere. Let me step
        back and look at the bigger picture."
+- **Fix the cause, never the symptom.** A change that only alters what is shown or logged is not a fix and is not a
+  strike-counted attempt. See `no-masking.md`.
 - Before proposing a fix, verify the hypothesis first. Prefer adding debug/diagnostic output to confirm the cause before
   changing code speculatively.

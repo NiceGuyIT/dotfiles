@@ -13,7 +13,11 @@ a short index for humans; edit the files below, not this list.
 - `rules/troubleshooting.md` - three-strike red herring rule, verify-before-fix
 - `rules/completeness-invariant-sweep.md` - MANDATORY: every change (bug fix, config, feature, issue) covers the
   whole family it governs; the user's list is a lower bound, enumerate the full set from the source of truth
-- `rules/error-visibility.md` - MANDATORY: no swallowed errors, no silent fallbacks, visible at every layer
+- `rules/error-visibility.md` - MANDATORY: no swallowed errors, no silent fallbacks, visible at every layer (see also
+  `no-masking.md`)
+- `rules/no-masking.md` - MANDATORY: nothing wrong, missing, unexpected, or deprecated is ever masked (placeholders
+  with no trace, defaults, dropped rows, silenced warnings, weakened tests); a placeholder with a tooltip and a log line
+  naming the id is findable, not masked; fix the cause or make the failure more visible
 - `rules/documentation-currency.md` - MANDATORY: docs updated in the same PR as the code; docs are never unit tested
 - `rules/documentation-provenance.md` - MANDATORY: verify system claims against the system, not against prior docs
 - `rules/plans-roadmap.md` - multi-step plans live in `docs/ROADMAP.md`, linking the tracker, never duplicating status
