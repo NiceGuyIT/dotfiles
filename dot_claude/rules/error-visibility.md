@@ -10,6 +10,10 @@ body was then discarded by `hx-swap="none"` one layer up, and the status was `20
 nothing, assumed success, and was locked out of production with the database as the only witness. Every individual
 layer looked correct.
 
+Masking (placeholders with no trace, defaults, dropped rows, silenced warnings, weakened tests) is the general form of
+this defect.
+See `no-masking.md`; both rules apply to every change.
+
 ## 1. Never discard an error value
 
 Forbidden in every language, no exceptions without the explicit justification in section 4:
@@ -31,14 +35,22 @@ An error MUST NOT be mapped onto a value that a successful call could also retur
 becoming `None`/`null`/`0`/`[]`, a 500 becoming an empty list: in every case the caller now cannot distinguish a broken
 dependency from a real negative result, and the bug becomes invisible at the call site AND in the logs.
 
-If a fallback value is genuinely wanted, the error is logged at `error` (or `warn` for a true best-effort path) BEFORE
-the substitution, naming the underlying cause. The fallback is the second statement, never the whole handling.
+A display fallback string ("Someone", "Unknown", "N/A") standing in for a failed lookup is this same collapse when
+nothing records the failure. With a hover tooltip naming the id and a log line carrying it, the failure can be found
+and the fallback is allowed (see `no-masking.md`). A lookup that found nothing is `info`; `error` is for something
+tried and failed.
+
+If a fallback value is genuinely wanted, the error is logged BEFORE the substitution, at a level that matches the
+consequence (`warn` or `info` is fine when `error` would overstate it), naming the underlying cause. The fallback is the second statement, never the whole handling.
 
 ## 3. A failure must be visible at every layer it crosses
 
 Check each layer the failure passes through, and name them in the change:
 
-- **Log**: one line, at `error` unless it is genuinely expected, carrying the underlying cause, not a generic string.
+- **Log**: one line carrying the underlying cause, not a generic string, at a level that matches the consequence:
+  `error` for a failure, `warn` for a degraded or unexpected-but-handled result, `info` for an expected outcome such
+  as a lookup that legitimately returned nothing. Visibility is mandatory; `error` is not. Never pick the level by
+  "will it page someone", and never drop the line to avoid the question.
 - **Status/exit code**: a failure NEVER answers `200`, exit `0`, or a success sentinel. A rendered error page with a
   `200` is a lie told to every proxy, log, monitor, and test that reads the status.
 - **Transport/client**: whatever the server rendered must actually reach the screen. A client that discards, ignores, or
