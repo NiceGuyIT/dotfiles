@@ -9,7 +9,9 @@ a short index for humans; edit the files below, not this list.
   named for their contents rather than a tracker issue
 - `rules/test-deliverable-yourself.md` - MANDATORY: the agent always runs and tests the script or program itself in its
   own environment, never hands testing to a human or a "Before this PR is merged" step, no redundant repeat checks
-- `rules/verify-source-of-truth.md` - MANDATORY: re-verify against the live source before stating any fact or claim
+- `rules/verify-source-of-truth.md` - MANDATORY, NO EXCEPTIONS: every statement of fact in a reply is backed by a
+  command or file read run in THIS turn, or is marked "unverified" in the same sentence. Applies to every turn,
+  including short answers and follow-ups. Violating it is the failure the user cares most about.
 - `rules/troubleshooting.md` - three-strike red herring rule, verify-before-fix
 - `rules/completeness-invariant-sweep.md` - MANDATORY: every change (bug fix, config, feature, issue) covers the
   whole family it governs; the user's list is a lower bound, enumerate the full set from the source of truth
