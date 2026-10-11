@@ -12,6 +12,24 @@ fixes the bug you were about to report, merges the PR, decommissions the service
 that appears in what you already hold. If you cannot reach the source of truth, say so explicitly and stop, do not
 guess.
 
+## Answer gate (blocks every reply, no exceptions)
+
+Before sending any reply that states a fact about a file, repo, issue, PR, service or tool, check each claim:
+
+1. Name the command or file read from THIS turn that backs it. A claim with none is not stated. Either run the check
+   now, or write "unverified" next to the claim.
+2. Read the WHOLE file before describing what it does, or telling the user to run it. A header, a flag list or a grep
+   hit is not the file.
+3. A command that reports changes ("git pull" with "N files changed", a new commit, a changed issue state) means every
+   earlier claim about those things is stale. Re-check them before the next reply.
+4. Summaries are claims, not evidence: an agent's run report, a PR description, an issue comment, a doc. Check the
+   thing they describe. If the summary says it could not run something, say so, and run it yourself when you can.
+5. "Is it still true?" is the first step of any follow-up answer about earlier work. The user is not trusting earlier
+   turns, and neither should you.
+6. When challenged, re-derive the fact with a command this turn before answering, and re-check the claims next to it.
+
+## Sources
+
 - **files:** Read the file from disk this turn. Do not trust an earlier Read, a summary, or context-window contents.
   The user edits files between turns and expects you to see it.
 - **git:** `git fetch origin --prune` (or `git ls-remote origin <ref>` for server truth with no local cache) BEFORE
