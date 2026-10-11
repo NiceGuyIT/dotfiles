@@ -65,8 +65,9 @@ agent tested it; it never asks a human to. See `test-deliverable-yourself.md`.
 The AI runner can only read/change the repo, run checks, and open a PR - it cannot write to YouTrack, touch a cloud
 console or secret store, resolve an open decision, or ask a question. Before every issue creation:
 
-- External mutation (KB article edit, field change, comment, console setting, secret rotation, merging a PR) is done
-  NOW, at filing time, and recorded under `## Already done, not part of this issue` - never left as an AC.
+- External mutation (field change, comment, console setting, secret rotation, merging a PR) is done NOW, at filing
+  time, and recorded under `## Already done, not part of this issue` - never left as an AC. A YouTrack Knowledge Base
+  article is never one of them: see section 8.
 - Unwritten content ("use the right wording/convention") is a decision, not a criterion: author it during filing, or
   paste the exact final text into the issue body verbatim.
 - Every AC is checkable from the repo alone (working tree or the project's existing check suite), and every issue
@@ -75,7 +76,7 @@ console or secret store, resolve an open decision, or ask a question. Before eve
   confirm the live schema.
 - Preflight, run on EVERY issue before filing: re-read every AC and confirm "the agent can complete this with repo
   access alone and only what's written here." Any "no" gets fixed before handoff, not discovered by the runner. This
-  preflight is what decides the `AI Agent` field in section 6, so it is never skipped.
+  preflight is what tells you the issue is workable as written, so it is never skipped.
 - Completeness: for any issue that specifies configuration, the whole family is enumerated from the source of truth
   and the issue covers every member, per `completeness-invariant-sweep.md`. A narrower list is a defect, not a scope
   decision.
@@ -86,28 +87,13 @@ console or secret store, resolve an open decision, or ask a question. Before eve
 "Implement / fix X (and open a PR)" means do the full branch -> change -> test -> PR flow. Ask which when the request
 is ambiguous.
 
-Queue by default. A filed issue that PASSES the section 5 preflight gets `AI Agent = Queued` in the SAME
-create call, so the runner can start it with no second human step; the same applies when an existing issue is
-updated into a workable state (`yt issue update` / `yt issue set-field`, or `yt issue apply` when the field is not writable that
-way). This is the whole point of writing agent-completable issues: an issue that could be worked and is not queued is
-work that silently waits on a human.
+Leave the `AI Agent` field unset on every filed issue: the user sets `Queued` themselves.
 
-Leave `AI Agent` unset ONLY when the issue is not workable as written, and say so plainly in the response with the
-reason. The cases:
-
-- The section 5 preflight fails: an open decision, a missing external mutation, an AC that is not checkable from the
-  repo alone.
-- A `## Before this PR is merged` human step (section 4) is also a precondition of STARTING, which is rare - human
-  steps normally gate the merge, not the code, so this alone is not a reason to hold the queue.
-- The issue depends on another issue that has not landed yet (link it per section 3 and queue it when the dependency
-  is Done).
-- The user said not to queue it, or asked for a draft.
-
-Never park an unqueued issue in the `AI Agent` field: the field is the runner lifecycle
+Never use the `AI Agent` field as a holding state: the field is the runner lifecycle
 (Queued / Working / Needs Review / Done / Failed / Code Review). Tag `Needs-Info` ONLY when a person must make a
 decision before the issue is workable, and add a one-line comment naming the decision. A dependency on another issue is
 NOT a reason for `Needs-Info`: the YouTrack dependency link (section 3) already records it, so leave the issue
-untagged and unqueued until the dependency is Done.
+untagged until the dependency is Done.
 
 ## 7. Every commit AND every PR references its issues
 
@@ -119,6 +105,37 @@ place of the bare id: those forms are not acceptable even alongside it. Prose th
 body does not replace the final block. No exceptions: a change with no tracked issue gets one filed before committing. Make field changes (assignee, tags, comments, other fields) explicitly via `yt`,
 never via a parse-time commit command. Always create NEW commits, never amend, to correct a wrong reference use
 `yt`, not `--amend`.
+
+## 8. Never write to YouTrack unbidden
+
+A YouTrack write nobody asked for is invisible work in somebody else's system.
+
+- **Write to YouTrack only when the current request asks for it** ("file an issue", "comment on X", "queue it", "link
+  these"), or when a rule in this file requires it. Working an issue is NOT a licence to update it: the runner reports
+  in its PR and its run summary, the bare `#<KEY>-N` in the commit body (section 7) is what links the work back to the
+  issue, and a human or CI moves it from there. Never open or close a session by tidying fields, posting progress
+  comments, or changing state nobody asked to be changed.
+- **Never create or edit a Knowledge Base article while working an issue**, which is the bullet above applied to
+  articles rather than a rule of its own: nobody asked for it. Two kinds of document exist, and they take different
+  paths:
+    - **Markdown files in `docs/`** follow the `kb-sync` path. The file is written in the repository and published as an
+      article under the `Docs` parent article by CI, which reconciles both directions: an article edited in YouTrack is
+      pulled back into its file, a file edited in the repository is pushed, and a pair that both changed since their
+      last common sync fails loudly with neither side written. Edit the file, never the article, and never write the
+      article directly.
+    - **Documents that are not in `docs/`** are written directly as KB articles, and only when the current request asks
+      for the article.
+
+  A person editing an article IS legitimate; for a `docs/` pair, sync carries it back into the file, so editing either
+  side is a normal way to change the document, not a way to lose work.
+- **A `docs/` file that needs an article which does not exist yet** is a human step under
+  `## Before this PR is merged` (section 4), naming the exact title under `Docs`. It is never a filing-time mutation,
+  and the implementing agent never needs the article id: a file with no article mapping yet is valid, and the mapping
+  is added once the article exists.
+
+**Why:** an issue was once filed with a placeholder KB article created at filing time, reading section 5's "external
+mutation is done NOW" as covering articles. Nobody had asked for an article, no diff reviewed a word of it, and the
+content it was standing in for is CI's to publish.
 
 ## Common gotchas
 

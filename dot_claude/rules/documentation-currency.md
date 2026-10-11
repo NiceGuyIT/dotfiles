@@ -19,7 +19,9 @@ the same commit as the change. The Definition of Done for ANY change includes a 
 5. Edit live content, never a remembered or drafted copy. For a doc hosted outside the repo (YouTrack article or issue,
    wiki, anything the user can edit concurrently), re-fetch it immediately before writing and merge the change into
    what comes back. Those writes are full-content replacements, so publishing a locally assembled version silently
-   deletes every edit made since you last read it. Same rule, same reason, as `verify-source-of-truth.md`.
+   deletes every edit made since you last read it. Same rule, same reason, as `verify-source-of-truth.md`. A YouTrack
+   Knowledge Base article mapped to a repo doc syncs both ways: CI pushes the file into it, and an article edited in
+   YouTrack is pulled back into the file, so edit whichever side the change belongs on rather than both at once.
 
 This is the doc analogue of the Completeness / Invariant Sweep, and it stands on Verify the Source of Truth FIRST: the
 sweep is only as good as the freshness of what it reads and writes. The failure mode is fixing the code and forgetting
