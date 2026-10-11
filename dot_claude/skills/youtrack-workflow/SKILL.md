@@ -94,6 +94,11 @@ asked for a human decision; the user then did the article work by hand. Both ste
 filing session. The filing session does the parts only it can do, and hands over an issue that is completable end to
 end.
 
+A Knowledge Base article is the one external mutation that is NOT done at filing time. CI pushes the repository doc
+into its mapped article, so an article written by hand is unreviewed and temporary; rule 8 in
+`~/.claude/rules/youtrack-workflow.md` carries the detail. An issue whose doc has no article yet names the article's
+creation under `## Before this PR is merged` and ships the file with no `youtrack_article` frontmatter.
+
 ## Commit and PR reference examples
 
 The same bare-id final block ends the PR description, one line per issue worked. `Closes KEY-N`, `Fixes KEY-N` and

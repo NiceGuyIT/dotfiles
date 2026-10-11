@@ -26,8 +26,9 @@ a short index for humans; edit the files below, not this list.
 - `rules/git-workflow.md` - branch/commit/PR flow, pre-change and pre-commit checks, Forgejo conventions (`fj` first, Forgejo MCP as fallback)
 - `rules/youtrack-workflow.md` - MANDATORY compliance gate: use the `yt` CLI for YouTrack (MCP only as fallback); every code
   change starts as a YouTrack issue; issue
-  granularity, parenting, no orphan notes, human-steps-gate-the-merge, agent-must-finish-alone, queue-on-file
-  (`AI Agent = Queued` whenever the issue is workable), `Needs-Info` only when a person must decide (dependencies are
+  granularity, parenting, no orphan notes, human-steps-gate-the-merge, agent-must-finish-alone, `AI Agent`
+  left unset on filing (the user queues), never write to YouTrack unbidden (KB articles: `docs/` files via kb-sync,
+  other documents only on request), `Needs-Info` only when a person must decide (dependencies are
   managed by YouTrack links, never by that tag), bare `#KEY-N` as the last block of every commit AND PR description
   (never `Closes` / `Tracked in`).
   Detailed drafting workflow, required issue-body shape, and fuller rationale live in the `youtrack-workflow` skill
