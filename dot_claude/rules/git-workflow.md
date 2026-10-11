@@ -89,4 +89,4 @@ load its schemas with ToolSearch first and say which one was used and why. Never
 - EVERY PR description ends with the bare `#<KEY>-N` block, one line per issue worked, per section 7 of
   `youtrack-workflow.md`. Never `Closes`, `Fixes`, `Tracked in`, or any other wording. Check the final block before
   running `fj pr create`.
-- `gh` is not installed; do not try to use it.
+- For `github.com` repos, open PRs with `gh pr create`. If `gh` fails, assume it is not installed and fall back to `git push` plus the compare URL.
