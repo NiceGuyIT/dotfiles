@@ -20,17 +20,24 @@ export def "zypper search" [
 		$args = ($args | append ["--type" $type])
 	}
 
-	let parsed = (
-		^zypper ...$zypp_args search ...$args ...$names
-		| collect
-		| from xml
-	)
-	# On no match zypper emits <message>No matching items found.</message> instead of
-	# a <search-result>/<solvable-list>. Return an empty list in that case.
-	if ($parsed.content.0.tag? | default "") != "search-result" {
+	# Exit 104 (ZYPPER_EXIT_INF_CAP_NOT_FOUND) means no match; any other non-zero is a failure.
+	let run = (^zypper ...$zypp_args search ...$args ...$names | complete)
+	if $run.exit_code not-in [0 104] {
+		error make {msg: $"zypper search failed with exit code ($run.exit_code): ($run.stderr | str trim)"}
+	}
+	let parsed = ($run.stdout | from xml)
+	# zypper emits <message> elements (e.g. expired-metadata warnings) before the
+	# <search-result>, so select by tag rather than position.
+	let errors = ($parsed.content | where tag? == "message" | where attributes.type? == "error")
+	if ($errors | is-not-empty) {
+		error make {msg: $"zypper search failed: ($errors.0.content.0.content? | default 'unknown error')"}
+	}
+	# On no match zypper emits only <message>No matching items found.</message>.
+	let result = ($parsed.content | where tag? == "search-result")
+	if ($result | is-empty) {
 		return []
 	}
-	$parsed | get content.0.content.0.content.attributes
+	$result.0.content.0.content.attributes
 	#| reject status kind arch
 }
 
