@@ -495,3 +495,9 @@ export def table-diff [
 		$right_not_in_left | insert side '=>'
 	)
 }
+
+
+# Run ssh with a remote command on hosts where ~/.ssh/config sets `RemoteCommand nu`.
+export def --wrapped sshc [...args: string]: nothing -> nothing {
+	^ssh -o RemoteCommand=none ...$args
+}

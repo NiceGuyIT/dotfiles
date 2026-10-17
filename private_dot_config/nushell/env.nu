@@ -144,6 +144,10 @@ do --env {
 	}
 }
 
+# rsync runs `ssh host rsync --server ...`, which collides with `RemoteCommand nu` in ~/.ssh/config on hosts
+# tagged `use-nu` ("Cannot execute command-line and remote command"). scp and sftp already pass this option.
+$env.RSYNC_RSH = "ssh -o RemoteCommand=none"
+
 # fnm: Fast Node Manager
 # https://github.com/Schniz/fnm/issues/463#issuecomment-2987700729
 if not (which fnm | is-empty) {
