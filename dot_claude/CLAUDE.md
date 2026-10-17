@@ -12,6 +12,10 @@ a short index for humans; edit the files below, not this list.
 - `rules/verify-source-of-truth.md` - MANDATORY, NO EXCEPTIONS: every statement of fact in a reply is backed by a
   command or file read run in THIS turn, or is marked "unverified" in the same sentence. Applies to every turn,
   including short answers and follow-ups. Violating it is the failure the user cares most about.
+- `rules/no-unrequested-tests.md` - MANDATORY: never run a load, stress, performance, benchmark, IO, network, memory or
+  disk test without "Yes, run the <name> test"; never test a user statement to verify it
+- `rules/large-writes.md` - MANDATORY: check the filesystem (`df`, `findmnt`) before writing anything large; never to
+  RAM-backed storage
 - `rules/troubleshooting.md` - three-strike red herring rule, verify-before-fix
 - `rules/completeness-invariant-sweep.md` - MANDATORY: every change (bug fix, config, feature, issue) covers the
   whole family it governs; the user's list is a lower bound, enumerate the full set from the source of truth
@@ -20,6 +24,8 @@ a short index for humans; edit the files below, not this list.
 - `rules/no-masking.md` - MANDATORY: nothing wrong, missing, unexpected, or deprecated is ever masked (placeholders
   with no trace, defaults, dropped rows, silenced warnings, weakened tests); a placeholder with a tooltip and a log line
   naming the id is findable, not masked; fix the cause or make the failure more visible
+- `rules/no-internal-names.md` - MANDATORY: no internal hostnames, domains, IPs, resource names, repos, people or
+  customers in any YouTrack issue, commit, PR or code; use roles or reserved placeholders; sweep before filing
 - `rules/documentation-currency.md` - MANDATORY: docs updated in the same PR as the code; docs are never unit tested
 - `rules/documentation-provenance.md` - MANDATORY: verify system claims against the system, not against prior docs
 - `rules/plans-roadmap.md` - multi-step plans live in `docs/ROADMAP.md`, linking the tracker, never duplicating status
@@ -28,9 +34,8 @@ a short index for humans; edit the files below, not this list.
 - `rules/git-workflow.md` - branch/commit/PR flow, pre-change and pre-commit checks, Forgejo conventions (`fj` first, Forgejo MCP as fallback)
 - `rules/youtrack-workflow.md` - MANDATORY compliance gate: use the `yt` CLI for YouTrack (MCP only as fallback); every code
   change starts as a YouTrack issue; issue
-  granularity, parenting, no orphan notes, human-steps-gate-the-merge, agent-must-finish-alone, `AI Agent`
-  left unset on filing (the user queues), never write to YouTrack unbidden (KB articles: `docs/` files via kb-sync,
-  other documents only on request), `Needs-Info` only when a person must decide (dependencies are
+  granularity, parenting, no orphan notes, human-steps-gate-the-merge, agent-must-finish-alone, queue-on-file
+  (`AI Agent = Queued` whenever the issue is workable), `Needs-Info` only when a person must decide (dependencies are
   managed by YouTrack links, never by that tag), bare `#KEY-N` as the last block of every commit AND PR description
   (never `Closes` / `Tracked in`).
   Detailed drafting workflow, required issue-body shape, and fuller rationale live in the `youtrack-workflow` skill
