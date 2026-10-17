@@ -76,7 +76,7 @@ console or secret store, resolve an open decision, or ask a question. Before eve
   confirm the live schema.
 - Preflight, run on EVERY issue before filing: re-read every AC and confirm "the agent can complete this with repo
   access alone and only what's written here." Any "no" gets fixed before handoff, not discovered by the runner. This
-  preflight is what tells you the issue is workable as written, so it is never skipped.
+  preflight is what decides the `AI Agent` field in section 6, so it is never skipped.
 - Completeness: for any issue that specifies configuration, the whole family is enumerated from the source of truth
   and the issue covers every member, per `completeness-invariant-sweep.md`. A narrower list is a defect, not a scope
   decision.
@@ -87,13 +87,28 @@ console or secret store, resolve an open decision, or ask a question. Before eve
 "Implement / fix X (and open a PR)" means do the full branch -> change -> test -> PR flow. Ask which when the request
 is ambiguous.
 
-Leave the `AI Agent` field unset on every filed issue: the user sets `Queued` themselves.
+Queue by default. A filed issue that PASSES the section 5 preflight gets `AI Agent = Queued` in the SAME
+create call, so the runner can start it with no second human step; the same applies when an existing issue is
+updated into a workable state (`yt issue update` / `yt issue set-field`, or `yt issue apply` when the field is not writable that
+way). This is the whole point of writing agent-completable issues: an issue that could be worked and is not queued is
+work that silently waits on a human.
 
-Never use the `AI Agent` field as a holding state: the field is the runner lifecycle
+Leave `AI Agent` unset ONLY when the issue is not workable as written, and say so plainly in the response with the
+reason. The cases:
+
+- The section 5 preflight fails: an open decision, a missing external mutation, an AC that is not checkable from the
+  repo alone.
+- A `## Before this PR is merged` human step (section 4) is also a precondition of STARTING, which is rare - human
+  steps normally gate the merge, not the code, so this alone is not a reason to hold the queue.
+- The issue depends on another issue that has not landed yet (link it per section 3 and queue it when the dependency
+  is Done).
+- The user said not to queue it, or asked for a draft.
+
+Never park an unqueued issue in the `AI Agent` field: the field is the runner lifecycle
 (Queued / Working / Needs Review / Done / Failed / Code Review). Tag `Needs-Info` ONLY when a person must make a
 decision before the issue is workable, and add a one-line comment naming the decision. A dependency on another issue is
 NOT a reason for `Needs-Info`: the YouTrack dependency link (section 3) already records it, so leave the issue
-untagged until the dependency is Done.
+untagged and unqueued until the dependency is Done.
 
 ## 7. Every commit AND every PR references its issues
 
@@ -142,3 +157,5 @@ content it was standing in for is CI's to publish.
 - Setting a field the project doesn't define fails. Call `yt project fields` (MCP: `mcp__youtrack__get_issue_fields_schema`) first and
   only set fields the project lists.
 - The em-dash ban (`user-preferences.md`) applies to YouTrack issue summaries, descriptions, and comments too.
+- So does `no-internal-names.md`: no internal hostnames, resources, or identities in summaries, descriptions, or
+  comments.

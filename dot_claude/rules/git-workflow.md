@@ -85,6 +85,8 @@ load its schemas with ToolSearch first and say which one was used and why. Never
   `gh pr create --body`, when posting `gh pr comment`, when writing a PR description in the Forgejo web UI, the rule
   is the same. Newlines stay only between paragraphs / between bullets, never inside them, no matter how long the
   resulting line is.
+- Commit messages, branch names, PR titles and PR bodies carry no internal names (`no-internal-names.md`). The
+  `#<KEY>-N` block is the only required identifier.
 - The subject line / PR title should still be short (~70 chars) and in the imperative.
 - EVERY PR description ends with the bare `#<KEY>-N` block, one line per issue worked, per section 7 of
   `youtrack-workflow.md`. Never `Closes`, `Fixes`, `Tracked in`, or any other wording. Check the final block before
