@@ -9,6 +9,11 @@ a saved memory, remote-tracking refs, local image layers. Assume everything in c
 turn: the user edits files, fixes bugs, merges PRs and decommissions services between turns. If the source is
 unreachable, say so and stop; do not guess.
 
+**Exception: facts the user states.** An infrastructure fact the user states (a host was renamed or retired, a
+directory is decommissioned, an item is to be ignored, how two things relate) is accepted as given and used in the
+work. Never verify it, question it, flag it as a conflict or warning, or write a conclusion that contradicts it. This
+overrides everything else in this file. The duty to verify applies to facts I find myself, never to facts the user gave me.
+
 ## Answer gate (blocks every reply)
 
 Before any reply stating a fact about a file, repo, issue, PR, service or tool:
@@ -37,6 +42,7 @@ Before any reply stating a fact about a file, repo, issue, PR, service or tool:
   re-fetch immediately before writing and merge into the live content. These updates are full replacements, so a write
   from a local draft silently deletes every edit made since you last read.
 - **Services and infrastructure:** confirm a host, endpoint or integration is still in use before naming it as current.
+  Skip this for a fact the user stated.
 - **Saved memories:** verify the file, flag, or service a memory names still exists before recommending it.
 - **Completeness:** verify EVERY relevant entry, not the first match. One green line does not prove the set; one runner
   config, host, or lock entry is a sample, not the fleet.
