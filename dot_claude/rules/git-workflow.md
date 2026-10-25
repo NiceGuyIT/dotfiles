@@ -4,91 +4,51 @@ Default workflow for every change, unless the user says they are working on many
 current branch:
 
 1. Make the changes.
-2. Create a new branch with a name that describes the change (e.g., `fix/...`, `feat/...`, `chore/...`).
+2. Create a new branch named for the change (`fix/...`, `feat/...`, `chore/...`).
 3. Commit and push the branch.
 4. Switch back to `main` (the user merges the PR).
 
-## Pre-change check (MANDATORY, runs every user request that edits code)
+## Pre-change check (MANDATORY, before the FIRST file edit of every user-requested change)
 
-Before the FIRST file edit of any user-requested change, run this check. No exceptions, including when the request
-looks like a small follow-up.
-
-1. `git fetch origin` then `git status` and `git log --oneline @..origin/main`.
-2. Decide which of these states I'm in:
+1. `git fetch origin`, then `git status` and `git log --oneline @..origin/main`.
+2. Decide the state:
    a. On `main`, no diff vs `origin/main` -> create a new branch named for the change, then edit.
-   b. On a feature branch whose PR is STILL OPEN AND UNMERGED, and this edit belongs to that PR -> stay on the branch.
-   c. Anything else (main is behind, previous PR was merged, remote branch was deleted, branch is
-   stale) -> `git checkout main && git pull --ff-only && git checkout -b <new-branch>` BEFORE editing.
+   b. On a feature branch whose PR is STILL OPEN AND UNMERGED and the edit belongs to that PR -> stay on it.
+   c. Anything else (main behind, previous PR merged, remote branch deleted, stale branch) ->
+      `git checkout main && git pull --ff-only && git checkout -b <new-branch>` BEFORE editing.
 
-A user message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change, not a
-continuation. Branch fresh off updated main.
+A message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change: branch fresh off
+updated main.
 
-## Pre-commit check (MANDATORY, runs before EVERY commit)
+## Pre-commit check (MANDATORY, before EVERY commit)
 
-Before the FIRST `git commit` of any change, run the project's full check suite and block the commit on any failure.
-Never bypass with `git commit --no-verify`.
+Run the project's full check suite and block the commit on any failure. Never use `git commit --no-verify`.
 
-1. Detect the project's check entrypoint, in order:
-   a. `justfile` with a `pre-commit` recipe -> run `just pre-commit` (matches the CI toolchain exactly).
-   b. else `justfile` with a `check` recipe -> run `just check`.
-   c. else fall back to the repo's documented checks (e.g. `cargo fmt --check`, `cargo clippy ... -D warnings`,
-   `cargo check`; the project's lint/format/build commands).
-2. If any check fails, FIX it (e.g. `just fmt` / `cargo fmt`) and re-run until green BEFORE committing. A red check is
-   never "commit now, fix in a follow-up".
-3. At session start in a fresh clone, if the repo has an `install-hooks` recipe and `.git/hooks/pre-commit` is absent,
-   run `just install-hooks` so the local hook backs you up.
-
-**Why:** CI's fmt/clippy/build gate rejects unformatted or lint-dirty commits. Running the same checks locally first
-turns a failed CI run plus a follow-up fix PR into zero round-trips. This is the gap that produced an unformatted-code
-CI failure.
-
-## Forgejo PRs
-
-Use the `fj` CLI (via Bash) for ALL Forgejo operations: PRs, issues, repos, releases, actions, wiki, packages, orgs.
-The Forgejo MCP (`mcp__forgejo__*` tools) is the FALLBACK, used only when an `fj` command fails or lacks the capability;
-load its schemas with ToolSearch first and say which one was used and why. Never hit the Forgejo REST API directly: see
-`tooling-gap-discipline.md`. Discover syntax with `fj <command> --help`.
-
-- Open PRs with `fj pr create`, not `curl` against the API. One-time `fj auth add-key` per host; tokens persist at
-  `~/.local/share/forgejo-cli/keys.json`.
-- When more than one host is configured in `keys.json` (e.g. `forgejo.example.com` alongside `gitea.example.org`),
-  pass `--host forgejo.example.com` to every `fj` call. Org-scoped commands like `fj org repo list <org>` will
-  silently target the wrong host or 403 without it. Repo-scoped commands run from inside a git working tree can
-  usually infer the host from the remote URL, but passing `--host` is the safe default.
-- Org-scoped calls (`fj org repo list`, etc.) also need `read:organization` token scope. If you get a 403, re-issue the
-  token via `fj auth add-key` with org scope enabled, not via the API directly.
-- Title is positional. Long bodies go in a `mktemp --tmpdir --suffix .md` file passed via `--body-file`, never escaped
-  inline. (Older docs called this flag `--body-from-file`; current `fj` rejects that name.)
-- `--base` defaults to the repo's primary branch; `--head` defaults to the current branch's upstream. Most calls
-  collapse to `fj --host forgejo.example.com pr create "<title>" --body-file <path>`.
-- DEFAULT to a branch-backed PR: `git push --set-upstream origin <branch>` first, then `fj pr create`. This is what
-  `fj` does without `-a` (`--head` defaults to the current branch's upstream). A real server branch is what makes
-  Forgejo's "Update Branch" control appear, so a PR that falls behind a protected base can be brought current and stays
-  mergeable. `-A` (`--autofill`) is orthogonal and fine to keep: it fills title/body from the commits.
-- AVOID `-a` (`--agit`). AGit opens the PR from local commits with no server branch (commits live only under
-  `refs/pull/<N>/head`). That branch never appears in `git branch --all`, the web Branches page, or a plain
-  `git fetch`, and because there is no branch to update, Forgejo cannot offer "Update Branch"; once the PR falls behind
-  a base that requires up-to-date, the merge button disappears. Reserve `-a` for deliberate throwaway PRs where no
-  server branch is wanted, and recover a stuck AGit PR by re-pushing its rebased/merged head to `refs/for/<base>` with
-  `--push-option topic=<original-head-branch-name>`. AGit details:
-  <https://codeberg.org/forgejo-contrib/forgejo-cli/wiki/PRs#agit>.
-- Doesn't apply to `github.com` repos. fj speaks only the Forgejo / Gitea API; for GitHub-hosted repos
-  (eg. `example-org/oci-images`) keep the `git push` + compare-URL pattern.
+1. Entrypoint, in order: `justfile` `pre-commit` recipe (`just pre-commit`), else `check` recipe (`just check`), else the
+   repo's documented checks (e.g. `cargo fmt --check`, `cargo clippy ... -D warnings`, `cargo check`).
+2. Fix failures (`just fmt` / `cargo fmt`) and re-run until green BEFORE committing.
+3. In a fresh clone with an `install-hooks` recipe and no `.git/hooks/pre-commit`, run `just install-hooks`.
 
 ## Commit messages and PR text
 
-- Do NOT hard-wrap bullet points or paragraphs anywhere that flows through the Forgejo/GitHub PR UI: commit message
-  bodies, PR titles, PR descriptions, and PR review comments. Each bullet or paragraph must be a single long line so
-  the GUI can wrap it naturally. Hard-wrapping inside a bullet causes the GUI to render each wrapped line as its own
-  broken-looking block and wastes vertical space in review.
-- This means: when authoring a commit message via `git commit -m "$(cat <<'EOF' ... EOF)"`, when filling in
-  `gh pr create --body`, when posting `gh pr comment`, when writing a PR description in the Forgejo web UI, the rule
-  is the same. Newlines stay only between paragraphs / between bullets, never inside them, no matter how long the
-  resulting line is.
-- Commit messages, branch names, PR titles and PR bodies carry no internal names (`no-internal-names.md`). The
-  `#<KEY>-N` block is the only required identifier.
-- The subject line / PR title should still be short (~70 chars) and in the imperative.
-- EVERY PR description ends with the bare `#<KEY>-N` block, one line per issue worked, per section 7 of
-  `youtrack-workflow.md`. Never `Closes`, `Fixes`, `Tracked in`, or any other wording. Check the final block before
-  running `fj pr create`.
-- For `github.com` repos, open PRs with `gh pr create`. If `gh` fails, assume it is not installed and fall back to `git push` plus the compare URL.
+- Do NOT hard-wrap bullets or paragraphs in anything flowing through the Forgejo/GitHub UI (commit bodies, PR titles
+  and descriptions, review comments, `gh pr create --body`, `gh pr comment`). Newlines only between paragraphs and
+  bullets, however long the line.
+- No internal names (`no-internal-names.md`). The `#<KEY>-N` block is the only required identifier.
+- Subject line / PR title: imperative, about 70 characters.
+- EVERY commit body and PR description ends with the bare `#<KEY>-N` block, one line per issue worked
+  (`youtrack-workflow.md` section 7). Check it before `fj pr create`.
+
+## Forgejo PRs
+
+Use the `fj` CLI for ALL Forgejo operations (PRs, issues, repos, releases, actions, wiki, packages, orgs). The Forgejo
+MCP (`mcp__forgejo__*`) is the FALLBACK, only when `fj` fails or lacks the capability: load schemas with ToolSearch and
+say which was used and why. Never hit the REST API directly (`tooling-gap-discipline.md`). Discover syntax with
+`fj <command> --help`.
+
+- Pass `--host <host>` to every `fj` call when `keys.json` holds more than one host.
+- Branch-backed PR by default: `git push --set-upstream origin <branch>`, then `fj pr create "<title>" --body-file <path>`
+  (title positional; body in a `mktemp --tmpdir --suffix .md` file). `-A` (`--autofill`) is fine.
+- AVOID `-a` (`--agit`): it leaves no server branch, so "Update Branch" never appears and a PR behind a protected base
+  becomes unmergeable. Token scopes, AGit recovery and other detail: `forgejo-pr-workflow` skill.
+- `github.com` repos: `git push` plus `gh pr create`; if `gh` fails, assume it is not installed and use the compare URL.
