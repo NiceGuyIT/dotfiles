@@ -20,7 +20,10 @@ commit, or phase of one change. When unsure, file the LARGER issue.
 Only an epic or milestone root (an issue that exists to group, with no work of its own) is ever a parent. An issue with
 work NEVER gets a child task: closing a child auto-closes the parent, and the runner treats a parent as blocked by its
 children. Relate two work issues with `depends on` / `is required for`, or `relates to` when neither blocks the other,
-never `subtask of`. Decide the parent on every creation:
+never `subtask of`. Only an epic is ever a parent, and nothing else is ever filed as a subtask. Before passing a parent,
+run `yt issue inspect` on the candidate and confirm it is a pure grouping root (its only acceptance criterion is that its
+children are resolved, and it has no code work of its own). Unsure it is an epic -> top-level and ask. Decide the parent
+on every creation:
 
 - Belongs under an existing epic or milestone -> pass `parentIssue` in the SAME create call, never as a follow-up link.
 - An epic plausibly fits but it is unclear which -> ASK before creating.
