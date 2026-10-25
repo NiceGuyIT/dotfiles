@@ -1,3 +1,4 @@
+# Caveman
 .claude/agents/cavecrew-builder.md
 .claude/agents/cavecrew-investigator.md
 .claude/agents/cavecrew-reviewer.md
@@ -7,4 +8,10 @@
 .claude/skills/caveman-help/SKILL.md
 .claude/skills/caveman-review/SKILL.md
 
+# Rules
+.claude/rules/no-unrequested-tests.md
+.claude/rules/test-deliverable-yourself.md
+.claude/rules/plans-roadmap.md
+.claude/rules/no-masking.md
+.claude/rules/documentation-provenance.md
 
