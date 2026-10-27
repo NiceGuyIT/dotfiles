@@ -35,6 +35,11 @@ Required body shape:
 - `## Alternatives considered`
 - `## Acceptance criteria` (checkbox list)
 
+File-set AC: name the files the diff is expected to touch, then word the criterion as "`git diff --stat` shows only
+these files, plus any file that must change to keep the build and tests green (a caller or test asserting a changed
+signature), each named and justified in the PR body". A strict three-files-only wording fails a PR for a necessary
+ripple edit; the PR-body justification still blocks real scope creep.
+
 Ground every claim in the actual codebase. Speculative-but-plausible content gets rewritten later; invented file
 paths get caught at code-read time.
 
