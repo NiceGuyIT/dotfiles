@@ -73,7 +73,9 @@ def reset-common-submodule []: nothing -> record<ok: bool, error: string> {
 	{ ok: ($result.exit_code == 0), error: ($result.stderr | str trim) }
 }
 
-export def "repos pull" [] {
+# Pull every repo; --untracked also pulls repos whose only changes are untracked files.
+# A failing pull (e.g. an incoming file would overwrite an untracked one) leaves the repo as plain `git pull` would.
+export def "repos pull" [--untracked] {
 	repo-paths
 	| each {|it|
 		let relative = ($it | path relative-to (pwd))
@@ -85,8 +87,9 @@ export def "repos pull" [] {
 			return { repo: $relative, status: $"(ansi red_bold)error: submodule reset failed: ($before.error)(ansi reset)" }
 		}
 
-		let porcelain = (git status --porcelain)
-		if ($porcelain | is-empty) {
+		let porcelain = (git status --porcelain | lines)
+		let only_untracked = ($porcelain | all {|line| $line | str starts-with "?? "})
+		if ($porcelain | is-empty) or ($untracked and $only_untracked) {
 			let result = (git pull | complete)
 			if $result.exit_code == 0 {
 				# The pull may move the recorded submodule commit.
@@ -137,10 +140,10 @@ export def "repos branch-delete" [] {
 	}
 }
 
-def main [command: string, --list, --remote] {
+def main [command: string, --list, --remote, --untracked] {
 	match $command {
 		"status" => { repos status --list=$list --remote=$remote }
-		"pull" => { repos pull }
+		"pull" => { repos pull --untracked=$untracked }
 		"branch-delete" => { repos branch-delete }
 		_ => { print $"Unknown command: ($command)" }
 	}
