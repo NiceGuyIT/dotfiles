@@ -60,8 +60,9 @@ console or secret store, resolve an open decision, or ask a question. Before eve
 - External mutation (field change, comment, console setting, secret rotation, PR merge) is done NOW, at filing time, and
   recorded under `## Already done, not part of this issue`. A Knowledge Base article is never one of them (section 8).
 - Unwritten content ("use the right wording") is a decision: author it during filing or paste the exact final text.
-- Every AC is checkable from the repo alone, and the issue names the file set its diff may touch, with an AC that
-  `git diff --stat` confirms nothing else changed.
+- Every AC is checkable from the repo alone, and the issue names the file set its diff is expected to touch, with an AC
+  that `git diff --stat` shows only those files plus any file that must change to keep the build and tests green
+  (a caller or test asserting a changed signature), each extra file named and justified in the PR body.
 - Never hardcode `yt` commands or MCP tool names as the criterion; state the outcome.
 - Preflight on EVERY issue: re-read every AC and confirm the agent can complete it with repo access alone and only
   what is written. Any "no" is fixed before handoff. The result decides `AI Agent` (section 6).
