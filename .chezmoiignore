@@ -45,7 +45,6 @@ bash-completion/
 cargo/
 chezmoi-example.jsonc
 config/
-git-hooks/
 key-bindings/
 local/
 src/
@@ -58,7 +57,6 @@ vim-local.d/
 #.mozilla/firefox/user.js
 bash-preexec.sh
 install.nu
-install.sh
 LICENSE.md
 markdownlint.rc.yaml
 README.md
