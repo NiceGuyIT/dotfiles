@@ -2,6 +2,8 @@
 set positional-arguments
 # Use Nushell for all shells
 set shell := ['nu', '-c']
+# Multi-line recipes run as one nu script.
+set script-interpreter := ['nu']
 # The export setting causes all just variables to be exported as environment variables. Defaults to false.
 set export
 
@@ -23,29 +25,25 @@ list:
 
 
 # Require a command to be available
+[script]
 require-command command:
-	#!/usr/bin/env nu
-	if ("{{command}}" | str contains " ") {
-		# Command to run
-		do { {{command}} } | complete
-		if ($env.LAST_EXIT_CODE == 0) {
-			exit 0
-		} else {
-			print $"'{{command}}' did not exit cleanly. Please install '{{command}}' is available."
+	# Bind the argument to a variable: a literal `which false` or `which cmd --flag` fails to parse.
+	let cmd = r#'{{command}}'#
+	if ($cmd | str contains " ") {
+		let result = (^nu --commands $cmd | complete)
+		if $result.exit_code != 0 {
+			print --stderr $"'($cmd)' exited with code ($result.exit_code). Please install it and try again."
 			exit 1
 		}
-	} else {
-		if (which {{command}}| is-empty) {
-			print $"'{{command}}' executable not found. Please install '{{command}}' and try again."
-			exit 1
-		}
+	} else if (which $cmd | is-empty) {
+		print --stderr $"'($cmd)' executable not found. Please install '($cmd)' and try again."
+		exit 1
 	}
 
 
 # Install the chezmoi config to the user's home directory.
+[script]
 chezmoi-install-config:
-	#!/usr/bin/env nu
-
 	# Get the users name and email from their ~/.gitconfig
 	let git_config = ("~/.gitconfig" | path expand)
 	mut user_name = ""
@@ -53,8 +51,8 @@ chezmoi-install-config:
 	print $"git_config: ($git_config)"
 	if ($git_config | path exists) {
 		# FIXME: Check if the nu_plugin_formats plugin is available before using 'from ini'
-		$user_name = (open $git_config | from ini | get --ignore-errors user.name)
-		$user_email = (open $git_config | from ini | get --ignore-errors user.email)
+		$user_name = (open $git_config | from ini | get --optional user.name)
+		$user_email = (open $git_config | from ini | get --optional user.email)
 	}
 	let chezmoi_dir = ("~/.config/chezmoi" | path expand)
 	if not ($chezmoi_dir | path exists) {
@@ -62,7 +60,7 @@ chezmoi-install-config:
 	}
 	open chezmoi-example.jsonc
 		| from json
-		| update sourceDir ($env.HOME | path join "projects/dotfiles")
+		| update sourceDir "{{justfile_directory()}}"
 		| update data.git.name $user_name
 		| update data.git.email $user_email
 		| update data.firefox.profile_name $env.USER
@@ -71,15 +69,14 @@ chezmoi-install-config:
 
 
 # Get the SOPS_AGE_KEY_FILE environment variable.
+[script]
 sops-get-env:
-	#!/usr/bin/env nu
 	print $"$env.SOPS_AGE_KEY_FILE = ($env.SOPS_AGE_KEY_FILE)"
 
 
 # Generate encryption keys for age
+[script]
 age-genkeys: (require-command "age-keygen")
-	#!/usr/bin/env nu
-
 	if (which age-keygen | is-empty) {
 		print $"'age-keygen' executable not found. Please install 'age-keygen' and try again."
 		exit 1
@@ -98,9 +95,8 @@ age-genkeys: (require-command "age-keygen")
 
 
 # Use sops to enccrypt an example file so that the encrypted file can be edited.
+[script]
 sops-encrypt-file prefix='cfg': (require-command "sops")
-	#!/usr/bin/env nu
-
 	cd "{{invocation_directory_native()}}"
 	let ext = (glob {{prefix}}.example.sops.*
 		| path basename

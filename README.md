@@ -10,8 +10,20 @@ Need more inspiration? Check out [Awesome dotfiles](), [dotfiles]() and the [dot
 
 ## Install
 
-[chezmoi]() manages this repository. Installation of single binary files, a.k.a. packages, is done by [get-packages]()
-in the [justfile]() repository. Follow the installation instructions in the justfile repo.
+[chezmoi]() manages this repository. Clone it, then create the chezmoi config for the current user. The recipe copies
+`chezmoi-example.jsonc` to `~/.config/chezmoi/chezmoi.jsonc` and sets `sourceDir` to this directory, the git name and
+email from `~/.gitconfig`, and the Firefox profile name to `$USER`. It needs [just]() and Nushell with the
+`nu_plugin_formats` plugin (for `from ini`).
+
+```nu
+just chezmoi-install-config
+chezmoi apply
+```
+
+Installation of single binary files, a.k.a. packages, is done by [get-packages]() in the [justfile]() repository. Follow
+the installation instructions in the justfile repo.
+
+[just]: https://just.systems/
 
 [chezmoi]: https://github.com/twpayne/chezmoi
 [get-packages]: https://github.com/NiceGuyIT/justfiles/tree/main/packages
