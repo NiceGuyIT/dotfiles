@@ -20,14 +20,24 @@ current branch:
 A message like "fix X", "also do Y", "you forgot Z" AFTER a previous PR was merged is a NEW change: branch fresh off
 updated main.
 
-## Pre-commit check (MANDATORY, before EVERY commit)
+## Checks: the git hooks run them (MANDATORY, before the FIRST commit or push of every change)
 
-Run the project's full check suite and block the commit on any failure. Never use `git commit --no-verify`.
+The repo's git hooks are the check gate. When they are active, do NOT also run the suite by hand: that doubles a slow
+run. Never use `git commit --no-verify` or `git push --no-verify`.
 
-1. Entrypoint, in order: `justfile` `pre-commit` recipe (`just pre-commit`), else `check` recipe (`just check`), else the
-   repo's documented checks (e.g. `cargo fmt --check`, `cargo clippy ... -D warnings`, `cargo check`).
-2. Fix failures (`just fmt` / `cargo fmt`) and re-run until green BEFORE committing.
-3. In a fresh clone with an `install-hooks` recipe and no `.git/hooks/pre-commit`, run `just install-hooks`.
+1. Verify the hooks are active: `git config --get core.hooksPath`, then `ls -l <hooks dir>/pre-commit <hooks dir>/pre-push`
+   (default `.git/hooks`). A hook counts only if it is executable and runs the repo's checks (read the file; a stub like
+   `exec just pre-push` qualifies).
+2. Missing hooks and the repo has an `install-hooks` recipe (`just install-hooks`) -> run it, then re-verify step 1.
+3. Hooks active -> commit and push; the hooks run the checks. A hook failure blocks the commit or push: fix the cause
+   (`just fmt` / `cargo fmt` for formatting) and retry. Do not run `just check` / `just pre-push` separately first.
+4. No hooks and no `install-hooks` recipe (or the hooks do not run the checks) -> fall back to manual checks BEFORE
+   committing, once: `justfile` `pre-commit` recipe (`just pre-commit`), else `check` recipe (`just check`), else the
+   repo's documented checks (e.g. `cargo fmt --check`, `cargo clippy ... -D warnings`, `cargo check`). Fix failures and
+   re-run until green.
+
+**Why:** a slow disk makes every full-suite run expensive, and running the suite by hand before a hook that runs it
+again is pure duplicate cost. Relying on the repo's own hook is also the tool-first path (`tooling-gap-discipline.md`).
 
 ## Commit messages and PR text
 
