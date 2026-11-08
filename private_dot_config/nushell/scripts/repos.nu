@@ -4,10 +4,11 @@ def highlight [value: int]: nothing -> string {
 	if $value == 0 { $"($value)" } else { $"(ansi yellow_bold)($value)(ansi reset)" }
 }
 
-# Repository paths under the cwd, excluding submodules; the parent repo manages those.
+# Repository paths under the cwd, excluding submodules (the parent repo manages those) and `.claude` directories
+# (agent worktrees live there).
 # --show-superproject-working-tree prints the parent worktree in a submodule, nothing elsewhere.
 def repo-paths []: nothing -> list<string> {
-	glob **/.git --depth 10
+	glob **/.git --depth 10 --exclude [**/.claude/**]
 	| each {|it| $it | path dirname}
 	| where {|it|
 		let superproject = (^git -C $it rev-parse --show-superproject-working-tree | complete)
