@@ -39,6 +39,26 @@ run. Never use `git commit --no-verify` or `git push --no-verify`.
 **Why:** a slow disk makes every full-suite run expensive, and running the suite by hand before a hook that runs it
 again is pure duplicate cost. Relying on the repo's own hook is also the tool-first path (`tooling-gap-discipline.md`).
 
+## No test runs outside the git hooks (MANDATORY)
+
+When the repo's hooks are active (steps above), the hooks and CI are the ONLY place checks run. NEVER run, by hand or
+in the background, any of: `cargo test` (full or filtered, including a single new test), `cargo clippy`,
+`cargo fmt --check`, `just check` / `just pre-push` / `just pre-commit`, `claude-run test-postgres`, or any other
+suite, linter or type check the hooks or CI already run.
+
+- Write the code and its tests, commit, and let the hook run them. A hook failure is the feedback.
+- Allowed before the commit: `cargo check` (compile only), and running the deliverable itself as `testing.md` section 1
+  requires (a script, CLI or migration actually executed), never the test suite.
+- An AC such as "tests pass on SQLite and Postgres" is satisfied by the hooks and CI, not by a local run. Report it as
+  "covered by the pre-push hook and CI".
+- A leg the hooks cannot run (a Postgres leg, a runner-only check) is left to CI. Say so in the PR body. Do not start
+  it locally, and do not retry it.
+- If I notice I ran one, say so to the user at once, with its duration.
+
+**Why:** every extra run costs minutes on a slow workstation and duplicates what the hook and CI run again. In one
+session, manual filtered tests, clippy and two `test-postgres` runs (one hit the 600s limit) cost about 15 to 20
+minutes before the hook ran the same suite.
+
 ## Commit messages and PR text
 
 - Do NOT hard-wrap bullets or paragraphs in anything flowing through the Forgejo/GitHub UI (commit bodies, PR titles
