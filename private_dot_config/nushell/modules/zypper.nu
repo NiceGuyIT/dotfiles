@@ -1,5 +1,35 @@
 # Custom Zypper functions
 
+use std log
+
+# Exit 106 (ZYPPER_EXIT_INF_REPOS_SKIPPED): zypper skipped a repository it could not refresh.
+const REPOS_SKIPPED = 106
+
+# Text of every <message type="error"> element in a parsed --xmlout document.
+def error-messages []: record -> list<string> {
+	$in.content
+	| where tag? == "message"
+	| where attributes.type? == "error"
+	| each {|m| $m.content.0.content }
+}
+
+# Log one warning per skipped-repository message from zypper.
+def warn-skipped [cmd: string, messages: list<string>] {
+	if ($messages | is-empty) {
+		log warning $"zypper ($cmd): repositories skipped (exit ($REPOS_SKIPPED)), results may be incomplete"
+	}
+	for m in $messages {
+		log warning $"zypper ($cmd): repository skipped, results may be incomplete: ($m)"
+	}
+}
+
+# Raise unless the exit code is 0, 106 (callers warn) or in `ok`.
+def check-exit [run: record, cmd: string, ok: list<int>] {
+	if $run.exit_code not-in ([0 $REPOS_SKIPPED] | append $ok) {
+		error make {msg: $"zypper ($cmd) failed with exit code ($run.exit_code): ($run.stderr | str trim)"}
+	}
+}
+
 # Search for packages with zypper and return a table.
 export def "zypper search" [
 	--installed (-i)			# Search only installed packges
@@ -20,17 +50,20 @@ export def "zypper search" [
 		$args = ($args | append ["--type" $type])
 	}
 
-	# Exit 104 (ZYPPER_EXIT_INF_CAP_NOT_FOUND) means no match; any other non-zero is a failure.
+	# Exit 104 (ZYPPER_EXIT_INF_CAP_NOT_FOUND) means no match; 106 is a skipped repository.
 	let run = (^zypper ...$zypp_args search ...$args ...$names | complete)
-	if $run.exit_code not-in [0 104] {
-		error make {msg: $"zypper search failed with exit code ($run.exit_code): ($run.stderr | str trim)"}
-	}
+	check-exit $run search [104]
 	let parsed = ($run.stdout | from xml)
 	# zypper emits <message> elements (e.g. expired-metadata warnings) before the
 	# <search-result>, so select by tag rather than position.
-	let errors = ($parsed.content | where tag? == "message" | where attributes.type? == "error")
-	if ($errors | is-not-empty) {
-		error make {msg: $"zypper search failed: ($errors.0.content.0.content? | default 'unknown error')"}
+	let errors = ($parsed | error-messages)
+	let has_result = ($parsed.content | where tag? == "search-result" | is-not-empty)
+	if $run.exit_code == $REPOS_SKIPPED and $has_result {
+		warn-skipped search $errors
+	} else if ($errors | is-not-empty) {
+		error make {msg: $"zypper search failed: ($errors | str join '; ')"}
+	} else if $run.exit_code == $REPOS_SKIPPED {
+		error make {msg: $"zypper search failed with exit code ($run.exit_code) and no result: ($run.stderr | str trim)"}
 	}
 	# On no match zypper emits only <message>No matching items found.</message>.
 	let result = ($parsed.content | where tag? == "search-result")
@@ -95,11 +128,15 @@ export def "zypper packages" [
 	# parse it by hand. Data rows start with a lowercase status char (i, v, ...)
 	# followed by whitespace and `|`, which skips the blank line, the header
 	# (`S  | ...`), and the `---+---` separator.
-	let parsed = (
-		^zypper ...$zypp_args packages ...$args ...$repos
-		| collect
-		| from xml
-	)
+	let run = (^zypper ...$zypp_args packages ...$args ...$repos | complete)
+	check-exit $run packages []
+	mut parsed = ($run.stdout | from xml)
+	# A skipped repository is reported by check-exit; drop its message so the
+	# disabled-repo handling below only sees messages that replace the table.
+	if $run.exit_code == $REPOS_SKIPPED {
+		warn-skipped packages ($parsed | error-messages)
+		$parsed = ($parsed | update content ($parsed.content | where {|c| $c.tag? != "message" or $c.attributes.type? != "error" }))
+	}
 	# On errors (e.g. a disabled repo) zypper returns <message type="error">...</message>
 	# instead of the text table. Surface the message as a friendly error and exit.
 	if ($parsed.content.0.tag? | default null) == "message" {
@@ -171,7 +208,12 @@ export def "zypper repos" [
 	# `zypper packages`: drop the `---+---` separator and any non-data lines
 	# (preamble, blanks), then feed the result to `from csv`. The pipe-existence
 	# filter also strips the priority preamble that prints when --details is off.
-	^zypper ...$zypp_args repos ...$args ...$repos
+	let run = (^zypper ...$zypp_args repos ...$args ...$repos | complete)
+	check-exit $run repos []
+	if $run.exit_code == $REPOS_SKIPPED {
+		log warning $"zypper repos: repositories skipped, list may be incomplete: ($run.stderr | str trim)"
+	}
+	$run.stdout
 	| lines
 	| where $it !~ '-{5,}'
 	| where $it =~ '\|'
