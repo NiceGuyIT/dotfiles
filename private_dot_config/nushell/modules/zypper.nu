@@ -58,8 +58,17 @@ export def "zypper search" [
 	# <search-result>, so select by tag rather than position.
 	let errors = ($parsed | error-messages)
 	let has_result = ($parsed.content | where tag? == "search-result" | is-not-empty)
+	# With no match zypper emits a non-error notice instead of <search-result>.
+	let has_notice = ($parsed.content | where tag? == "message" | where attributes.type? != "error" | is-not-empty)
+	let no_match = ($run.exit_code == 104 or ($run.exit_code == $REPOS_SKIPPED and $has_notice))
 	if $run.exit_code == $REPOS_SKIPPED and $has_result {
 		warn-skipped search $errors
+	} else if $no_match and not $has_result {
+		# A skipped repository is the only error a no-match run can carry.
+		if ($errors | is-not-empty) {
+			warn-skipped search $errors
+		}
+		return []
 	} else if ($errors | is-not-empty) {
 		error make {msg: $"zypper search failed: ($errors | str join '; ')"}
 	} else if $run.exit_code == $REPOS_SKIPPED {
